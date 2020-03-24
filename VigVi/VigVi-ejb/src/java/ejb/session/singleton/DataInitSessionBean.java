@@ -34,7 +34,7 @@ public class DataInitSessionBean {
     @PostConstruct
     void PostConstruct(){
         if(em.find(Merchant.class, 1l)==null){
-               merchantSessionBeanLocal.createNewMerchant(new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)", 0.03 , "viggym@gmail.com", "password", true , "DBS" , "123-4567-890",""));
+               merchantSessionBeanLocal.createNewMerchant(new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)", 0.03 , "viggym@gmail.com", "password", true , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
         }
     }
 }
