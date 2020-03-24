@@ -5,21 +5,19 @@
  */
 package ejb.session.stateless;
 
-import entity.Merchant;
-import java.util.List;
+import entity.GymClass;
 import javax.ejb.Local;
+import util.exception.ClassIDExistException;
 import util.exception.MerchantNotFoundException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
  * @author JiaYunTeo
  */
 @Local
-public interface MerchantSessionBeanLocal {
+public interface ClassSessionBeanLocal {
+
+    public Long createNewClass(Long merchantId, GymClass newClass) throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException;
     
-    public Long createNewMerchant(Merchant newMerchant);
-    public List<Merchant> retrieveAllMerchants();
-
-    public Merchant retrieveMerchantByMerchantId(Long merchantId) throws MerchantNotFoundException;
-
 }

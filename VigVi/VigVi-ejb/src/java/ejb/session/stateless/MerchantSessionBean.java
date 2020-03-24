@@ -9,8 +9,11 @@ import entity.Merchant;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.MerchantNotFoundException;
 
 /**
  *
@@ -46,6 +49,18 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
         return query.getResultList();
 
     }
+    
+    @Override
+    public Merchant retrieveMerchantByMerchantId(Long merchantId)throws MerchantNotFoundException{
+        Merchant merchantEntity = em.find(Merchant.class, merchantId);
+
+        try{
+            return merchantEntity;
+        }catch (NoResultException | NonUniqueResultException ex){
+            throw new MerchantNotFoundException ("Merchant" + merchantId + "does not exist");
+        }
+    }
+    
     
     
     

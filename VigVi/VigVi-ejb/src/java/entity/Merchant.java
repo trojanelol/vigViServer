@@ -6,10 +6,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,6 +24,8 @@ public class Merchant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long merchantId;
+    @OneToMany(mappedBy="merchant")
+    private List<GymClass> classes;
     private String merchantName;
     private String merchantDesc;
     private Double commissionRate;
@@ -172,6 +176,14 @@ public class Merchant implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<GymClass> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<GymClass> classes) {
+        this.classes = classes;
     }
     
     
