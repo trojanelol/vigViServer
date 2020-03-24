@@ -31,11 +31,13 @@ public class Merchant implements Serializable {
     private String bankName;
     private String bankAccount;
     private String merchantImage;
+    private String contactNumber;
+    private String address;
 
     public Merchant() {
     }
 
-    public Merchant(String merchantName, String merchantDesc, Double commissionRate, String merchantEmail, String merchantPw, Boolean merchantStatus, String bankName, String bankAccount, String merchantImage) {
+    public Merchant(String merchantName, String merchantDesc, Double commissionRate, String merchantEmail, String merchantPw, Boolean merchantStatus, String bankName, String bankAccount, String merchantImage, String contactNumber, String address) {
         this.merchantName = merchantName;
         this.merchantDesc = merchantDesc;
         this.commissionRate = commissionRate;
@@ -45,10 +47,11 @@ public class Merchant implements Serializable {
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.merchantImage = merchantImage;
+        this.contactNumber = contactNumber;
+        this.address = address;
     }
-    
-    
-    
+
+   
 
     public Long getMerchantId() {
         return merchantId;
@@ -154,5 +157,24 @@ public class Merchant implements Serializable {
     public void setMerchantImage(String merchantImage) {
         this.merchantImage = merchantImage;
     }
+    
+        public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    
+    
     
 }
