@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
  *
@@ -37,6 +40,19 @@ public class Merchant implements Serializable {
     private String merchantImage;
     private String contactNumber;
     private String address;
+    private Date createdDate;
+    private Date updatedDate;
+//    private Date deactivatedDate;
+    
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedDate = new Date();
+    }
 
     public Merchant() {
     }
@@ -185,6 +201,27 @@ public class Merchant implements Serializable {
     public void setClasses(List<GymClass> classes) {
         this.classes = classes;
     }
+    
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+    
+    
+
+
+
     
     
     

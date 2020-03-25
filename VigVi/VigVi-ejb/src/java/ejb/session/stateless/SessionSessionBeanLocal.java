@@ -5,11 +5,10 @@
  */
 package ejb.session.stateless;
 
-import entity.GymClass;
+import entity.Session;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
-import util.exception.MerchantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -17,10 +16,8 @@ import util.exception.UnknownPersistenceException;
  * @author JiaYunTeo
  */
 @Local
-public interface ClassSessionBeanLocal {
+public interface SessionSessionBeanLocal {
 
-    public Long createNewClass(Long merchantId, GymClass newClass) throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException;
-
-    public GymClass retrieveClassByClassId(Long classId) throws GymClassNotFoundException;
+    public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException, UnknownPersistenceException, GymClassNotFoundException;
     
 }
