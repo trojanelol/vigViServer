@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/entity/GymClass.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/ejb/session/stateless/ClassSessionBean.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/ejb/session/stateless/ClassSessionBeanLocal.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/util/exception/MerchantNotFoundException.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/ejb/session/singleton/DataInitSessionBean.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/ejb/session/stateless/MerchantSessionBeanLocal.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/util/exception/UnknownPersistenceException.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/util/exception/ClassIDExistException.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/entity/Merchant.java</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigvi/VigVi/VigVi-ejb/src/java/ejb/session/stateless/MerchantSessionBean.java</file>
+        </group>
+    </open-files>
 </project-private>

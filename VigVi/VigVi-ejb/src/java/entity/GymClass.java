@@ -6,11 +6,16 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
  *
@@ -25,6 +30,8 @@ public class GymClass implements Serializable {
     private Long classId;
     @ManyToOne
     private Merchant merchant;
+    @OneToMany(mappedBy="gymClass")
+    private List<Session> sessions;
     private String className;
     private String classDesc;
     private String classImg;
@@ -32,6 +39,19 @@ public class GymClass implements Serializable {
     private Integer classSize;
     private String startTime;
     private String endTime;
+    private Date createdDate;
+    private Date updatedDate;
+//    private Date deactivatedDate;
+    
+    @PrePersist
+    protected void onCreate() {
+        createdDate = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedDate = new Date();
+    }
 
     public GymClass() {
     }
@@ -143,6 +163,14 @@ public class GymClass implements Serializable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
     
 }

@@ -5,18 +5,15 @@
  */
 package ejb.session.stateless;
 
-import entity.Merchant;
 import entity.GymClass;
+import entity.Session;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
-import util.exception.MerchantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -24,22 +21,25 @@ import util.exception.UnknownPersistenceException;
  * @author JiaYunTeo
  */
 @Stateless
-public class ClassSessionBean implements ClassSessionBeanLocal {
+public class SessionSessionBean implements SessionSessionBeanLocal {
+
+    @EJB(name = "ClassSessionBeanLocal")
+    private ClassSessionBeanLocal classSessionBeanLocal;
 
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
-    @EJB
-    private MerchantSessionBeanLocal merchantSessionBeanLocal;
+    
+    
     
     @Override
-    public Long createNewClass(Long merchantId, GymClass newClass) throws ClassIDExistException , UnknownPersistenceException, MerchantNotFoundException{
+    public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException , UnknownPersistenceException, GymClassNotFoundException{
         try{
-        Merchant merchantEntity = merchantSessionBeanLocal.retrieveMerchantByMerchantId(merchantId);
-        newClass.setMerchant(merchantEntity);
-        merchantEntity.getClasses().add(newClass);
-        em.persist(newClass);
+        GymClass gymClassEntity = classSessionBeanLocal.retrieveClassByClassId(classId);
+        newSession.setGymClass(gymClassEntity);
+        gymClassEntity.getSessions().add(newSession);
+        em.persist(newSession);
         em.flush();
-        return newClass.getClassId();
+        return newSession.getSessionId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {
@@ -56,17 +56,6 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
             {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
-        }
-    }
-    
-    @Override
-    public GymClass retrieveClassByClassId(Long classId)throws GymClassNotFoundException{
-        GymClass gymClassEntity = em.find(GymClass.class, classId);
-
-        try{
-            return gymClassEntity;
-        }catch (NoResultException | NonUniqueResultException ex){
-            throw new GymClassNotFoundException ("Gym Class" + classId + "does not exist");
         }
     }
 }
