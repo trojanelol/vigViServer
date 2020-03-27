@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -39,7 +40,9 @@ public class GymClass implements Serializable {
     private Integer classSize;
     private String startTime;
     private String endTime;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
 //    private Date deactivatedDate;
     

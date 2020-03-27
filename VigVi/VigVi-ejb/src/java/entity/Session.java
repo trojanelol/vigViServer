@@ -7,13 +7,19 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -21,6 +27,38 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 public class Session implements Serializable {
+
+    public List<CustomerSession> getSignedUpCustomer() {
+        return signedUpCustomer;
+    }
+
+    public void setSignedUpCustomer(List<CustomerSession> signedUpCustomer) {
+        this.signedUpCustomer = signedUpCustomer;
+    }
+
+//    public List<Customer> getSignedUpCustomer() {
+//        return signedUpCustomer;
+//    }
+//
+//    public void setSignedUpCustomer(List<Customer> signedUpCustomer) {
+//        this.signedUpCustomer = signedUpCustomer;
+//    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
     
     public enum SessionStatus
     { 
@@ -36,20 +74,25 @@ public class Session implements Serializable {
     private Long sessionId;
     @ManyToOne
     private GymClass gymClass;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date sessionDate;
     private SessionStatus status;
+    @OneToMany(mappedBy = "session")
+    private List<CustomerSession> signedUpCustomer;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
 //    private Date deactivatedDate;
     
     @PrePersist
     protected void onCreate() {
-        createdDate = new Date();
+        setCreatedDate(new Date());
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedDate = new Date();
+        setUpdatedDate(new Date());
     }
 
     public Session() {

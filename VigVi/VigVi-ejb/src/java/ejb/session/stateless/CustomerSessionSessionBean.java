@@ -6,19 +6,16 @@
 package ejb.session.stateless;
 
 import entity.Customer;
-import entity.GymClass;
+import entity.CustomerSession;
+import entity.CustomerSessionId;
 import entity.Session;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import util.exception.ClassIDExistException;
-import util.exception.GymClassNotFoundException;
+import util.exception.CustomerNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -27,10 +24,13 @@ import util.exception.UnknownPersistenceException;
  * @author JiaYunTeo
  */
 @Stateless
-public class SessionSessionBean implements SessionSessionBeanLocal {
+public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLocal {
 
-    @EJB(name = "ClassSessionBeanLocal")
-    private ClassSessionBeanLocal classSessionBeanLocal;
+    @EJB(name = "SessionSessionBeanLocal")
+    private SessionSessionBeanLocal sessionSessionBeanLocal;
+
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
@@ -38,14 +38,20 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
     
     @Override
-    public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException , UnknownPersistenceException, GymClassNotFoundException{
+    public Long signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException{
         try{
-        GymClass gymClassEntity = classSessionBeanLocal.retrieveClassByClassId(classId);
-        newSession.setGymClass(gymClassEntity);
-        gymClassEntity.getSessions().add(newSession);
-        em.persist(newSession);
+        Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+        Session sessionEntity = sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId);
+        CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
+        CustomerSession customerSession = new CustomerSession(customerSessionId);
+        customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
+        customerSession.setCustomer(customerEntity);
+        customerSession.setSession(sessionEntity);
+        customerEntity.getSignedUpClass().add(customerSession);
+        sessionEntity.getSignedUpCustomer().add(customerSession);
+        em.persist(customerSession);
         em.flush();
-        return newSession.getSessionId();
+        return customerSession.getSession().getSessionId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {
@@ -62,17 +68,6 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
             {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
-        }
-    }
-    
-     @Override
-    public Session retrieveSessionBySessionId(Long sessionId)throws SessionNotFoundException{
-        Session sessionEntity = em.find(Session.class, sessionId);
-
-        try{
-            return sessionEntity;
-        }catch (NoResultException | NonUniqueResultException ex){
-            throw new SessionNotFoundException ("Session" + sessionId + "does not exist");
         }
     }
 }

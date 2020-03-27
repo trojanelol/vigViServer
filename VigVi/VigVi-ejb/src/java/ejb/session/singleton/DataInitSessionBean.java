@@ -6,11 +6,17 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.ClassSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionSessionBeanLocal;
 import ejb.session.stateless.MerchantSessionBeanLocal;
 import ejb.session.stateless.SessionSessionBeanLocal;
+import ejb.session.stateless.WalletSessionBeanLocal;
+import entity.Customer;
+import entity.CustomerSession;
 import entity.GymClass;
 import entity.Merchant;
 import entity.Session;
+import entity.Wallet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -23,8 +29,10 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.ClassIDExistException;
+import util.exception.CustomerNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.MerchantNotFoundException;
+import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -35,6 +43,16 @@ import util.exception.UnknownPersistenceException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "CustomerSessionSessionBeanLocal")
+    private CustomerSessionSessionBeanLocal customerSessionSessionBeanLocal;
+
+
+    @EJB(name = "WalletSessionBeanLocal")
+    private WalletSessionBeanLocal walletSessionBeanLocal;
+
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB(name = "SessionSessionBeanLocal")
     private SessionSessionBeanLocal sessionSessionBeanLocal;
@@ -56,24 +74,31 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | SessionNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException{
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException{
         if(em.find(Merchant.class, 1l)==null){
                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
                Long merchantId = merchantSessionBeanLocal.createNewMerchant(new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)", 0.03 , "viggym@gmail.com", "password", true , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 30.0 , 20 , "1100", "1200"));
-               sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
-               sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
-               sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId2 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId3 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
                Long classId2 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Muay Thai", "Challenge Yourself", "", 30.0 , 20 , "2000", "2130"));
-               sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
-               sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
-               sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId4 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId5 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
+               Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female, true , "+65-89765677"));
+               Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male, true , "+65-89765678"));
+               walletSessionBeanLocal.createNewWallet(customerId1, new Wallet(100.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"));
+               walletSessionBeanLocal.createNewWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"));
+               customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
+               customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
+               customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);
         }
     }
 }

@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -29,6 +31,7 @@ public class Merchant implements Serializable {
     private Long merchantId;
     @OneToMany(mappedBy="merchant")
     private List<GymClass> classes;
+    @Column(unique = true)
     private String merchantName;
     private String merchantDesc;
     private Double commissionRate;
@@ -40,7 +43,9 @@ public class Merchant implements Serializable {
     private String merchantImage;
     private String contactNumber;
     private String address;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
 //    private Date deactivatedDate;
     
