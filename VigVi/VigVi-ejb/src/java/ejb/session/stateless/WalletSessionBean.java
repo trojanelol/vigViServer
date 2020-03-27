@@ -6,9 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Customer;
-import entity.GymClass;
-import entity.Session;
-import java.util.List;
+import entity.Wallet;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,21 +14,20 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import util.exception.ClassIDExistException;
-import util.exception.GymClassNotFoundException;
-import util.exception.SessionNotFoundException;
+import util.exception.CustomerNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.WalletNotFoundException;
 
 /**
  *
  * @author JiaYunTeo
  */
 @Stateless
-public class SessionSessionBean implements SessionSessionBeanLocal {
+public class WalletSessionBean implements WalletSessionBeanLocal {
 
-    @EJB(name = "ClassSessionBeanLocal")
-    private ClassSessionBeanLocal classSessionBeanLocal;
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBeanLocal customerSessionBeanLocal;
 
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
@@ -38,14 +35,14 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
     
     @Override
-    public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException , UnknownPersistenceException, GymClassNotFoundException{
+    public Long createNewWallet(Long customerId, Wallet newWallet) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException{
         try{
-        GymClass gymClassEntity = classSessionBeanLocal.retrieveClassByClassId(classId);
-        newSession.setGymClass(gymClassEntity);
-        gymClassEntity.getSessions().add(newSession);
-        em.persist(newSession);
+        Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+        newWallet.setCustomer(customerEntity);
+        customerEntity.setWallet(newWallet);
+        em.persist(newWallet);
         em.flush();
-        return newSession.getSessionId();
+        return newWallet.getWalletId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {
@@ -65,14 +62,14 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         }
     }
     
-     @Override
-    public Session retrieveSessionBySessionId(Long sessionId)throws SessionNotFoundException{
-        Session sessionEntity = em.find(Session.class, sessionId);
+    @Override
+    public Wallet retrieveWalletByCustomerId(Long customerId)throws WalletNotFoundException{
+        Wallet walletEntity = em.find(Wallet.class, customerId);
 
         try{
-            return sessionEntity;
+            return walletEntity;
         }catch (NoResultException | NonUniqueResultException ex){
-            throw new SessionNotFoundException ("Session" + sessionId + "does not exist");
+            throw new WalletNotFoundException ("Wallet from customer" + customerId + "does not exist");
         }
     }
 }
