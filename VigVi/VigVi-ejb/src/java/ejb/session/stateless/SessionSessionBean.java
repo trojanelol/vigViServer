@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.CustomerSession;
 import entity.GymClass;
 import entity.Session;
 import java.util.List;
@@ -74,5 +75,13 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         }catch (NoResultException | NonUniqueResultException ex){
             throw new SessionNotFoundException ("Session" + sessionId + "does not exist");
         }
+    }
+    
+    @Override
+    public List<Session> retrieveAllOngoingSessionsByClassId(Long classId){
+        Query query = em.createQuery("SELECT s from Session s where s.gymClass.classId = :id and s.status = :status");
+        query.setParameter("id", classId);
+        query.setParameter("status", Session.SessionStatus.ONGOING);
+        return query.getResultList();
     }
 }

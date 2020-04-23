@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Session;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
@@ -22,5 +23,7 @@ public interface SessionSessionBeanLocal {
     public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException, UnknownPersistenceException, GymClassNotFoundException;
 
     public Session retrieveSessionBySessionId(Long sessionId) throws SessionNotFoundException;
+
+    public List<Session> retrieveAllOngoingSessionsByClassId(Long classId);
     
 }

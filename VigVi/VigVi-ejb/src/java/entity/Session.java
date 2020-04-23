@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -73,11 +74,13 @@ public class Session implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionId;
     @ManyToOne
+    @JsonbTransient
     private GymClass gymClass;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date sessionDate;
     private SessionStatus status;
     @OneToMany(mappedBy = "session")
+    @JsonbTransient
     private List<CustomerSession> signedUpCustomer;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;

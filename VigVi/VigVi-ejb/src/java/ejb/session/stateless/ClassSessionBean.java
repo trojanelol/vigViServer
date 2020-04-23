@@ -82,4 +82,16 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
             throw new GymClassNotFoundException ("Gym Class" + classId + "does not exist");
         }
     }
+    
+    @Override
+    public Merchant retrieveMerchantByClassId(Long classId)throws GymClassNotFoundException{
+        GymClass gymClassEntity = em.find(GymClass.class, classId);
+
+        try{
+            return gymClassEntity.getMerchant();
+        }catch (NoResultException | NonUniqueResultException ex){
+            throw new GymClassNotFoundException ("Gym Class" + classId + "does not exist");
+        }
+    }
+    
 }

@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.GymClass;
+import entity.Merchant;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
@@ -25,5 +26,7 @@ public interface ClassSessionBeanLocal {
     public GymClass retrieveClassByClassId(Long classId) throws GymClassNotFoundException;
 
     public List<GymClass> retrieveAllActiveClasses();
+
+    public Merchant retrieveMerchantByClassId(Long classId) throws GymClassNotFoundException;
     
 }
