@@ -6,9 +6,12 @@
 package ejb.session.stateless;
 
 import entity.CustomerSession;
+import entity.CustomerSessionId;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
+import util.exception.CustomerSessionNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -19,6 +22,9 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface CustomerSessionSessionBeanLocal {
 
-    public Long signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException;
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException;
     
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException;
+
+    public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
 }

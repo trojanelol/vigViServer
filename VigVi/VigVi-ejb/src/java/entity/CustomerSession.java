@@ -6,13 +6,20 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -20,6 +27,16 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class CustomerSession implements Serializable {
+
+    public CustomerSessionId getCustomerSessionId() {
+        return customerSessionId;
+    }
+
+    public void setCustomerSessionId(CustomerSessionId customerSessionId) {
+        this.customerSessionId = customerSessionId;
+    }
+
+
 
 
     public enum CustomerSessionStatus{
@@ -38,6 +55,41 @@ public class CustomerSession implements Serializable {
     private Session session;
     private CustomerSessionStatus customerSessionStatus;
     private Boolean customerAttendance;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "transactionId", referencedColumnName = "transactionId")
+    private Transaction transaction;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date updatedDate;
+//    private Date deactivatedDate;
+    
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate(new Date());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate(new Date());
+    }
+    
+    
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public CustomerSession() {
     }
@@ -46,11 +98,20 @@ public class CustomerSession implements Serializable {
         this.customerSessionId = customerSessionId;
     }
     
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (customerSessionId != null ? customerSessionId.hashCode() : 0);
+        hash += (getCustomerSessionId() != null ? getCustomerSessionId().hashCode() : 0);
         return hash;
     }
 
@@ -61,7 +122,7 @@ public class CustomerSession implements Serializable {
             return false;
         }
         CustomerSession other = (CustomerSession) object;
-        if ((this.customerSessionId == null && other.customerSessionId != null) || (this.customerSessionId != null && !this.customerSessionId.equals(other.customerSessionId))) {
+        if ((this.getCustomerSessionId() == null && other.getCustomerSessionId() != null) || (this.getCustomerSessionId() != null && !this.customerSessionId.equals(other.customerSessionId))) {
             return false;
         }
         return true;
@@ -69,7 +130,7 @@ public class CustomerSession implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.CustomerSession[ id=" + customerSessionId + " ]";
+        return "entity.CustomerSession[ id=" + getCustomerSessionId() + " ]";
     }
     
         public Customer getCustomer() {

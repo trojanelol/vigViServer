@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Currency;
 import javax.ejb.Local;
+import util.exception.CurrencyNotFoundException;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface CurrencySessionBeanLocal {
     public Long createNewCurrency(Currency newCurrency);
 
     public Currency updateConversionRate(long currencyId, double newConversionRate);
+
+    public Currency retrieveCurrencyByCurrencyId(Long currencyId) throws CurrencyNotFoundException;
     
 }

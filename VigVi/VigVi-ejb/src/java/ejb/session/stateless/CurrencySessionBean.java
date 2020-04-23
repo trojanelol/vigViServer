@@ -8,7 +8,11 @@ package ejb.session.stateless;
 import entity.Currency;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import util.exception.CurrencyNotFoundException;
+import util.exception.SessionNotFoundException;
 
 /**
  *
@@ -37,6 +41,17 @@ public class CurrencySessionBean implements CurrencySessionBeanLocal {
         }
         return emp;
         
+    }
+    
+     @Override
+    public Currency retrieveCurrencyByCurrencyId(Long currencyId)throws CurrencyNotFoundException{
+        Currency currencyEntity = em.find(Currency.class, currencyId);
+
+        try{
+            return currencyEntity;
+        }catch (NoResultException | NonUniqueResultException ex){
+            throw new CurrencyNotFoundException ("Currency" + currencyId + "does not exist");
+        }
     }
     
 }
