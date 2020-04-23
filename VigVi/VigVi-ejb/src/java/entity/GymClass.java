@@ -77,7 +77,7 @@ public class GymClass implements Serializable {
     public GymClass() {
     }
 
-    public GymClass(String className, String classDesc, String classImg, Double classPrice, Integer classSize, String startTime, String endTime) {
+    public GymClass(String className, String classDesc, String classImg, Double classPrice, Integer classSize, String startTime, String endTime, String classRemarks, String classInstructor) {
         this.className = className;
         this.classDesc = classDesc;
         this.classImage = classImg;
@@ -85,6 +85,8 @@ public class GymClass implements Serializable {
         this.classSize = classSize;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.classRemarks = classRemarks;
+        this.classInstructor = classInstructor;
     }
     
     
