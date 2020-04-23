@@ -86,6 +86,30 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
+    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance, Long currencyId) throws CurrencyNotFoundException{
+        CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
+        
+        emp.setCustomerAttendance(attendance);
+        
+        if (emp.getCustomerAttendance()== true){
+            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.COMPLETED, currencyId);         
+        }else{
+            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.MISSED, currencyId);
+        }
+        
+        return emp;
+    }
+    
+    @Override
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException{
+        CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
+        emp.setCustomerAttendance(false);
+        this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN, currencyId); 
+        
+        return emp;
+    }
+    
+    @Override
     public CustomerSession retrieveCustomerSessionById (CustomerSessionId customerSessionId)throws CustomerSessionNotFoundException{
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         
@@ -99,30 +123,54 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     @Override
     public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException{
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
-        if (emp != null) {
+        if (emp != null & emp.getCustomerSessionStatus()!= newStatus) {
             emp.setCustomerSessionStatus(newStatus);
-        }
-        if (emp.getCustomerSessionStatus() == CustomerSessionStatus.COMPLETED){
-         //create transaction
-         double customerAmountBeforeConversion;
-         customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice();
-         double conversionRate;
-         conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
-            double customerAmount = customerAmountBeforeConversion*conversionRate;
-         double commissionRate;
-         commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
-            double platformAmount = customerAmount*commissionRate;
-            double merchantAmount = customerAmount - platformAmount;
-            try {
-                transactionSessionBeanLocal.createNewTransaction(customerSessionId, new Transaction(customerAmount, false, merchantAmount, platformAmount));
-            } catch (ClassIDExistException ex) {
-                Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnknownPersistenceException ex) {
-                Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (CustomerSessionNotFoundException ex) {
-                Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+
+            if (emp.getCustomerSessionStatus() == CustomerSessionStatus.COMPLETED){
+             //create transaction
+             double customerAmountBeforeConversion;
+             customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice();
+             double conversionRate;
+             conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+                double customerAmount = customerAmountBeforeConversion*conversionRate;
+             double commissionRate;
+             commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
+                double platformAmount = customerAmount*commissionRate;
+                double merchantAmount = customerAmount - platformAmount;
+                try {
+                    transactionSessionBeanLocal.createNewTransaction(customerSessionId, new Transaction(customerAmount, false, merchantAmount, platformAmount));
+                } catch (ClassIDExistException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownPersistenceException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CustomerSessionNotFoundException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
- 
+            if (emp.getCustomerSessionStatus() == CustomerSessionStatus.MISSED){
+             //create transaction
+             double customerAmountBeforeConversion;
+             customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice();
+             double conversionRate;
+             conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+                //charge 50% if they miss the class
+                double customerAmount = customerAmountBeforeConversion*conversionRate*0.5;
+             double commissionRate;
+             commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
+                double platformAmount = customerAmount*commissionRate;
+                double merchantAmount = customerAmount - platformAmount;
+                try {
+                    transactionSessionBeanLocal.createNewTransaction(customerSessionId, new Transaction(customerAmount, false, merchantAmount, platformAmount));
+                } catch (ClassIDExistException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownPersistenceException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (CustomerSessionNotFoundException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
         }
         return emp;
     }

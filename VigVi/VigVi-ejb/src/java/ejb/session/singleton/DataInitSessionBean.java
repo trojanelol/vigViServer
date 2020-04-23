@@ -109,7 +109,9 @@ public class DataInitSessionBean {
                CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore"));
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
-               customerSessionSessionBeanLocal.updateCustomerSessionStatus(customerSessionId1, CustomerSession.CustomerSessionStatus.COMPLETED, singaporeRateId);
+               customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true, singaporeRateId);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false, singaporeRateId);
         }
     }
 }
