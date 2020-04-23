@@ -25,6 +25,22 @@ import javax.persistence.Temporal;
 @Entity
 public class GymClass implements Serializable {
 
+    public String getClassRemarks() {
+        return classRemarks;
+    }
+
+    public void setClassRemarks(String classRemarks) {
+        this.classRemarks = classRemarks;
+    }
+
+    public String getClassInstructor() {
+        return classInstructor;
+    }
+
+    public void setClassInstructor(String classInstructor) {
+        this.classInstructor = classInstructor;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +51,13 @@ public class GymClass implements Serializable {
     private List<Session> sessions;
     private String className;
     private String classDesc;
-    private String classImg;
+    private String classImage;
     private Double classPrice;
     private Integer classSize;
     private String startTime;
     private String endTime;
+    private String classRemarks;
+    private String classInstructor;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -62,7 +80,7 @@ public class GymClass implements Serializable {
     public GymClass(String className, String classDesc, String classImg, Double classPrice, Integer classSize, String startTime, String endTime) {
         this.className = className;
         this.classDesc = classDesc;
-        this.classImg = classImg;
+        this.classImage = classImg;
         this.classPrice = classPrice;
         this.classSize = classSize;
         this.startTime = startTime;
@@ -128,12 +146,12 @@ public class GymClass implements Serializable {
         this.classDesc = classDesc;
     }
 
-    public String getClassImg() {
-        return classImg;
+    public String getClassImage() {
+        return classImage;
     }
 
-    public void setClassImg(String classImg) {
-        this.classImg = classImg;
+    public void setClassImage(String classImage) {
+        this.classImage = classImage;
     }
 
     public Double getClassPrice() {

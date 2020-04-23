@@ -61,8 +61,8 @@ public class Wallet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long walletId;
-    private Double balance;
-    private Double hold;
+    private Double currentBalance;
+    private Double holdBalance;
     private String ccName;
     private String ccBillingAddress;
     private CardType ccType;
@@ -90,7 +90,7 @@ public class Wallet implements Serializable {
     }
 
     public Wallet(Double balance, String ccName, String ccBillingAddress, CardType ccType, String ccNumber) {
-        this.balance = balance;
+        this.currentBalance = balance;
         this.ccName = ccName;
         this.ccBillingAddress = ccBillingAddress;
         this.ccType = ccType;
@@ -131,20 +131,20 @@ public class Wallet implements Serializable {
         return "entity.Wallet[ id=" + walletId + " ]";
     }
 
-    public Double getBalance() {
-        return balance;
+    public Double getCurrentBalance() {
+        return currentBalance;
     }
 
-    public void setBalance(Double balance) {
-        this.balance = balance;
+    public void setCurrentBalance(Double currentBalance) {
+        this.currentBalance = currentBalance;
     }
 
-    public Double getHold() {
-        return hold;
+    public Double getHoldBalance() {
+        return holdBalance;
     }
 
-    public void setHold(Double hold) {
-        this.hold = hold;
+    public void setHoldBalance(Double holdBalance) {
+        this.holdBalance = holdBalance;
     }
 
     public String getCcName() {

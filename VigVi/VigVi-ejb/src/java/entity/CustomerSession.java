@@ -24,8 +24,10 @@ public class CustomerSession implements Serializable {
 
     public enum CustomerSessionStatus{
         ACTIVE,
-        CANCELLED,
-        COMPLETED
+        WITHDRAWN,
+        COMPLETED, 
+        MISSED,
+        CANCELLEDBYMERCHANT
     }
     
     @EmbeddedId

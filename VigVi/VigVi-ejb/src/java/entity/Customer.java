@@ -86,13 +86,13 @@ public class Customer implements Serializable {
     @Column(unique = true)
     private String customerEmail;
     private String customerPw;
-    private String customerImg;
+    private String customerImage;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date customerBday;
     private String customerName;
     private Gender customerGender;
     private Boolean customerStatus;
-    private String contactNumber;
+    private String customerContactNo;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "walletId", referencedColumnName = "walletId")
     private Wallet wallet;
@@ -121,12 +121,12 @@ public class Customer implements Serializable {
     public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, Boolean customerStatus, String contactNumber) {
         this.customerEmail = customerEmail;
         this.customerPw = customerPw;
-        this.customerImg = customerImg;
+        this.customerImage = customerImg;
         this.customerBday = customerBday;
         this.customerName = customerName;
         this.customerGender = customerGender;
         this.customerStatus = customerStatus;
-        this.contactNumber = contactNumber;
+        this.customerContactNo = contactNumber;
     }
     
     
@@ -181,12 +181,12 @@ public class Customer implements Serializable {
         this.customerPw = customerPw;
     }
 
-    public String getCustomerImg() {
-        return customerImg;
+    public String getCustomerImage() {
+        return customerImage;
     }
 
-    public void setCustomerImg(String customerImg) {
-        this.customerImg = customerImg;
+    public void setCustomerImage(String customerImage) {
+        this.customerImage = customerImage;
     }
 
     public Date getCustomerBday() {
@@ -221,12 +221,12 @@ public class Customer implements Serializable {
         this.customerStatus = customerStatus;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getCustomerContactNo() {
+        return customerContactNo;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setCustomerContactNo(String customerContactNo) {
+        this.customerContactNo = customerContactNo;
     }
     
 }
