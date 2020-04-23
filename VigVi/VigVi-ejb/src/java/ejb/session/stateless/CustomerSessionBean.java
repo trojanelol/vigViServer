@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -25,7 +26,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
      @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
     
-    
+     
     @Override
     public Long createNewCustomer(Customer newCustomer){
         em.persist(newCustomer);

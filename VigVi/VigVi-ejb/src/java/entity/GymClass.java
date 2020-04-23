@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,14 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class GymClass implements Serializable {
+
+    public boolean isClassStatus() {
+        return classStatus;
+    }
+
+    public void setClassStatus(boolean classStatus) {
+        this.classStatus = classStatus;
+    }
 
     public String getClassRemarks() {
         return classRemarks;
@@ -46,8 +55,10 @@ public class GymClass implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long classId;
     @ManyToOne
+    @JsonbTransient
     private Merchant merchant;
     @OneToMany(mappedBy="gymClass")
+    @JsonbTransient
     private List<Session> sessions;
     private String className;
     private String classDesc;
@@ -58,6 +69,7 @@ public class GymClass implements Serializable {
     private String endTime;
     private String classRemarks;
     private String classInstructor;
+    private boolean classStatus;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)

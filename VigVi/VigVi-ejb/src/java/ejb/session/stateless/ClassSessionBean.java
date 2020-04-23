@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Merchant;
 import entity.GymClass;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
 import util.exception.MerchantNotFoundException;
@@ -39,6 +41,7 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
         merchantEntity.getClasses().add(newClass);
         em.persist(newClass);
         em.flush();
+        newClass.setClassStatus(true);
         return newClass.getClassId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
@@ -58,6 +61,16 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
             }
         }
     }
+    
+    public List<GymClass> retrieveAllActiveClasses() {
+            //retrieveActiveClasses
+        Query query = em.createQuery("SELECT c from GymClass c where c.classStatus = :status");
+        query.setParameter("status", true);
+        return query.getResultList();
+
+    }
+    
+
     
     @Override
     public GymClass retrieveClassByClassId(Long classId)throws GymClassNotFoundException{
