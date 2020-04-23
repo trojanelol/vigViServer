@@ -41,8 +41,8 @@ public class Merchant implements Serializable {
     private String bankName;
     private String bankAccount;
     private String merchantImage;
-    private String contactNumber;
-    private String address;
+    private String merchantContactNo;
+    private String merchantAddress;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -72,8 +72,8 @@ public class Merchant implements Serializable {
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.merchantImage = merchantImage;
-        this.contactNumber = contactNumber;
-        this.address = address;
+        this.merchantContactNo = contactNumber;
+        this.merchantAddress = address;
     }
 
    
@@ -183,20 +183,20 @@ public class Merchant implements Serializable {
         this.merchantImage = merchantImage;
     }
     
-        public String getContactNumber() {
-        return contactNumber;
+        public String getMerchantContactNo() {
+        return merchantContactNo;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setMerchantContactNo(String merchantContactNo) {
+        this.merchantContactNo = merchantContactNo;
     }
 
-    public String getAddress() {
-        return address;
+    public String getMerchantAddress() {
+        return merchantAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setMerchantAddress(String merchantAddress) {
+        this.merchantAddress = merchantAddress;
     }
 
     public List<GymClass> getClasses() {
