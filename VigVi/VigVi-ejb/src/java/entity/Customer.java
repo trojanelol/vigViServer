@@ -118,14 +118,13 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, Boolean customerStatus, String contactNumber) {
+    public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, String contactNumber) {
         this.customerEmail = customerEmail;
         this.customerPw = customerPw;
         this.customerImage = customerImg;
         this.customerBday = customerBday;
         this.customerName = customerName;
         this.customerGender = customerGender;
-        this.customerStatus = customerStatus;
         this.customerContactNo = contactNumber;
     }
     

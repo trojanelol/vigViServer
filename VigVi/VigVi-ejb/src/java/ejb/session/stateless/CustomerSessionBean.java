@@ -31,7 +31,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     public Long createNewCustomer(Customer newCustomer){
         em.persist(newCustomer);
         em.flush();
-        
+        newCustomer.setCustomerStatus(Boolean.TRUE);
         return newCustomer.getCustomerId();
         
     }

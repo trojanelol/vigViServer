@@ -100,8 +100,8 @@ public class DataInitSessionBean {
                Long sessionId4 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
                Long sessionId5 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
                Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
-               Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female, true , "+65-89765677"));
-               Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male, true , "+65-89765678"));
+               Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female , "+65-89765677"));
+               Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male , "+65-89765678"));
                walletSessionBeanLocal.createNewWallet(customerId1, new Wallet(100.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"));
                walletSessionBeanLocal.createNewWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"));
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
