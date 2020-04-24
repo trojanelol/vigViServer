@@ -26,3 +26,7 @@ hs_err_pid*
 /VigVi/VigViRws/nbproject/private/
 /VigVi/VigViRws/build/
 /VigVi/VigViRws/dist/
+/VigVi/VigVi-ejb/build/
+/VigVi/build/
+/VigVi/VigVi-war/build/
+/VigVi/dist/
