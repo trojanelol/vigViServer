@@ -9,6 +9,10 @@ import entity.Customer;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CustomerNotFoundException;
+import util.exception.CustomerUsernameExistException;
+import util.exception.InputDataValidationException;
+import util.exception.InvalidLoginCredentialException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -17,10 +21,16 @@ import util.exception.CustomerNotFoundException;
 @Local
 public interface CustomerSessionBeanLocal {
 
-    public Long createNewCustomer(Customer newCustomer);
+
 
     public Customer retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException;
 
     public List<Customer> retrieveAllCustomers();
+
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException;
+
+    public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
+
+    public Long createNewCustomer(Customer newCustomer) throws InputDataValidationException, CustomerUsernameExistException, UnknownPersistenceException;
     
 }

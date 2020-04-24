@@ -21,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -28,6 +29,14 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Customer implements Serializable {
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public List<CustomerSession> getSignedUpClass() {
         return signedUpClass;
@@ -102,6 +111,8 @@ public class Customer implements Serializable {
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    private String salt;
 //    private Date deactivatedDate;
     
     @PrePersist
@@ -116,16 +127,21 @@ public class Customer implements Serializable {
     
 
     public Customer() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
     public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, String contactNumber) {
+        
+        this();
+        
         this.customerEmail = customerEmail;
-        this.customerPw = customerPw;
         this.customerImage = customerImg;
         this.customerBday = customerBday;
         this.customerName = customerName;
         this.customerGender = customerGender;
         this.customerContactNo = contactNumber;
+        
+        this.setCustomerPw(customerPw);
     }
     
     
@@ -177,7 +193,14 @@ public class Customer implements Serializable {
     }
 
     public void setCustomerPw(String customerPw) {
-        this.customerPw = customerPw;
+        if(customerPw != null)
+        {
+            this.customerPw = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(customerPw + this.salt));
+        }
+        else
+        {
+            this.customerPw = null;
+        }
     }
 
     public String getCustomerImage() {
