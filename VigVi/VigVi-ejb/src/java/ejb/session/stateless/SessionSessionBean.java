@@ -41,6 +41,7 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     @Override
     public Long createNewSession(Long classId, Session newSession) throws ClassIDExistException , UnknownPersistenceException, GymClassNotFoundException{
         try{
+        //check whether same date?    
         GymClass gymClassEntity = classSessionBeanLocal.retrieveClassByClassId(classId);
         newSession.setGymClass(gymClassEntity);
         gymClassEntity.getSessions().add(newSession);

@@ -68,11 +68,13 @@ public class Session implements Serializable {
     }
 
     public Session() {
+        this.setStatus(status.ONGOING);
     }
 
     public Session(Date sessionDate) {
+        this();
         this.sessionDate = sessionDate;
-        this.setStatus(status.ONGOING);
+        
     }
     
        public Integer getAvailableSlot() {

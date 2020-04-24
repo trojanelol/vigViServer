@@ -10,6 +10,7 @@ import ejb.session.stateless.SessionSessionBeanLocal;
 import entity.GymClass;
 import entity.Merchant;
 import entity.Session;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +23,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.InvalidLoginCredentialException;
+import ws.restful.model.CreateNewSessionReq;
+import ws.restful.model.CreateNewSessionRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllOngoingSessionsReq;
 import ws.restful.model.RetrieveAllOngoingSessionsRsp;
@@ -64,6 +69,27 @@ public class SessionResource {
     public String getJson() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
+    }
+    
+    @Path("CreateSession")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createNewSession(CreateNewSessionReq createNewSessionReq)
+    {
+        try
+        {
+            Long sessionEntity =  sessionSessionBean.createNewSession(createNewSessionReq.getClassId(), createNewSessionReq.getNewSession());
+            System.out.println("********** SessionResource.createSession(): Session " + sessionEntity + " has been created");
+            
+            return Response.status(Status.OK).entity(new CreateNewSessionRsp(sessionEntity)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
 
     /**
