@@ -56,7 +56,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     @Override
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException
     {
-        Query query = em.createQuery("SELECT e FROM Customer c WHERE c.customerEmail = :inCustomerEmail");
+        Query query = em.createQuery("SELECT c FROM Customer c WHERE c.customerEmail = :inCustomerEmail");
         query.setParameter("inCustomerEmail", email);
         
         try

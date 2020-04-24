@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +31,77 @@ import util.security.CryptographicHelper;
 @Entity
 public class Customer implements Serializable {
 
-    public String getSalt() {
+   
+
+       public enum Gender
+    { 
+        Male,
+        Female, 
+        Other
+    }   
+    
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long customerId;
+    @Column(unique = true)
+    private String customerEmail;
+    @JsonbTransient
+    private String customerPw;
+    private String customerImage;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date customerBday;
+    private String customerName;
+    private Gender customerGender;
+    private Boolean customerStatus;
+    private String customerContactNo;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "walletId", referencedColumnName = "walletId")
+    @JsonbTransient
+    private Wallet wallet;
+    @OneToMany(mappedBy = "customer")
+    @JsonbTransient
+    private List<CustomerSession> signedUpClass;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date updatedDate;
+    @Column(columnDefinition = "CHAR(32) NOT NULL")
+    @JsonbTransient
+    private String salt;
+//    private Date deactivatedDate;
+    
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate(new Date());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate(new Date());
+    }
+    
+
+    public Customer() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+    }
+
+    public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, String contactNumber) {
+        
+        this();
+        
+        this.customerEmail = customerEmail;
+        this.customerImage = customerImg;
+        this.customerBday = customerBday;
+        this.customerName = customerName;
+        this.customerGender = customerGender;
+        this.customerContactNo = contactNumber;
+        
+        this.setCustomerPw(customerPw);
+    }
+    
+    
+     public String getSalt() {
         return salt;
     }
 
@@ -77,75 +148,6 @@ public class Customer implements Serializable {
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
-
-       public enum Gender
-    { 
-        Male,
-        Female, 
-        Other
-    } 
-       
-
-       
-    
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
-    @Column(unique = true)
-    private String customerEmail;
-    private String customerPw;
-    private String customerImage;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date customerBday;
-    private String customerName;
-    private Gender customerGender;
-    private Boolean customerStatus;
-    private String customerContactNo;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "walletId", referencedColumnName = "walletId")
-    private Wallet wallet;
-    @OneToMany(mappedBy = "customer")
-    private List<CustomerSession> signedUpClass;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date createdDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date updatedDate;
-    @Column(columnDefinition = "CHAR(32) NOT NULL")
-    private String salt;
-//    private Date deactivatedDate;
-    
-    @PrePersist
-    protected void onCreate() {
-        setCreatedDate(new Date());
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        setUpdatedDate(new Date());
-    }
-    
-
-    public Customer() {
-        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-    }
-
-    public Customer(String customerEmail, String customerPw, String customerImg, Date customerBday, String customerName, Gender customerGender, String contactNumber) {
-        
-        this();
-        
-        this.customerEmail = customerEmail;
-        this.customerImage = customerImg;
-        this.customerBday = customerBday;
-        this.customerName = customerName;
-        this.customerGender = customerGender;
-        this.customerContactNo = contactNumber;
-        
-        this.setCustomerPw(customerPw);
-    }
-    
-    
-
 
     public Long getCustomerId() {
         return customerId;

@@ -20,10 +20,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import util.exception.InvalidLoginCredentialException;
 import ws.restful.model.CreateNewCustomerReq;
 import ws.restful.model.CreateNewCustomerRsp;
+import ws.restful.model.CustomerLoginRsp;
 import ws.restful.model.ErrorRsp;
 
 /**
@@ -57,11 +61,43 @@ public class CustomerResource {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
+    
+    
+    @Path("Login")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerLogin(@QueryParam("username") String email, 
+                                @QueryParam("password") String password)
+    {
+        try
+        {
+            Customer customerEntity = customerSessionBean.customerLogin(email, password);
+            System.out.println("********** CustomerResource.customerLogin(): Customer " + customerEntity.getCustomerId() + " login remotely via web service");
+            
+            return Response.status(Status.OK).entity(new CustomerLoginRsp(customerEntity)).build();
+        }
+        catch(InvalidLoginCredentialException ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+
+    
 
     /**
      * PUT method for updating or creating an instance of CustomerResource
      * @param content representation for the resource
      */
+    @Path("Register")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
