@@ -8,7 +8,11 @@ package ejb.session.stateless;
 import entity.Merchant;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.InputDataValidationException;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.MerchantNotFoundException;
+import util.exception.MerchantUsernameExistException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -17,7 +21,6 @@ import util.exception.MerchantNotFoundException;
 @Local
 public interface MerchantSessionBeanLocal {
     
-    public Long createNewMerchant(Merchant newMerchant);
     public List<Merchant> retrieveAllMerchants();
 
     public Merchant retrieveMerchantByMerchantId(Long merchantId) throws MerchantNotFoundException;
@@ -25,5 +28,11 @@ public interface MerchantSessionBeanLocal {
     public Long approveMerchant(Long merchantId);
 
     public Long deactivateMerchant(Long merchantId);
+
+    public Merchant retrieveMerchantByEmail(String email) throws MerchantNotFoundException;
+
+    public Merchant MerchantLogin(String username, String password) throws InvalidLoginCredentialException;
+
+    public Long createNewMerchant(Merchant newMerchant) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException;
 
 }

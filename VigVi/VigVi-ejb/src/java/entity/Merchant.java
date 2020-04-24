@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -24,6 +25,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Merchant implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,6 +49,7 @@ public class Merchant implements Serializable {
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
+    private String salt;
 //    private Date deactivatedDate;
     
     @PrePersist
@@ -60,23 +63,35 @@ public class Merchant implements Serializable {
     }
 
     public Merchant() {
+        this.salt = CryptographicHelper.getInstance().generateRandomString(32);
     }
 
     public Merchant(String merchantName, String merchantDesc, Double commissionRate, String merchantEmail, String merchantPw, Boolean merchantStatus, String bankName, String bankAccount, String merchantImage, String contactNumber, String address) {
+        
+        this();
+        
         this.merchantName = merchantName;
         this.merchantDesc = merchantDesc;
         this.commissionRate = commissionRate;
         this.merchantEmail = merchantEmail;
-        this.merchantPw = merchantPw;
         this.merchantStatus = merchantStatus;
         this.bankName = bankName;
         this.bankAccount = bankAccount;
         this.merchantImage = merchantImage;
         this.merchantContactNo = contactNumber;
         this.merchantAddress = address;
+        
+        this.setMerchantPw(merchantPw);
     }
 
-   
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
 
     public Long getMerchantId() {
         return merchantId;
@@ -148,7 +163,14 @@ public class Merchant implements Serializable {
     }
 
     public void setMerchantPw(String merchantPw) {
-        this.merchantPw = merchantPw;
+        if(merchantPw != null)
+        {
+            this.merchantPw = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(merchantPw + this.salt));
+        }
+        else
+        {
+            this.merchantPw = null;
+        }
     }
 
     public Boolean getMerchantStatus() {

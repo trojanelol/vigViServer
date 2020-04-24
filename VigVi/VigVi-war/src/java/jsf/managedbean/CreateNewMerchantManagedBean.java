@@ -13,6 +13,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.InputDataValidationException;
+import util.exception.MerchantUsernameExistException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -37,7 +40,7 @@ public class CreateNewMerchantManagedBean {
     }
     
     //actioneventlistener
-    public void createNewMerchant(ActionEvent event){
+    public void createNewMerchant(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException{
         
         Long newMerchantId = merchantSessionBeanLocal.createNewMerchant(newMerchant);
         
