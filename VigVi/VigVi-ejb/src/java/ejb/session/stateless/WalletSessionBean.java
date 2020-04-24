@@ -58,6 +58,7 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             double conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
             double issuedAmount = realAmount/conversionRate;
             newWallet.setCurrentBalance(issuedAmount);
+            newWallet.setHoldBalance(0.0);
             receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(realAmount, issuedAmount));
         }
         return newWallet.getWalletId();
@@ -95,22 +96,41 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
 
     }
     
-    public Wallet deductMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
+    //for internal use only
+    @Override
+    public Wallet holdVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
         Wallet walletEntity = retrieveWalletByCustomerId(customerId);
+
         double currentBalance = walletEntity.getCurrentBalance();
+
+        double holdBalance = walletEntity.getHoldBalance();
+
         if(currentBalance >= deductAmount){
             walletEntity.setCurrentBalance(currentBalance - deductAmount);
-
+            walletEntity.setHoldBalance(holdBalance + deductAmount);
             return walletEntity;
         }else{
-            throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough Vig$");
+            throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough current Vig$");
+        }
+    }
+    
+    @Override
+    public Wallet deductVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
+        Wallet walletEntity = retrieveWalletByCustomerId(customerId);
+        double holdBalance = walletEntity.getHoldBalance();
+        if(holdBalance >= deductAmount){
+            walletEntity.setHoldBalance(holdBalance - deductAmount);
+            return walletEntity;
+        }else{
+            throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough hold Vig$");
         }
     }
     
     
     @Override
     public Wallet retrieveWalletByCustomerId(Long customerId)throws WalletNotFoundException{
-        Wallet walletEntity = em.find(Wallet.class, customerId);
+        Customer customerEntity = em.find(Customer.class, customerId);
+        Wallet walletEntity = em.find(Wallet.class, customerEntity.getWallet().getWalletId());
 
         try{
             return walletEntity;

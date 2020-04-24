@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Wallet;
 import javax.ejb.Local;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
@@ -25,5 +26,9 @@ public interface WalletSessionBeanLocal {
     public Long activateWallet(Long customerId, Wallet newWallet, Long currencyId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException;
 
     public Wallet topUpMoney(Long customerId, double topUpAmount, Long currencyId) throws WalletNotFoundException, ClassIDExistException, UnknownPersistenceException, CurrencyNotFoundException;
+
+    public Wallet holdVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException;
+
+    public Wallet deductVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException;
     
 }

@@ -20,6 +20,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.ClassSessionIDExistException;
 import util.exception.CurrencyNotFoundException;
@@ -27,6 +28,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.CustomerSessionNotFoundException;
+import util.exception.WalletNotFoundException;
 /**
  *
  * @author JiaYunTeo
@@ -34,10 +36,13 @@ import util.exception.CustomerSessionNotFoundException;
 @Stateless
 public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLocal {
 
+    @EJB(name = "WalletSessionBeanLocal")
+    private WalletSessionBeanLocal walletSessionBeanLocal;
+
     @EJB(name = "CurrencySessionBeanLocal")
     private CurrencySessionBeanLocal currencySessionBeanLocal;
 
-    @EJB(name = "TransactionSessionBeanLocal")
+    @EJB(name = "PayableTransactionSessionBeanLocal")
     private PayableTransactionSessionBeanLocal payableTransactionSessionBeanLocal;
 
     @EJB(name = "SessionSessionBeanLocal")
@@ -52,10 +57,11 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     
     
     @Override
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException{
-        try{
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException{
+     try{    
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         Session sessionEntity = sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId);
+        walletSessionBeanLocal.holdVigMoney(customerId, sessionEntity.getGymClass().getClassPrice());
         CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
         CustomerSession customerSession = new CustomerSession(customerSessionId);
         customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
@@ -65,6 +71,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         sessionEntity.getSignedUpCustomer().add(customerSession);
         em.persist(customerSession);
         em.flush();
+        
         return customerSessionId;
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
