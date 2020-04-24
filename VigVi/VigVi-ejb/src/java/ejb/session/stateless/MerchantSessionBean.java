@@ -61,7 +61,23 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
         }
     }
     
+    @Override
+    public Long approveMerchant(Long merchantId){
+        Merchant merchantEntity = em.find(Merchant.class, merchantId);
+        
+        merchantEntity.setMerchantStatus(Boolean.TRUE);
+        
+        return merchantEntity.getMerchantId();
+    }
     
+    @Override
+    public Long deactivateMerchant(Long merchantId){
+        Merchant merchantEntity = em.find(Merchant.class, merchantId);
+        
+        merchantEntity.setMerchantStatus(Boolean.FALSE);
+        
+        return merchantEntity.getMerchantId();
+    }
     
     
 }

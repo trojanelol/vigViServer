@@ -22,4 +22,8 @@ public interface MerchantSessionBeanLocal {
 
     public Merchant retrieveMerchantByMerchantId(Long merchantId) throws MerchantNotFoundException;
 
+    public Long approveMerchant(Long merchantId);
+
+    public Long deactivateMerchant(Long merchantId);
+
 }
