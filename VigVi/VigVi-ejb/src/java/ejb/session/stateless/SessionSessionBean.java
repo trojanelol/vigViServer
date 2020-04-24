@@ -44,6 +44,7 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         GymClass gymClassEntity = classSessionBeanLocal.retrieveClassByClassId(classId);
         newSession.setGymClass(gymClassEntity);
         gymClassEntity.getSessions().add(newSession);
+        newSession.setAvailableSlot(gymClassEntity.getClassSize());
         em.persist(newSession);
         em.flush();
         return newSession.getSessionId();
@@ -83,5 +84,15 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         query.setParameter("id", classId);
         query.setParameter("status", Session.SessionStatus.ONGOING);
         return query.getResultList();
+    }
+    
+    @Override
+    public Session updateSessionAvailableSlot (Long sessionId, Integer newSlotSize) throws SessionNotFoundException{
+        Session sessionEntity = retrieveSessionBySessionId(sessionId);
+        
+        sessionEntity.setAvailableSlot(newSlotSize);
+    
+        return sessionEntity;
+
     }
 }

@@ -22,6 +22,9 @@ import entity.Session;
 import entity.Wallet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -41,6 +44,7 @@ import util.exception.GymClassNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.MerchantNotFoundException;
 import util.exception.MerchantUsernameExistException;
+import util.exception.NoAvailableSlotException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.WalletNotFoundException;
@@ -87,25 +91,25 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException{
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException{
         if(em.find(Merchant.class, 1l)==null){
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore")); 
-               SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
+               SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");  
                Long merchantId = merchantSessionBeanLocal.createNewMerchant(new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)", 0.3 , "viggym@gmail.com", "password", true , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 15.0 , 20 , "1100", "1200", "Bring Towel", "Mr Muscle"));
-               Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
-               Long sessionId2 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
-               Long sessionId3 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("25/03/2020"))));
+               Long sessionId2 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/04/2020"))));
+               Long sessionId3 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("08/04/2020"))));
                Long classId2 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Muay Thai", "Challenge Yourself", "", 10.0 , 20 , "2000", "2130", "Bring Towel", "Miss Veronica"));
-               Long sessionId4 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("25/03/2020")),Session.SessionStatus.ONGOING));
-               Long sessionId5 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("01/04/2020")),Session.SessionStatus.ONGOING));
-               Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
+               Long sessionId4 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("25/03/2020"))));
+               Long sessionId5 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("01/04/2020"))));
+               Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020"))));
                Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female , "+65-89765677"));
                Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male , "+65-89765678"));
                walletSessionBeanLocal.activateWallet(customerId1, new Wallet(100.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"),singaporeRateId);

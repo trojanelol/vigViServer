@@ -13,6 +13,7 @@ import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CustomerSessionNotFoundException;
+import util.exception.NoAvailableSlotException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.WalletNotFoundException;
@@ -24,7 +25,7 @@ import util.exception.WalletNotFoundException;
 @Local
 public interface CustomerSessionSessionBeanLocal {
 
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException;
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException,NoAvailableSlotException;
     
     public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException;
 

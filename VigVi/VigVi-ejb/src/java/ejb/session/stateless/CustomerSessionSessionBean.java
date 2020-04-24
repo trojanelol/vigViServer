@@ -28,6 +28,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.CustomerSessionNotFoundException;
+import util.exception.NoAvailableSlotException;
 import util.exception.WalletNotFoundException;
 /**
  *
@@ -57,22 +58,31 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     
     
     @Override
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException{
-     try{    
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException, NoAvailableSlotException{
+     try{
+        
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         Session sessionEntity = sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId);
-        walletSessionBeanLocal.holdVigMoney(customerId, sessionEntity.getGymClass().getClassPrice());
-        CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
-        CustomerSession customerSession = new CustomerSession(customerSessionId);
-        customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
-        customerSession.setCustomer(customerEntity);
-        customerSession.setSession(sessionEntity);
-        customerEntity.getSignedUpClass().add(customerSession);
-        sessionEntity.getSignedUpCustomer().add(customerSession);
-        em.persist(customerSession);
-        em.flush();
         
-        return customerSessionId;
+            if(sessionEntity.getAvailableSlot() > 0){ 
+        
+                walletSessionBeanLocal.holdVigMoney(customerId, sessionEntity.getGymClass().getClassPrice());
+                CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
+                CustomerSession customerSession = new CustomerSession(customerSessionId);
+                customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
+                customerSession.setCustomer(customerEntity);
+                customerSession.setSession(sessionEntity);
+                customerEntity.getSignedUpClass().add(customerSession);
+                sessionEntity.getSignedUpCustomer().add(customerSession);
+                sessionSessionBeanLocal.updateSessionAvailableSlot(sessionEntity.getSessionId(),sessionEntity.getAvailableSlot()-1);
+                em.persist(customerSession);
+                em.flush();
+
+                return customerSessionId;
+
+            }else{
+                throw new NoAvailableSlotException("Session" + sessionId + "does not have enough slot");
+            }
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {

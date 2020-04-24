@@ -25,5 +25,7 @@ public interface SessionSessionBeanLocal {
     public Session retrieveSessionBySessionId(Long sessionId) throws SessionNotFoundException;
 
     public List<Session> retrieveAllOngoingSessionsByClassId(Long classId);
+
+    public Session updateSessionAvailableSlot(Long sessionId, Integer newSlotSize) throws SessionNotFoundException;
     
 }

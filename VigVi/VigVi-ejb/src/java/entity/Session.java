@@ -28,6 +28,60 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Session implements Serializable {
+    
+    public enum SessionStatus
+    { 
+        ONGOING,
+        CANCELLED,
+        COMPLETED;
+    } 
+  
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long sessionId;
+    @ManyToOne
+    @JsonbTransient
+    private GymClass gymClass;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date sessionDate;
+    private SessionStatus status;
+    @OneToMany(mappedBy = "session")
+    @JsonbTransient
+    private List<CustomerSession> signedUpCustomer;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date createdDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date updatedDate;
+    private Integer availableSlot;
+//    private Date deactivatedDate;
+    
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate(new Date());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate(new Date());
+    }
+
+    public Session() {
+    }
+
+    public Session(Date sessionDate) {
+        this.sessionDate = sessionDate;
+        this.setStatus(status.ONGOING);
+    }
+    
+       public Integer getAvailableSlot() {
+        return availableSlot;
+    }
+
+    public void setAvailableSlot(Integer availableSlot) {
+        this.availableSlot = availableSlot;
+    }
 
     public List<CustomerSession> getSignedUpCustomer() {
         return signedUpCustomer;
@@ -60,52 +114,6 @@ public class Session implements Serializable {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
-    
-    public enum SessionStatus
-    { 
-        ONGOING,
-        CANCELLED,
-        COMPLETED;
-    } 
-  
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sessionId;
-    @ManyToOne
-    @JsonbTransient
-    private GymClass gymClass;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date sessionDate;
-    private SessionStatus status;
-    @OneToMany(mappedBy = "session")
-    @JsonbTransient
-    private List<CustomerSession> signedUpCustomer;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date createdDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date updatedDate;
-//    private Date deactivatedDate;
-    
-    @PrePersist
-    protected void onCreate() {
-        setCreatedDate(new Date());
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        setUpdatedDate(new Date());
-    }
-
-    public Session() {
-    }
-
-    public Session(Date ssesionDate, SessionStatus status) {
-        this.sessionDate = sessionDate;
-        this.status = status;
-    }
-    
     
 
     public Long getSessionId() {
