@@ -42,6 +42,7 @@ import util.exception.MerchantNotFoundException;
 import util.exception.MerchantUsernameExistException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.WalletNotFoundException;
 
 /**
  *
@@ -85,14 +86,15 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException{
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException{
         if(em.find(Merchant.class, 1l)==null){
+               Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore")); 
                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
                Long merchantId = merchantSessionBeanLocal.createNewMerchant(new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)", 0.3 , "viggym@gmail.com", "password", true , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 30.0 , 20 , "1100", "1200", "Bring Towel", "Mr Muscle"));
@@ -105,13 +107,13 @@ public class DataInitSessionBean {
                Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/04/2020")),Session.SessionStatus.ONGOING));
                Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female , "+65-89765677"));
                Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male , "+65-89765678"));
-               walletSessionBeanLocal.createNewWallet(customerId1, new Wallet(100.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"));
-               walletSessionBeanLocal.createNewWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"));
+               walletSessionBeanLocal.activateWallet(customerId1, new Wallet(100.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"),singaporeRateId);
+               walletSessionBeanLocal.activateWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"),singaporeRateId);
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
                CustomerSessionId customerSessionId2 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
-               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);
-               Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore"));
+               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);              
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
+               walletSessionBeanLocal.topUpMoney(customerId2, 100, singaporeRateId);
                customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
                customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true, singaporeRateId);
                customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false, singaporeRateId);

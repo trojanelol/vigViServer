@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -25,6 +26,14 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Wallet implements Serializable {
+
+    public List<ReceivableTransaction> getReceivableTransactions() {
+        return receivableTransactions;
+    }
+
+    public void setReceivableTransactions(List<ReceivableTransaction> receivableTransactions) {
+        this.receivableTransactions = receivableTransactions;
+    }
 
     public Date getCreatedDate() {
         return createdDate;
@@ -74,6 +83,8 @@ public class Wallet implements Serializable {
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
+    @OneToMany(mappedBy="wallet")
+    private List<ReceivableTransaction> receivableTransactions;
 //    private Date deactivatedDate;
     
     @PrePersist

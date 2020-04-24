@@ -6,7 +6,10 @@
 package ejb.session.stateless;
 
 import entity.Customer;
+import entity.ReceivableTransaction;
 import entity.Wallet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -16,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.WalletNotFoundException;
@@ -27,6 +31,12 @@ import util.exception.WalletNotFoundException;
 @Stateless
 public class WalletSessionBean implements WalletSessionBeanLocal {
 
+    @EJB(name = "CurrencySessionBeanLocal")
+    private CurrencySessionBeanLocal currencySessionBeanLocal;
+
+    @EJB(name = "ReceivableTransactionSessionBeanLocal")
+    private ReceivableTransactionSessionBeanLocal receivableTransactionSessionBeanLocal;
+
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -36,13 +46,20 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
     
     
     @Override
-    public Long createNewWallet(Long customerId, Wallet newWallet) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException{
+    public Long activateWallet(Long customerId, Wallet newWallet, Long currencyId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException{
         try{
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         newWallet.setCustomer(customerEntity);
         customerEntity.setWallet(newWallet);
         em.persist(newWallet);
         em.flush();
+        double realAmount = newWallet.getCurrentBalance();
+        if(realAmount != 0){
+            double conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+            double issuedAmount = realAmount/conversionRate;
+            newWallet.setCurrentBalance(issuedAmount);
+            receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(realAmount, issuedAmount));
+        }
         return newWallet.getWalletId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
@@ -63,10 +80,16 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
         }
     }
     
-    public Wallet topUpMoney(Long customerId, double topUpAmount) throws WalletNotFoundException{
+    @Override
+    public Wallet topUpMoney(Long customerId, double topUpAmount, Long currencyId) throws WalletNotFoundException, ClassIDExistException, UnknownPersistenceException, CurrencyNotFoundException{
         Wallet walletEntity = retrieveWalletByCustomerId(customerId);
         double currentBalance = walletEntity.getCurrentBalance();
-        walletEntity.setCurrentBalance(currentBalance + topUpAmount);
+        double conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+        // convert amount to regional V dollar
+        double issuedAmount = topUpAmount / conversionRate;
+        walletEntity.setCurrentBalance(currentBalance + issuedAmount);
+        
+        receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(topUpAmount, issuedAmount));
         
         return walletEntity;
 
