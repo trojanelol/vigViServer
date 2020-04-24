@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,7 @@ public class Merchant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long merchantId;
     @OneToMany(mappedBy="merchant")
+    @JsonbTransient
     private List<GymClass> classes;
     @Column(unique = true)
     private String merchantName;

@@ -31,7 +31,7 @@ public interface MerchantSessionBeanLocal {
 
     public Merchant retrieveMerchantByEmail(String email) throws MerchantNotFoundException;
 
-    public Merchant MerchantLogin(String username, String password) throws InvalidLoginCredentialException;
+    public Merchant merchantLogin(String username, String password) throws InvalidLoginCredentialException;
 
     public Long createNewMerchant(Merchant newMerchant) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException;
 

@@ -50,7 +50,7 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
      @Override
     public Merchant retrieveMerchantByEmail(String email) throws MerchantNotFoundException
     {
-        Query query = em.createQuery("SELECT m FROM Merchant m WHERE m.merchantName = :inMerchantName");
+        Query query = em.createQuery("SELECT m FROM Merchant m WHERE m.merchantEmail = :inMerchantName");
         query.setParameter("inMerchantName", email);
         
         try
@@ -64,7 +64,7 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
     }
     
     @Override
-    public Merchant MerchantLogin(String username, String password) throws InvalidLoginCredentialException
+    public Merchant merchantLogin(String username, String password) throws InvalidLoginCredentialException
     {
         try
         {
