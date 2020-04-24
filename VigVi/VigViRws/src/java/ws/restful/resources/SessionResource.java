@@ -58,6 +58,7 @@ public class SessionResource {
      * Retrieves representation of an instance of ws.restful.resources.SessionResource
      * @return an instance of java.lang.String
      */
+   
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getJson() {
@@ -69,6 +70,7 @@ public class SessionResource {
      * PUT method for updating or creating an instance of SessionResource
      * @param content representation for the resource
      */
+    @Path("ClassDetails")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

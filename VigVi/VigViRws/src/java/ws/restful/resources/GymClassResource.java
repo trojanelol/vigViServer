@@ -50,6 +50,7 @@ public class GymClassResource {
      * Retrieves representation of an instance of ws.restful.resources.GymClassResource
      * @return an instance of java.lang.String
      */
+    @Path("ActiveClasses")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllActiveClasses() {
