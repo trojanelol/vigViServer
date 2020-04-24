@@ -94,4 +94,12 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
         }
     }
     
+//    only auto-trigger when there is no ongoing session
+    public Long deactivateClass (Long classId){
+        GymClass gymClassEntity = em.find(GymClass.class, classId);
+        
+        gymClassEntity.setClassStatus(false);
+        
+        return gymClassEntity.getClassId();
+    }
 }
