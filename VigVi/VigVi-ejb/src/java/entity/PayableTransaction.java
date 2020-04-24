@@ -21,7 +21,7 @@ import javax.persistence.Temporal;
  * @author JiaYunTeo
  */
 @Entity
-public class Transaction implements Serializable {
+public class PayableTransaction implements Serializable {
 
     
 
@@ -29,8 +29,8 @@ public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long transactionId;
-    @OneToOne(mappedBy = "transaction")
+    private Long payableTransactionId;
+    @OneToOne(mappedBy = "payableTransaction")
     private CustomerSession customerSession;
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -70,10 +70,10 @@ public class Transaction implements Serializable {
         this.createdDate = createdDate;
     }
 
-    public Transaction() {
+    public PayableTransaction() {
     }
 
-    public Transaction(double customerAmount, boolean merchantReceivedStatus, double merchantAmount, double platformAmount) {
+    public PayableTransaction(double customerAmount, boolean merchantReceivedStatus, double merchantAmount, double platformAmount) {
         this.customerAmount = customerAmount;
         this.merchantReceivedStatus = merchantReceivedStatus;
         this.merchantAmount = merchantAmount;
@@ -91,12 +91,12 @@ public class Transaction implements Serializable {
         this.customerSession = customerSession;
     }
     
-    public Long getTransactionId() {
-        return transactionId;
+    public Long getPayableTransactionId() {
+        return payableTransactionId;
     }
 
-    public void setTransactionId(Long transactionId) {
-        this.transactionId = transactionId;
+    public void setPayableTransactionId(Long payableTransactionId) {
+        this.payableTransactionId = payableTransactionId;
     }
     
     public Date getMerchantReceivedDate() {
@@ -143,18 +143,18 @@ public class Transaction implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (transactionId != null ? transactionId.hashCode() : 0);
+        hash += (payableTransactionId != null ? payableTransactionId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the transactionId fields are not set
-        if (!(object instanceof Transaction)) {
+        // TODO: Warning - this method won't work in the case the payableTransactionId fields are not set
+        if (!(object instanceof PayableTransaction)) {
             return false;
         }
-        Transaction other = (Transaction) object;
-        if ((this.transactionId == null && other.transactionId != null) || (this.transactionId != null && !this.transactionId.equals(other.transactionId))) {
+        PayableTransaction other = (PayableTransaction) object;
+        if ((this.payableTransactionId == null && other.payableTransactionId != null) || (this.payableTransactionId != null && !this.payableTransactionId.equals(other.payableTransactionId))) {
             return false;
         }
         return true;
@@ -162,7 +162,7 @@ public class Transaction implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Transaction[ id=" + transactionId + " ]";
+        return "entity.Transaction[ id=" + payableTransactionId + " ]";
     }
     
 }

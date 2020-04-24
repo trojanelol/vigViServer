@@ -7,7 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerSession;
 import entity.CustomerSessionId;
-import entity.Transaction;
+import entity.PayableTransaction;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,7 +23,7 @@ import util.exception.UnknownPersistenceException;
  * @author JiaYunTeo
  */
 @Stateless
-public class TransactionSessionBean implements TransactionSessionBeanLocal {
+public class PayableTransactionSessionBean implements PayableTransactionSessionBeanLocal {
 
     @EJB(name = "CustomerSessionSessionBeanLocal")
     private CustomerSessionSessionBeanLocal customerSessionSessionBeanLocal;
@@ -34,14 +34,14 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     
     
     @Override
-    public Long createNewTransaction(CustomerSessionId customerSessionId, Transaction newTransaction) throws ClassIDExistException , UnknownPersistenceException, CustomerSessionNotFoundException{
+    public Long createNewTransaction(CustomerSessionId customerSessionId, PayableTransaction newTransaction) throws ClassIDExistException , UnknownPersistenceException, CustomerSessionNotFoundException{
         try{
         CustomerSession customerSessionEntity = customerSessionSessionBeanLocal.retrieveCustomerSessionById(customerSessionId);
         newTransaction.setCustomerSession(customerSessionEntity);
-        customerSessionEntity.setTransaction(newTransaction);
+        customerSessionEntity.setPayableTransaction(newTransaction);
         em.persist(newTransaction);
         em.flush();
-        return newTransaction.getTransactionId();
+        return newTransaction.getPayableTransactionId();
         } catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {

@@ -14,6 +14,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CustomerNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -61,6 +62,28 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             }
         }
     }
+    
+    public Wallet topUpMoney(Long customerId, double topUpAmount) throws WalletNotFoundException{
+        Wallet walletEntity = retrieveWalletByCustomerId(customerId);
+        double currentBalance = walletEntity.getCurrentBalance();
+        walletEntity.setCurrentBalance(currentBalance + topUpAmount);
+        
+        return walletEntity;
+
+    }
+    
+    public Wallet deductMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
+        Wallet walletEntity = retrieveWalletByCustomerId(customerId);
+        double currentBalance = walletEntity.getCurrentBalance();
+        if(currentBalance >= deductAmount){
+            walletEntity.setCurrentBalance(currentBalance - deductAmount);
+
+            return walletEntity;
+        }else{
+            throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough Vig$");
+        }
+    }
+    
     
     @Override
     public Wallet retrieveWalletByCustomerId(Long customerId)throws WalletNotFoundException{

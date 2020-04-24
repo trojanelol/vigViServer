@@ -10,7 +10,7 @@ import entity.CustomerSession;
 import entity.CustomerSession.CustomerSessionStatus;
 import entity.CustomerSessionId;
 import entity.Session;
-import entity.Transaction;
+import entity.PayableTransaction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -38,7 +38,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     private CurrencySessionBeanLocal currencySessionBeanLocal;
 
     @EJB(name = "TransactionSessionBeanLocal")
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
+    private PayableTransactionSessionBeanLocal payableTransactionSessionBeanLocal;
 
     @EJB(name = "SessionSessionBeanLocal")
     private SessionSessionBeanLocal sessionSessionBeanLocal;
@@ -138,7 +138,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 double platformAmount = customerAmount*commissionRate;
                 double merchantAmount = customerAmount - platformAmount;
                 try {
-                    transactionSessionBeanLocal.createNewTransaction(customerSessionId, new Transaction(customerAmount, false, merchantAmount, platformAmount));
+                    payableTransactionSessionBeanLocal.createNewTransaction(customerSessionId, new PayableTransaction(customerAmount, false, merchantAmount, platformAmount));
                 } catch (ClassIDExistException ex) {
                     Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (UnknownPersistenceException ex) {
@@ -161,7 +161,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 double platformAmount = customerAmount*commissionRate;
                 double merchantAmount = customerAmount - platformAmount;
                 try {
-                    transactionSessionBeanLocal.createNewTransaction(customerSessionId, new Transaction(customerAmount, false, merchantAmount, platformAmount));
+                    payableTransactionSessionBeanLocal.createNewTransaction(customerSessionId, new PayableTransaction(customerAmount, false, merchantAmount, platformAmount));
                 } catch (ClassIDExistException ex) {
                     Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (UnknownPersistenceException ex) {

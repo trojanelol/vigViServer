@@ -56,8 +56,8 @@ public class CustomerSession implements Serializable {
     private CustomerSessionStatus customerSessionStatus;
     private Boolean customerAttendance;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "transactionId", referencedColumnName = "transactionId")
-    private Transaction transaction;
+    @JoinColumn(name = "payableTransactionId", referencedColumnName = "payableTransactionId")
+    private PayableTransaction payableTransaction;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -98,12 +98,12 @@ public class CustomerSession implements Serializable {
         this.customerSessionId = customerSessionId;
     }
     
-    public Transaction getTransaction() {
-        return transaction;
+    public PayableTransaction getPayableTransaction() {
+        return payableTransaction;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setPayableTransaction(PayableTransaction payableTransaction) {
+        this.payableTransaction = payableTransaction;
     }
 
     
