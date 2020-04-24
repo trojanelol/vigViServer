@@ -13,13 +13,6 @@ import entity.Customer;
  */
 public class CreateNewCustomerReq {
 
-    public Customer getNewCustomer() {
-        return newCustomer;
-    }
-
-    public void setNewCustomer(Customer newCustomer) {
-        this.newCustomer = newCustomer;
-    }
     private Customer newCustomer;
 
     public CreateNewCustomerReq() {
@@ -29,5 +22,11 @@ public class CreateNewCustomerReq {
         this.newCustomer = newCustomer;
     }
     
-    
+     public Customer getNewCustomer() {
+        return newCustomer;
+    }
+
+    public void setNewCustomer(Customer newCustomer) {
+        this.newCustomer = newCustomer;
+    }
 }

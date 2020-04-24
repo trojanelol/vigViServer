@@ -11,13 +11,6 @@ package ws.restful.model;
  */
 public class CreateNewCustomerRsp {
 
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
-    }
     private Long customerId;
 
     public CreateNewCustomerRsp() {
@@ -25,7 +18,13 @@ public class CreateNewCustomerRsp {
 
     public CreateNewCustomerRsp(Long customerId) {
         this.customerId = customerId;
+    }   
+    
+    public Long getCustomerId() {
+        return customerId;
     }
-    
-    
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 }

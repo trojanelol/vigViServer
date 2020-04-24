@@ -22,6 +22,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import ws.restful.model.CreateNewClassReq;
+import ws.restful.model.CreateNewClassRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllActiveClassesRsp;
 
@@ -75,9 +77,36 @@ public class GymClassResource {
      * PUT method for updating or creating an instance of GymClassResource
      * @param content representation for the resource
      */
+    @Path("CreateClass")
     @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createNewMerchant(CreateNewClassReq createNewClassReq) {
+        
+        if(createNewClassReq != null)
+        {
+            try
+            {
+                
+                Long classId = classSessionBean.createNewClass(createNewClassReq.getMerchantId(),createNewClassReq.getNewGymClass());
+               
+                CreateNewClassRsp createNewClassRsp = new CreateNewClassRsp(classId);
+                
+                return Response.status(Response.Status.OK).entity(createNewClassRsp).build();
+            }
+            catch(Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
     }
 
     private ClassSessionBeanLocal lookupClassSessionBeanLocal() {
