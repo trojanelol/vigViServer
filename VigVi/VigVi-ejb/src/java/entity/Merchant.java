@@ -66,9 +66,11 @@ public class Merchant implements Serializable {
 
     public Merchant() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        this.merchantStatus = false;
+        this.commissionRate = 0.3;
     }
 
-    public Merchant(String merchantName, String merchantDesc, Double commissionRate, String merchantEmail, String merchantPw, Boolean merchantStatus, String bankName, String bankAccount, String merchantImage, String contactNumber, String address) {
+    public Merchant(String merchantName, String merchantDesc, String merchantEmail, String merchantPw, String bankName, String bankAccount, String merchantImage, String contactNumber, String address) {
         
         this();
         
