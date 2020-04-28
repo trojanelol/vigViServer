@@ -109,11 +109,13 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         
         emp.setCustomerAttendance(attendance);
         
-        if (emp.getCustomerAttendance()== true){
-            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.COMPLETED, currencyId);         
-        }else{
-            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.MISSED, currencyId);
-        }
+//        push this under check attendance function
+//        
+//        if (emp.getCustomerAttendance()== true){
+//            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.COMPLETED, currencyId);         
+//        }else{
+//            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.MISSED, currencyId);
+//        }
         
         return emp;
     }

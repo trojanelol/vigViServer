@@ -113,6 +113,12 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
          
          sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
          
+         //mark attendance to missed if null
+         
+         //forloop
+         //check attendance
+         //updateStatus
+         
          classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
          
          return sessionEntity;

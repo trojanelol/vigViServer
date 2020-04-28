@@ -116,7 +116,8 @@ public class DataInitSessionBean {
                walletSessionBeanLocal.activateWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"),singaporeRateId);
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
                CustomerSessionId customerSessionId2 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
-               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);              
+               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);
+               CustomerSessionId customerSessionId4 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId2);
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
                walletSessionBeanLocal.topUpMoney(customerId2, 100, singaporeRateId);
                customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
