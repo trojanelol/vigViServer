@@ -30,5 +30,7 @@ public interface WalletSessionBeanLocal {
     public Wallet holdVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException;
 
     public Wallet deductVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException;
+
+    public Wallet returnHoldMoney(Long customerId, double returnAmount) throws WalletNotFoundException, AmountNotSufficientException;
     
 }

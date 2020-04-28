@@ -117,17 +117,18 @@ public class DataInitSessionBean {
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
                CustomerSessionId customerSessionId2 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
                CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1); 
-               CustomerSessionId customerSessionId4 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId2);   
+               CustomerSessionId customerSessionId4 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId2);
+               CustomerSessionId customerSessionId5 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId3); 
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
                walletSessionBeanLocal.topUpMoney(customerId2, 100, singaporeRateId);
                customerSessionSessionBeanLocal.withdrawSession(customerSessionId3);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false);
-               sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId1);
-               
-               sessionSessionBeanLocal.endSession(sessionId1, singaporeRateId);
-               sessionSessionBeanLocal.endSession(sessionId2, singaporeRateId);
-               sessionSessionBeanLocal.endSession(sessionId3, singaporeRateId);
+               customerSessionSessionBeanLocal.markAttendanceByCustomerSessionId(customerSessionId1, true);
+               customerSessionSessionBeanLocal.markAttendanceByCustomerSessionId(customerSessionId2, false);
+//               
+//               sessionSessionBeanLocal.endSession(sessionId1, singaporeRateId);
+//               sessionSessionBeanLocal.endSession(sessionId2, singaporeRateId);
+//               sessionSessionBeanLocal.endSession(sessionId3, singaporeRateId);
+//               sessionSessionBeanLocal.cancelSession(sessionId3);
         }
     }
 }

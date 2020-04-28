@@ -18,11 +18,13 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.WalletNotFoundException;
 
 /**
  *
@@ -30,6 +32,9 @@ import util.exception.UnknownPersistenceException;
  */
 @Stateless
 public class SessionSessionBean implements SessionSessionBeanLocal {
+
+    @EJB(name = "WalletSessionBeanLocal")
+    private WalletSessionBeanLocal walletSessionBeanLocal;
 
     @EJB(name = "CustomerSessionSessionBeanLocal")
     private CustomerSessionSessionBeanLocal customerSessionSessionBeanLocal;
@@ -120,5 +125,19 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
          classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
          
          return sessionEntity;
+    }
+    
+    @Override
+    public Session cancelSession (Long sessionId) throws SessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException{
+        Session sessionEntity = retrieveSessionBySessionId(sessionId);
+        sessionEntity.setSessionStatus(Session.SessionStatus.CANCELLED);
+        List<CustomerSession> customerSessionList = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
+         
+         for(int i = 0 ; i < customerSessionList.size(); i++){
+            customerSessionSessionBeanLocal.updateCustomerSessionStatus(customerSessionList.get(i).getCustomerSessionId(), CustomerSession.CustomerSessionStatus.CANCELLEDBYMERCHANT);
+            //reimburse those only if customerSessionStatus is Active
+            walletSessionBeanLocal.returnHoldMoney(customerSessionList.get(i).getCustomer().getCustomerId(), sessionEntity.getGymClass().getClassPrice());
+         }   
+        return sessionEntity;
     }
 }

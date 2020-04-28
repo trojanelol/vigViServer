@@ -105,7 +105,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
-    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance){
+    public CustomerSession markAttendanceByCustomerSessionId(CustomerSessionId customerSessionId, boolean attendance){
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         
         emp.setCustomerAttendance(attendance);
@@ -236,14 +236,9 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         Query query = em.createQuery("SELECT e FROM CustomerSession e WHERE e.customerAttendance IS NULL");
         List<CustomerSession> result = query.getResultList();
         for (int i = 0; i < result.size(); i++) {
-                this.markAttendance(result.get(i).getCustomerSessionId(), false);
+                this.markAttendanceByCustomerSessionId(result.get(i).getCustomerSessionId(), false);
         }
 
         return query.getResultList();
-    }
-
-    @Override
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -26,22 +26,21 @@ import util.exception.WalletNotFoundException;
 @Local
 public interface CustomerSessionSessionBeanLocal {
 
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException,NoAvailableSlotException;
-    
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException;
-
-    public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
-
-    public CustomerSession endClassByCustomerSessionId(CustomerSessionId customerSessionId, Long currencyId)throws CurrencyNotFoundException;
-
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus) throws CurrencyNotFoundException;
 
     public CustomerSession withdrawSession(CustomerSessionId customerSessionId);
 
-    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance);
+    public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
+
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus);
+
+    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
+
+    public CustomerSession endClassByCustomerSessionId(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException;
 
     public List<CustomerSession> updateNullAttendanceBySessionId(Long sessionId);
 
-    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
+    public CustomerSession markAttendanceByCustomerSessionId(CustomerSessionId customerSessionId, boolean attendance);
+
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException;
 
 }

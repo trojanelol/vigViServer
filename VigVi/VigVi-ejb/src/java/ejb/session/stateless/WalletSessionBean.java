@@ -127,6 +127,23 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
         }
     }
     
+    @Override
+    public Wallet returnHoldMoney(Long customerId, double returnAmount) throws WalletNotFoundException, AmountNotSufficientException{
+        Wallet walletEntity = retrieveWalletByCustomerId(customerId);
+
+        double holdBalance = walletEntity.getHoldBalance();
+        
+        double currentBalance = walletEntity.getCurrentBalance();
+        
+        if(holdBalance >= returnAmount){
+            walletEntity.setCurrentBalance(holdBalance - returnAmount);
+            walletEntity.setHoldBalance(currentBalance + returnAmount);
+            return walletEntity;
+        }else{
+            throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough hold Vig$");
+        }
+    }
+    
     
     @Override
     public Wallet retrieveWalletByCustomerId(Long customerId)throws WalletNotFoundException{

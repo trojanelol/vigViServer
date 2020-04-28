@@ -23,15 +23,15 @@ public class CustomerSessionId implements Serializable {
         return customerId;
     }
 
-    public void setCustomer(Long customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    public Long getSession() {
+    public Long getSessionId() {
         return sessionId;
     }
 
-    public void setSession(Long sessionId) {
+    public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
     }
 
