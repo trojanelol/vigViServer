@@ -11,7 +11,6 @@ import entity.CustomerSession.CustomerSessionStatus;
 import entity.CustomerSessionId;
 import entity.Session;
 import entity.PayableTransaction;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -21,7 +20,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.Query;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.ClassSessionIDExistException;
@@ -105,25 +103,26 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
-    public CustomerSession markAttendanceByCustomerSessionId(CustomerSessionId customerSessionId, boolean attendance){
+    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance, Long currencyId) throws CurrencyNotFoundException{
+
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         
         emp.setCustomerAttendance(attendance);
         
         if (emp.getCustomerAttendance()== true){
-            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.COMPLETED);         
+            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.COMPLETED, currencyId);         
         }else{
-            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.MISSED);
+            this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.MISSED, currencyId);
         }
         
         return emp;
     }
     
     @Override
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId){
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException{
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         emp.setCustomerAttendance(false);
-        this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN); 
+        this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN, currencyId); 
         
         return emp;
     }
@@ -140,27 +139,11 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSessionStatus newStatus ) {
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException{
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         if (emp != null & emp.getCustomerSessionStatus()!= newStatus) {
             emp.setCustomerSessionStatus(newStatus);
-        }
-        return emp;
-    }
-    
-    @Override
-    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId){
-        Query query = em.createQuery("SELECT s from CustomerSession s where s.session.sessionId = :id");
-        query.setParameter("id", sessionId);
-        
-        return query.getResultList();
-    }
-    
-    @Override
-    public CustomerSession endClassByCustomerSessionId(CustomerSessionId customerSessionId, Long currencyId)throws CurrencyNotFoundException{
-        
-        CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
-        
+
             if (emp.getCustomerSessionStatus() == CustomerSessionStatus.COMPLETED){
              //create transaction
              double customerAmountBeforeConversion;
@@ -226,19 +209,8 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 }
 
             }
-            return emp;
-        }
-           
-    
-    @Override
-    public List<CustomerSession> updateNullAttendanceBySessionId (Long sessionId){
-        
-        Query query = em.createQuery("SELECT e FROM CustomerSession e WHERE e.customerAttendance IS NULL");
-        List<CustomerSession> result = query.getResultList();
-        for (int i = 0; i < result.size(); i++) {
-                this.markAttendanceByCustomerSessionId(result.get(i).getCustomerSessionId(), false);
-        }
 
-        return query.getResultList();
+        }
+        return emp;
     }
 }

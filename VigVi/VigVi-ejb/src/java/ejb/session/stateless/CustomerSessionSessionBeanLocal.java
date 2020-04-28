@@ -26,20 +26,13 @@ import util.exception.WalletNotFoundException;
 @Local
 public interface CustomerSessionSessionBeanLocal {
 
-
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId);
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException;
 
     public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
 
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus);
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException;
 
-    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
-
-    public CustomerSession endClassByCustomerSessionId(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException;
-
-    public List<CustomerSession> updateNullAttendanceBySessionId(Long sessionId);
-
-    public CustomerSession markAttendanceByCustomerSessionId(CustomerSessionId customerSessionId, boolean attendance);
+    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance, Long currencyId) throws CurrencyNotFoundException;
 
     public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException;
 

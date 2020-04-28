@@ -20,7 +20,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
-import util.exception.CurrencyNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -32,6 +31,7 @@ import util.exception.WalletNotFoundException;
  */
 @Stateless
 public class SessionSessionBean implements SessionSessionBeanLocal {
+
 
     @EJB(name = "WalletSessionBeanLocal")
     private WalletSessionBeanLocal walletSessionBeanLocal;
@@ -107,37 +107,15 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     }
     
     
-    
     @Override
-    public Session endSession (Long sessionId, Long currencyId) throws SessionNotFoundException, CurrencyNotFoundException{
+    public Session endSession (Long sessionId) throws SessionNotFoundException{
          Session sessionEntity = retrieveSessionBySessionId(sessionId);
          
          sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
-         
-         customerSessionSessionBeanLocal.updateNullAttendanceBySessionId(sessionId);
-         
-         List<CustomerSession> customerSessionList = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
-         
-         for(int i = 0 ; i < customerSessionList.size(); i++){
-            customerSessionSessionBeanLocal.endClassByCustomerSessionId(customerSessionList.get(i).getCustomerSessionId(), currencyId);
-         }
          
          classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
          
          return sessionEntity;
     }
-    
-    @Override
-    public Session cancelSession (Long sessionId) throws SessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException{
-        Session sessionEntity = retrieveSessionBySessionId(sessionId);
-        sessionEntity.setSessionStatus(Session.SessionStatus.CANCELLED);
-        List<CustomerSession> customerSessionList = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
-         
-         for(int i = 0 ; i < customerSessionList.size(); i++){
-            customerSessionSessionBeanLocal.updateCustomerSessionStatus(customerSessionList.get(i).getCustomerSessionId(), CustomerSession.CustomerSessionStatus.CANCELLEDBYMERCHANT);
-            //reimburse those only if customerSessionStatus is Active
-            walletSessionBeanLocal.returnHoldMoney(customerSessionList.get(i).getCustomer().getCustomerId(), sessionEntity.getGymClass().getClassPrice());
-         }   
-        return sessionEntity;
-    }
+
 }
