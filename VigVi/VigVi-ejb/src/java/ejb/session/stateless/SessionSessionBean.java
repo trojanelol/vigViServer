@@ -81,7 +81,7 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
     @Override
     public List<Session> retrieveAllOngoingSessionsByClassId(Long classId){
-        Query query = em.createQuery("SELECT s from Session s where s.gymClass.classId = :id and s.status = :status");
+        Query query = em.createQuery("SELECT s from Session s where s.gymClass.classId = :id and s.sessionStatus = :status");
         query.setParameter("id", classId);
         query.setParameter("status", Session.SessionStatus.ONGOING);
         return query.getResultList();
@@ -95,5 +95,17 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
         return sessionEntity;
 
+    }
+    
+    
+    @Override
+    public Session endSession (Long sessionId) throws SessionNotFoundException{
+         Session sessionEntity = retrieveSessionBySessionId(sessionId);
+         
+         sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
+         
+         classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
+         
+         return sessionEntity;
     }
 }

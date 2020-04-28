@@ -114,6 +114,7 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
         }
     }
     
+    
     @Override
     public Wallet deductVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
         Wallet walletEntity = retrieveWalletByCustomerId(customerId);

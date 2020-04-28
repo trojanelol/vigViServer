@@ -122,6 +122,11 @@ public class DataInitSessionBean {
                customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
                customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true, singaporeRateId);
                customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false, singaporeRateId);
+               sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId1);
+               
+               sessionSessionBeanLocal.endSession(sessionId1);
+               sessionSessionBeanLocal.endSession(sessionId2);
+               sessionSessionBeanLocal.endSession(sessionId3);
         }
     }
 }

@@ -96,6 +96,7 @@ public class CustomerSession implements Serializable {
 
     public CustomerSession(CustomerSessionId customerSessionId) {
         this.customerSessionId = customerSessionId;
+        this.customerSessionStatus = CustomerSessionStatus.ACTIVE;
     }
     
     public PayableTransaction getPayableTransaction() {

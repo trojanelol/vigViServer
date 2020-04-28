@@ -28,5 +28,7 @@ public interface ClassSessionBeanLocal {
     public List<GymClass> retrieveAllActiveClasses();
 
     public Merchant retrieveMerchantByClassId(Long classId) throws GymClassNotFoundException;
+
+    public Long deactivateClass(Long classId);
     
 }

@@ -147,6 +147,16 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
              //create transaction
              double customerAmountBeforeConversion;
              customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice();
+                try {
+                    //deduct hold amount
+                    walletSessionBeanLocal.deductVigMoney(emp.getCustomer().getCustomerId(), customerAmountBeforeConversion);
+                } catch (WalletNotFoundException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (AmountNotSufficientException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             
+             
              double conversionRate;
              conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
                 double customerAmount = customerAmountBeforeConversion*conversionRate;
@@ -154,6 +164,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
              commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
                 double platformAmount = customerAmount*commissionRate;
                 double merchantAmount = customerAmount - platformAmount;
+                
                 try {
                     payableTransactionSessionBeanLocal.createNewTransaction(customerSessionId, new PayableTransaction(customerAmount, false, merchantAmount, platformAmount));
                 } catch (ClassIDExistException ex) {
@@ -168,11 +179,20 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
             if (emp.getCustomerSessionStatus() == CustomerSessionStatus.MISSED){
              //create transaction
              double customerAmountBeforeConversion;
-             customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice();
+             //charge 50% if they miss the class
+             customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice()*0.5;
+                try {
+                    //deduct hold amount
+                    walletSessionBeanLocal.deductVigMoney(emp.getCustomer().getCustomerId(), customerAmountBeforeConversion);
+                } catch (WalletNotFoundException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (AmountNotSufficientException ex) {
+                    Logger.getLogger(CustomerSessionSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
              double conversionRate;
              conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
-                //charge 50% if they miss the class
-                double customerAmount = customerAmountBeforeConversion*conversionRate*0.5;
+                
+                double customerAmount = customerAmountBeforeConversion*conversionRate;
              double commissionRate;
              commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
                 double platformAmount = customerAmount*commissionRate;

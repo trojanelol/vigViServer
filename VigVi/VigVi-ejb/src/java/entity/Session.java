@@ -46,7 +46,7 @@ public class Session implements Serializable {
     private GymClass gymClass;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date sessionDate;
-    private SessionStatus status;
+    private SessionStatus sessionStatus;
     @OneToMany(mappedBy = "session")
     @JsonbTransient
     private List<CustomerSession> signedUpCustomer;
@@ -68,7 +68,7 @@ public class Session implements Serializable {
     }
 
     public Session() {
-        this.setStatus(status.ONGOING);
+        this.setSessionStatus(sessionStatus.ONGOING);
     }
 
     public Session(Date sessionDate) {
@@ -167,12 +167,12 @@ public class Session implements Serializable {
         this.sessionDate = sessionDate;
     }
 
-    public SessionStatus getStatus() {
-        return status;
+    public SessionStatus getSessionStatus() {
+        return sessionStatus;
     }
 
-    public void setStatus(SessionStatus status) {
-        this.status = status;
+    public void setSessionStatus(SessionStatus sessionStatus) {
+        this.sessionStatus = sessionStatus;
     }
     
 }

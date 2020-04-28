@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Merchant;
 import entity.GymClass;
+import entity.Session;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -28,10 +29,15 @@ import util.exception.UnknownPersistenceException;
 @Stateless
 public class ClassSessionBean implements ClassSessionBeanLocal {
 
+    @EJB(name = "SessionSessionBeanLocal")
+    private SessionSessionBeanLocal sessionSessionBeanLocal;
+
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
     @EJB
     private MerchantSessionBeanLocal merchantSessionBeanLocal;
+    
+    
     
     @Override
     public Long createNewClass(Long merchantId, GymClass newClass) throws ClassIDExistException , UnknownPersistenceException, MerchantNotFoundException{
@@ -96,10 +102,20 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
     
 //    only auto-trigger when there is no ongoing session
     public Long deactivateClass (Long classId){
+        
         GymClass gymClassEntity = em.find(GymClass.class, classId);
         
-        gymClassEntity.setClassStatus(false);
+        List<Session>  result = sessionSessionBeanLocal.retrieveAllOngoingSessionsByClassId(classId);
+        
+        if (result==null || result.isEmpty()){
+            gymClassEntity.setClassStatus(false);
+        }    
         
         return gymClassEntity.getClassId();
     }
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
+    
 }
