@@ -9,6 +9,7 @@ import entity.Session;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -28,6 +29,6 @@ public interface SessionSessionBeanLocal {
 
     public Session updateSessionAvailableSlot(Long sessionId, Integer newSlotSize) throws SessionNotFoundException;
 
-    public Session endSession(Long sessionId) throws SessionNotFoundException;
+    public Session endSession(Long sessionId, Long currencyId) throws SessionNotFoundException, CurrencyNotFoundException;
     
 }

@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerSession;
 import entity.CustomerSessionId;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
@@ -31,7 +32,16 @@ public interface CustomerSessionSessionBeanLocal {
 
     public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
 
-    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance, Long currencyId) throws CurrencyNotFoundException;
+    public CustomerSession endClassByCustomerSessionId(CustomerSessionId customerSessionId, Long currencyId)throws CurrencyNotFoundException;
 
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException;
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus) throws CurrencyNotFoundException;
+
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId);
+
+    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance);
+
+    public List<CustomerSession> updateNullAttendanceBySessionId(Long sessionId);
+
+    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
+
 }

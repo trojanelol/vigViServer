@@ -19,6 +19,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -29,6 +30,9 @@ import util.exception.UnknownPersistenceException;
  */
 @Stateless
 public class SessionSessionBean implements SessionSessionBeanLocal {
+
+    @EJB(name = "CustomerSessionSessionBeanLocal")
+    private CustomerSessionSessionBeanLocal customerSessionSessionBeanLocal;
 
     @EJB(name = "ClassSessionBeanLocal")
     private ClassSessionBeanLocal classSessionBeanLocal;
@@ -98,11 +102,20 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     }
     
     
+    
     @Override
-    public Session endSession (Long sessionId) throws SessionNotFoundException{
+    public Session endSession (Long sessionId, Long currencyId) throws SessionNotFoundException, CurrencyNotFoundException{
          Session sessionEntity = retrieveSessionBySessionId(sessionId);
          
          sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
+         
+         customerSessionSessionBeanLocal.updateNullAttendanceBySessionId(sessionId);
+         
+         List<CustomerSession> customerSessionList = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
+         
+         for(int i = 0 ; i < customerSessionList.size(); i++){
+            customerSessionSessionBeanLocal.endClassByCustomerSessionId(customerSessionList.get(i).getCustomerSessionId(), currencyId);
+         }
          
          classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
          

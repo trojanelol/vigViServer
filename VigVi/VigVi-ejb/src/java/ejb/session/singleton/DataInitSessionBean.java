@@ -116,17 +116,18 @@ public class DataInitSessionBean {
                walletSessionBeanLocal.activateWallet(customerId2, new Wallet(100.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"),singaporeRateId);
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1);
                CustomerSessionId customerSessionId2 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
-               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);              
+               CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1); 
+               CustomerSessionId customerSessionId4 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId2);   
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
                walletSessionBeanLocal.topUpMoney(customerId2, 100, singaporeRateId);
-               customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true, singaporeRateId);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false, singaporeRateId);
+               customerSessionSessionBeanLocal.withdrawSession(customerSessionId3);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false);
                sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId1);
                
-               sessionSessionBeanLocal.endSession(sessionId1);
-               sessionSessionBeanLocal.endSession(sessionId2);
-               sessionSessionBeanLocal.endSession(sessionId3);
+               sessionSessionBeanLocal.endSession(sessionId1, singaporeRateId);
+               sessionSessionBeanLocal.endSession(sessionId2, singaporeRateId);
+               sessionSessionBeanLocal.endSession(sessionId3, singaporeRateId);
         }
     }
 }
