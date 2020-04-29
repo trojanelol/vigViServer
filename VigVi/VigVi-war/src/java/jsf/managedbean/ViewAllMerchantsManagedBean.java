@@ -14,8 +14,10 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -55,6 +57,26 @@ public class ViewAllMerchantsManagedBean{
         System.out.println("get merchant ID " + merchantIdToUpdate);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToUpdate", merchantIdToUpdate);
         FacesContext.getCurrentInstance().getExternalContext().redirect("updateMerchant.xhtml");
+        this.reload();
+    }
+    
+    public void activateMerchant(ActionEvent event) throws IOException{
+        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
+        System.out.println("to activate merchant " + merchantIdToActivate);
+        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
+        this.reload();
+    }
+    
+     public void deactivateMerchant(ActionEvent event) throws IOException{
+        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
+        System.out.println("to deactivate merchant " + merchantIdToActivate);
+        merchantSessionBeanLocal.deactivateMerchant(merchantIdToActivate);
+        this.reload();
+    }
+    
+    public void reload() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
 
     

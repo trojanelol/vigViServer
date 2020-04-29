@@ -66,9 +66,17 @@
                       </p:column>
 
                       <p:column headerText="Action">    				
-                          <p:commandButton value="Update" actionListener="#{viewAllMerchantsManagedBean.updateMerchantDetails}">
+                          <p:commandLink value="Update" actionListener="#{viewAllMerchantsManagedBean.updateMerchantDetails}">
                               <f:attribute name="merchantId" value="#{merchant.merchantId}" />
-                          </p:commandButton>
+                          </p:commandLink>
+                          <br></br>
+                          <br></br>
+                          <p:commandLink rendered="#{!merchant.merchantStatus}" value="Activate" actionListener="#{viewAllMerchantsManagedBean.activateMerchant}">
+                              <f:attribute name="merchantId" value="#{merchant.merchantId}" />
+                          </p:commandLink>    
+                          <p:commandLink rendered="#{merchant.merchantStatus}" value="Deactivate" actionListener="#{viewAllMerchantsManagedBean.deactivateMerchant}">
+                              <f:attribute name="merchantId" value="#{merchant.merchantId}" />
+                          </p:commandLink>    
                       </p:column>
                   </p:dataTable>
               </p:panel>
