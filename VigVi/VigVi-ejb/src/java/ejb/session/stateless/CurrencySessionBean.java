@@ -6,11 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Currency;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import util.exception.CurrencyNotFoundException;
 import util.exception.SessionNotFoundException;
 
@@ -52,6 +54,15 @@ public class CurrencySessionBean implements CurrencySessionBeanLocal {
         }catch (NoResultException | NonUniqueResultException ex){
             throw new CurrencyNotFoundException ("Currency" + currencyId + "does not exist");
         }
+    }
+    
+    
+    @Override
+     public List<Currency> retrieveAllCurrencies(){
+        Query query = em.createQuery("SELECT c from Currency c");
+
+        return query.getResultList();
+
     }
     
 }

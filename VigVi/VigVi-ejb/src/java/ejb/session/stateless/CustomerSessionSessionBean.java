@@ -125,10 +125,13 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException{
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException{
         CustomerSession emp = em.find(CustomerSession.class, customerSessionId);
         emp.setCustomerAttendance(false);
-        this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN, currencyId); 
+        Long currencyId = emp.getSession().getGymClass().getMerchant().getCurrency().getCurrencyId();
+        this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN, currencyId);
+        
+        //deduct money
         
         return emp;
     }

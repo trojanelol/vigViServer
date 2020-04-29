@@ -111,8 +111,9 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
     
     @Override
-    public Session endSession (Long sessionId, Long currencyId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
+    public Session endSession (Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
          Session sessionEntity = retrieveSessionBySessionId(sessionId);
+         Long currencyId = sessionEntity.getGymClass().getMerchant().getCurrency().getCurrencyId();
          
          sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
          

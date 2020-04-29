@@ -8,10 +8,13 @@ package jsf.managedbean;
 import ejb.session.stateless.MerchantSessionBeanLocal;
 import entity.Merchant;
 import java.util.List;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *

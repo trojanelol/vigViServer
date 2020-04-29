@@ -42,8 +42,8 @@ public interface CustomerSessionSessionBeanLocal {
 
     public Boolean updateCustomerSessionStatusByCheckingAttendance(CustomerSessionId customerSessionId, Long currencyId) throws CustomerSessionAttendanceNullException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
 
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
-
     public Boolean retrieveCustomerSessionAttendanceById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
+
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
 
 }

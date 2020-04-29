@@ -5,6 +5,7 @@
  */
 package ws.restful.resources;
 
+import ejb.session.stateless.CurrencySessionBeanLocal;
 import ejb.session.stateless.MerchantSessionBeanLocal;
 import entity.Merchant;
 import java.util.logging.Level;
@@ -38,7 +39,11 @@ import ws.restful.model.RetrieveAllOngoingSessionsRsp;
 @Path("Merchant")
 public class MerchantResource {
 
+    CurrencySessionBeanLocal currencySessionBean = lookupCurrencySessionBeanLocal();
+
     MerchantSessionBeanLocal merchantSessionBean = lookupMerchantSessionBeanLocal();
+    
+    
 
     @Context
     private UriInfo context;
@@ -103,7 +108,9 @@ public class MerchantResource {
             try
             {
                 
-                Long merchant = merchantSessionBean.createNewMerchant(createNewMerchantReq.getNewMerchant());
+                Long currencyId = currencySessionBean.retrieveAllCurrencies().get(0).getCurrencyId();
+                
+                Long merchant = merchantSessionBean.createNewMerchant(currencyId, createNewMerchantReq.getNewMerchant());
                 
                 CreateNewMerchantRsp createNewMerchantRsp = new CreateNewMerchantRsp(merchant);
                 
@@ -128,6 +135,16 @@ public class MerchantResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (MerchantSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/MerchantSessionBean!ejb.session.stateless.MerchantSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CurrencySessionBeanLocal lookupCurrencySessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CurrencySessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/CurrencySessionBean!ejb.session.stateless.CurrencySessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

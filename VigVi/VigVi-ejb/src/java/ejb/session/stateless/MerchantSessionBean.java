@@ -5,9 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.Currency;
 import entity.Merchant;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -19,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CurrencyNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import util.exception.MerchantNotFoundException;
@@ -35,8 +38,13 @@ import util.security.CryptographicHelper;
 
 public class MerchantSessionBean implements MerchantSessionBeanLocal {
 
+   @EJB(name = "CurrencySessionBeanLocal")
+    private CurrencySessionBeanLocal currencySessionBeanLocal;
+
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
+    
+    
     
      private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -99,7 +107,7 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
     }
     
     @Override
-    public Long createNewMerchant(Merchant newMerchant) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException{
+    public Long createNewMerchant(Long currencyId, Merchant newMerchant) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException{
         
         try
         {
@@ -107,6 +115,9 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
         
             if(constraintViolations.isEmpty())
             {
+                Currency currencyEntity = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId);
+                newMerchant.setCurrency(currencyEntity);
+                currencyEntity.getMerchants().add(newMerchant);
                 em.persist(newMerchant);
                 em.flush();
         

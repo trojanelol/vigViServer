@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Create New Merchant</title>
     </h:head>
@@ -70,9 +71,12 @@
                                 <p:outputLabel for="merchantStatus" value="Activate Account"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="merchantStatus" value="#{createNewMerchantManagedBean.newMerchant.merchantStatus}"/>
+                                <p:selectBooleanCheckbox id="merchantStatus" value="#{createNewMerchantManagedBean.newMerchant.merchantStatus}"/>
+                               
                             </p:column>      
                         </p:row>
+                        
+                        
 
                         <p:row>
                             <p:column>
@@ -97,7 +101,7 @@
                                 <p:outputLabel for="address" value="Address"/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="address" value="#{createNewMerchantManagedBean.newMerchant.address}"/>
+                                <p:inputText id="address" value="#{createNewMerchantManagedBean.newMerchant.merchantAddress}"/>
                             </p:column>      
                         </p:row>
                         
@@ -106,7 +110,7 @@
                                 <p:outputLabel for="contact" value="Contact No."/>
                             </p:column>
                             <p:column>
-                                <p:inputText id="contact" value="#{createNewMerchantManagedBean.newMerchant.contactNumber}"/>
+                                <p:inputText id="contact" value="#{createNewMerchantManagedBean.newMerchant.merchantContactNo}"/>
                             </p:column>      
                         </p:row>
 
@@ -115,7 +119,14 @@
                                 <p:commandButton value="Clear" type="reset"/>
                                 <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewMerchantManagedBean.createNewMerchant}"/>
                             </p:column>      
-                        </p:row> 
+                        </p:row>
+                        
+                        <p:outputLabel style="font-weight: bold;" for="selRegion" value="Region" />
+                        <p:selectOneMenu id="selRegion" value="#{createNewMerchantManagedBean.currencyId}">
+                            <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                            <f:selectItems value="#{createNewMerchantManagedBean.currencyEntities}" var="currencyEntity" itemValue="#{currencyEntity.currencyId}" itemLabel="#{currencyEntity.conversionRegion}" />
+                        </p:selectOneMenu>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
                     </p:panelGrid>
             </h:form>
         </p:panel>

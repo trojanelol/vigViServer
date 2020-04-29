@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -26,6 +27,14 @@ import util.security.CryptographicHelper;
  */
 @Entity
 public class Merchant implements Serializable {
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +61,9 @@ public class Merchant implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
     private String salt;
+    @ManyToOne
+    @JsonbTransient
+    private Currency currency;
 //    private Date deactivatedDate;
     
     @PrePersist

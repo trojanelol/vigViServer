@@ -12,6 +12,7 @@ import entity.Merchant;
  * @author JiaYunTeo
  */
 public class CreateNewMerchantReq {
+
     public Merchant getNewMerchant() {
         return newMerchant;
     }
@@ -28,4 +29,6 @@ public class CreateNewMerchantReq {
     public CreateNewMerchantReq(Merchant newMerchant) {
         this.newMerchant = newMerchant;
     }
+
+    
 }

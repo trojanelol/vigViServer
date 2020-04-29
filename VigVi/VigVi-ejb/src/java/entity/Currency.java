@@ -7,10 +7,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
@@ -21,6 +24,22 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Currency implements Serializable {
+
+    public String getConversionRegion() {
+        return conversionRegion;
+    }
+
+    public void setConversionRegion(String conversionRegion) {
+        this.conversionRegion = conversionRegion;
+    }
+
+    public List<Merchant> getMerchants() {
+        return merchants;
+    }
+
+    public void setMerchants(List<Merchant> merchants) {
+        this.merchants = merchants;
+    }
 
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +52,9 @@ public class Currency implements Serializable {
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
+    @OneToMany(mappedBy="currency")
+    @JsonbTransient
+    private List<Merchant> merchants;
     
      @PrePersist
     protected void onCreate() {

@@ -5,14 +5,19 @@
  */
 package jsf.managedbean;
 
+import ejb.session.stateless.CurrencySessionBeanLocal;
 import ejb.session.stateless.MerchantSessionBeanLocal;
+import entity.Currency;
 import entity.Merchant;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.CurrencyNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.MerchantUsernameExistException;
 import util.exception.UnknownPersistenceException;
@@ -25,11 +30,25 @@ import util.exception.UnknownPersistenceException;
 @RequestScoped
 public class CreateNewMerchantManagedBean {
 
+    public List<Currency> getCurrencyEntities() {
+        return currencyEntities;
+    }
+
+    public void setCurrencyEntities(List<Currency> currencyEntities) {
+        this.currencyEntities = currencyEntities;
+    }
+
+
+    @EJB(name = "CurrencySessionBeanLocal")
+    private CurrencySessionBeanLocal currencySessionBeanLocal;
+
     @EJB(name = "MerchantSessionBeanLocal")
     private MerchantSessionBeanLocal merchantSessionBeanLocal;
     
     //model
-    private Merchant newMerchant;    
+    private Merchant newMerchant;   
+    private Long currencyId;
+    private List<Currency> currencyEntities;
     /**
      * Creates a new instance of CreateNewMerchantManagedBean
      */
@@ -39,10 +58,22 @@ public class CreateNewMerchantManagedBean {
         
     }
     
+    @PostConstruct
+    public void postConstruct()
+    {
+        setCurrencyEntities(currencySessionBeanLocal.retrieveAllCurrencies());
+    }
+    
+    
     //actioneventlistener
-    public void createNewMerchant(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException{
+    public void createNewMerchant(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException{
         
-        Long newMerchantId = merchantSessionBeanLocal.createNewMerchant(newMerchant);
+        //by default, selecting Singapore Region
+        if(currencyId == 0){
+          Long currencyId = currencySessionBeanLocal.retrieveAllCurrencies().get(0).getCurrencyId();
+        }
+        
+        Long newMerchantId = merchantSessionBeanLocal.createNewMerchant(currencyId, newMerchant);
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New merchant created successfully: " + newMerchantId, null));
         
@@ -56,4 +87,12 @@ public class CreateNewMerchantManagedBean {
         this.newMerchant = newMerchant;
     }
     
+    
+    public Long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
+    }
 }
