@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
+import util.exception.InputDataValidationException;
 import util.exception.MerchantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -30,5 +31,7 @@ public interface ClassSessionBeanLocal {
     public Merchant retrieveMerchantByClassId(Long classId) throws GymClassNotFoundException;
 
     public Long deactivateClass(Long classId);
+
+    public void updateClass(GymClass gymClass) throws InputDataValidationException, MerchantNotFoundException, GymClassNotFoundException;
     
 }

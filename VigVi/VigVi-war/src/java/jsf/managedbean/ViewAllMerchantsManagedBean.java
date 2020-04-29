@@ -57,7 +57,14 @@ public class ViewAllMerchantsManagedBean{
         System.out.println("get merchant ID " + merchantIdToUpdate);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToUpdate", merchantIdToUpdate);
         FacesContext.getCurrentInstance().getExternalContext().redirect("updateMerchant.xhtml");
-        this.reload();
+    }
+    
+        public void viewMerchantDetails(ActionEvent event) throws IOException
+    {
+        Long merchantIdToView = (Long)event.getComponent().getAttributes().get("merchantId");
+        System.out.println("get merchant ID " + merchantIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToView", merchantIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchantDetails.xhtml");
     }
     
     public void activateMerchant(ActionEvent event) throws IOException{

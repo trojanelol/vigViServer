@@ -9,6 +9,7 @@ import entity.Merchant;
 import entity.GymClass;
 import entity.Session;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,8 +18,10 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
 import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
+import util.exception.InputDataValidationException;
 import util.exception.MerchantNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -116,6 +119,38 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
 
     public void persist(Object object) {
         em.persist(object);
+    }
+    
+    @Override
+    public void updateClass(GymClass gymClass) throws InputDataValidationException, MerchantNotFoundException, GymClassNotFoundException
+    {
+        if(gymClass != null && gymClass.getClassId()!= null)
+        {
+//            Set<ConstraintViolation<GymClass>>constraintViolations = validator.validate(gymClass);
+        
+//            if(constraintViolations.isEmpty())
+//            {
+                GymClass gymClassEntityToUpdate = this.retrieveClassByClassId(gymClass.getClassId());
+                    
+                    gymClassEntityToUpdate.setClassName(gymClass.getClassName());
+                    gymClassEntityToUpdate.setClassDesc(gymClass.getClassDesc());
+                    gymClassEntityToUpdate.setClassInstructor(gymClass.getClassInstructor());
+                    gymClassEntityToUpdate.setClassName(gymClass.getClassName());
+                    gymClassEntityToUpdate.setClassPrice(gymClass.getClassPrice());
+                    gymClassEntityToUpdate.setClassRemarks(gymClass.getClassRemarks());
+                    gymClassEntityToUpdate.setClassSize(gymClass.getClassSize());
+                    gymClassEntityToUpdate.setEndTime(gymClass.getEndTime());
+                    gymClassEntityToUpdate.setStartTime(gymClass.getStartTime());
+//            }
+//            else
+//            {
+//                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+//            }
+        }
+        else
+        {
+            throw new GymClassNotFoundException("Merchant ID not provided for product to be updated");
+        }
     }
     
 }

@@ -65,7 +65,12 @@
                           <h:outputText value="#{merchant.merchantContactNo}"/>
                       </p:column>
 
-                      <p:column headerText="Action">    				
+                      <p:column headerText="Action">
+                          <p:commandLink value="View Classes" actionListener="#{viewAllMerchantsManagedBean.viewMerchantDetails}">
+                              <f:attribute name="merchantId" value="#{merchant.merchantId}" />
+                          </p:commandLink>
+                          <br></br>
+                          <br></br>
                           <p:commandLink value="Update" actionListener="#{viewAllMerchantsManagedBean.updateMerchantDetails}">
                               <f:attribute name="merchantId" value="#{merchant.merchantId}" />
                           </p:commandLink>
