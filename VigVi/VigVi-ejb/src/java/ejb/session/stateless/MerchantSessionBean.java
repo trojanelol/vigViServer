@@ -192,5 +192,37 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
         return merchantEntity.getMerchantId();
     }
     
+   @Override
+    public void updateMerchant(Merchant merchant) throws InputDataValidationException, MerchantNotFoundException
+    {
+        if(merchant != null && merchant.getMerchantId()!= null)
+        {
+            Set<ConstraintViolation<Merchant>>constraintViolations = validator.validate(merchant);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Merchant merchantEntityToUpdate = this.retrieveMerchantByMerchantId(merchant.getMerchantId());
+                    
+                    merchantEntityToUpdate.setMerchantName(merchant.getMerchantName());
+                    merchantEntityToUpdate.setMerchantDesc(merchant.getMerchantDesc());
+                    merchantEntityToUpdate.setBankName(merchant.getBankName());
+                    merchantEntityToUpdate.setBankAccount(merchant.getBankAccount());
+                    merchantEntityToUpdate.setCommissionRate(merchant.getCommissionRate());
+                    merchantEntityToUpdate.setMerchantAddress(merchant.getMerchantAddress());
+                    merchantEntityToUpdate.setMerchantContactNo(merchant.getMerchantContactNo());
+                    merchantEntityToUpdate.setMerchantEmail(merchant.getMerchantEmail());
+                    merchantEntityToUpdate.setMerchantPw(merchant.getMerchantPw());
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else
+        {
+            throw new MerchantNotFoundException("Merchant ID not provided for product to be updated");
+        }
+    }
+    
     
 }

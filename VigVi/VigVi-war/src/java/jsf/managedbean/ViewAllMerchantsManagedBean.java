@@ -7,14 +7,15 @@ package jsf.managedbean;
 
 import ejb.session.stateless.MerchantSessionBeanLocal;
 import entity.Merchant;
+import java.io.IOException;
 import java.util.List;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 /**
  *
@@ -22,7 +23,7 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "viewAllMerchantsManagedBean")
 @RequestScoped
-public class ViewAllMerchantsManagedBean {
+public class ViewAllMerchantsManagedBean{
 
     @EJB(name = "MerchantSessionBeanLocal")
     private MerchantSessionBeanLocal merchantSessionBeanLocal;
@@ -47,5 +48,14 @@ public class ViewAllMerchantsManagedBean {
     public void setMerchants(List<Merchant> merchants) {
         this.merchants = merchants;
     }
+    
+    public void updateMerchantDetails(ActionEvent event) throws IOException
+    {
+        Long merchantIdToUpdate = (Long)event.getComponent().getAttributes().get("merchantId");
+        System.out.println("get merchant ID " + merchantIdToUpdate);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToUpdate", merchantIdToUpdate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("full_updateMerchant.xhtml");
+    }
+
     
 }

@@ -36,5 +36,7 @@ public interface MerchantSessionBeanLocal {
 
     public Long createNewMerchant(Long currencyId, Merchant newMerchant) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException;
 
+    public void updateMerchant(Merchant merchant) throws InputDataValidationException, MerchantNotFoundException;
+
   
 }
