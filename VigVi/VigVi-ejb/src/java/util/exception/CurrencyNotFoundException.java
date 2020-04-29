@@ -12,6 +12,7 @@ package util.exception;
 public class CurrencyNotFoundException extends Exception {
 
     public CurrencyNotFoundException(String string) {
+        super(string);
     }
     
 }

@@ -12,6 +12,7 @@ package util.exception;
 public class WalletNotFoundException extends Exception {
 
     public WalletNotFoundException(String string) {
+        super(string);
     }
     
 }

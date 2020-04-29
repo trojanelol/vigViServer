@@ -20,6 +20,9 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
+import util.exception.CustomerSessionAttendanceNullException;
+import util.exception.CustomerSessionNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -108,16 +111,27 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
     
     
     @Override
-    public Session endSession (Long sessionId) throws SessionNotFoundException{
+    public Session endSession (Long sessionId, Long currencyId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
          Session sessionEntity = retrieveSessionBySessionId(sessionId);
          
          sessionEntity.setSessionStatus(Session.SessionStatus.COMPLETED);
          
-         //mark attendance to missed if null
+         //mark attendancea for all customer sessions to false if null
+//         Query query = em.createQuery("UPDATE CustomerSession e SET e.customerAttendance = :attendance WHERE e.session.sessionId = :id AND e.customerAttendance is NULL");
+//         query.setParameter("attendance", false);
+//         query.setParameter("id", sessionEntity.getSessionId());
+//         int rowsUpdated = query.executeUpdate();
+//         System.out.println("attendances Updated: " + rowsUpdated);
+         
+         List<CustomerSession> results = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
          
          //forloop
-         //check attendance
-         //updateStatus
+         for (int i = 0; i < results.size(); i++) {
+            //check attendance to update status
+             System.out.println("charging" + results.get(i).getCustomerSessionId() + "attendance" + results.get(i).getCustomerAttendance());
+            customerSessionSessionBeanLocal.updateCustomerSessionStatusByCheckingAttendance(results.get(i).getCustomerSessionId(), currencyId);
+         }
+
          
          classSessionBeanLocal.deactivateClass(sessionEntity.getGymClass().getClassId());
          

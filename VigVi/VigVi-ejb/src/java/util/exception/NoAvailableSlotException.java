@@ -12,6 +12,7 @@ package util.exception;
 public class NoAvailableSlotException extends Exception {
 
     public NoAvailableSlotException(String string) {
+        super(string);
     }
     
 }

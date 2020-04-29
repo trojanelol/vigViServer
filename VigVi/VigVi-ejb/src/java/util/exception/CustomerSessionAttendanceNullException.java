@@ -9,10 +9,10 @@ package util.exception;
  *
  * @author JiaYunTeo
  */
-public class UnknownPersistenceException extends Exception {
+public class CustomerSessionAttendanceNullException extends Exception {
 
-    public UnknownPersistenceException(String message) {
-        super(message);
+    public CustomerSessionAttendanceNullException(String string) {
+        System.out.print(string);
     }
     
 }

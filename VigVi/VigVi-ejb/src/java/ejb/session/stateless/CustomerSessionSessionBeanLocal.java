@@ -13,6 +13,7 @@ import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
+import util.exception.CustomerSessionAttendanceNullException;
 import util.exception.CustomerSessionNotFoundException;
 import util.exception.NoAvailableSlotException;
 import util.exception.SessionNotFoundException;
@@ -26,14 +27,23 @@ import util.exception.WalletNotFoundException;
 @Local
 public interface CustomerSessionSessionBeanLocal {
 
-    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException;
-
+    
     public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
 
-    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException;
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException;  
 
-    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance, Long currencyId) throws CurrencyNotFoundException;
+    public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
 
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException;
+    public List<CustomerSession> retrieveAllCustomerSessionsByCustomerId(Long customerId);
+
+    public CustomerSession markAttendance(CustomerSessionId customerSessionId, boolean attendance);
+    
+    public CustomerSession updateCustomerSessionStatus(CustomerSessionId customerSessionId, CustomerSession.CustomerSessionStatus newStatus, Long currencyId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
+
+    public Boolean updateCustomerSessionStatusByCheckingAttendance(CustomerSessionId customerSessionId, Long currencyId) throws CustomerSessionAttendanceNullException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
+
+    public CustomerSession withdrawSession(CustomerSessionId customerSessionId, Long currencyId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
+
+    public Boolean retrieveCustomerSessionAttendanceById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
 
 }

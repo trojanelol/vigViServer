@@ -12,6 +12,7 @@ package util.exception;
 public class AmountNotSufficientException extends Exception {
 
     public AmountNotSufficientException(String string) {
+        super(string);
     }
     
 }

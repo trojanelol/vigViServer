@@ -38,6 +38,7 @@ import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
+import util.exception.CustomerSessionAttendanceNullException;
 import util.exception.CustomerSessionNotFoundException;
 import util.exception.CustomerUsernameExistException;
 import util.exception.GymClassNotFoundException;
@@ -91,13 +92,13 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException | CustomerSessionAttendanceNullException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException{
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException{
         if(em.find(Merchant.class, 1l)==null){
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore")); 
                SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");  
@@ -121,13 +122,13 @@ public class DataInitSessionBean {
                currencySessionBeanLocal.updateConversionRate(singaporeRateId, 3.0);
                walletSessionBeanLocal.topUpMoney(customerId2, 100, singaporeRateId);
                customerSessionSessionBeanLocal.withdrawSession(customerSessionId3, singaporeRateId);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true, singaporeRateId);
-               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false, singaporeRateId);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId1, true);
+               customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false);
                sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId1);
                
-               sessionSessionBeanLocal.endSession(sessionId1);
-               sessionSessionBeanLocal.endSession(sessionId2);
-               sessionSessionBeanLocal.endSession(sessionId3);
+               sessionSessionBeanLocal.endSession(sessionId1,singaporeRateId);
+               sessionSessionBeanLocal.endSession(sessionId2,singaporeRateId);
+               sessionSessionBeanLocal.endSession(sessionId3,singaporeRateId);
         }
     }
 }

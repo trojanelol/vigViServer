@@ -12,6 +12,7 @@ package util.exception;
 public class GymClassNotFoundException extends Exception {
 
     public GymClassNotFoundException(String string) {
+        super(string);
     }
     
 }

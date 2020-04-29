@@ -12,6 +12,7 @@ package util.exception;
 public class MerchantNotFoundException extends Exception {
 
     public MerchantNotFoundException(String string) {
+        super(string);
     }
     
 }
