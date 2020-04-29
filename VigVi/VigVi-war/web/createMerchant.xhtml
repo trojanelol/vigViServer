@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Create New Merchant">
+                <h:form id="formMain">
+                    <p:messages/>
+                        <p:panelGrid>
+                             <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selRegion" value="Region" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selRegion" value="#{createNewMerchantManagedBean.currencyId}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{createNewMerchantManagedBean.currencyEntities}" var="currencyEntity" itemValue="#{currencyEntity.currencyId}" itemLabel="#{currencyEntity.conversionRegion}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>    
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="merchantName" value="Merchant Name"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="merchantName" value="#{createNewMerchantManagedBean.newMerchant.merchantName}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="merchantDesc" value="Description"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea cols="25" counter="display" maxlength="200" counterTemplate="{0} characters remaining." autoResize="true" id="merchantDesc" value="#{createNewMerchantManagedBean.newMerchant.merchantDesc}"/>
+                                    <br/>
+                                    <h:outputText id="display"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="merchantEmail" value="Merchant Email"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="email" id="merchantEmail" value="#{createNewMerchantManagedBean.newMerchant.merchantEmail}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="password" value="Merchant Password"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="password" id="password" value="#{createNewMerchantManagedBean.newMerchant.merchantPw}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="selBankName" value="Bank Name"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selBankName" value="#{createNewMerchantManagedBean.newMerchant.bankName}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItem itemValue="DBS" itemLabel="DBS" />
+                                        <f:selectItem itemValue="UOB" itemLabel="UOB" />
+                                        <f:selectItem itemValue="Citibank" itemLabel="Citibank" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="bankAcc" value="Bank Account Details"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="bankAcc" value="#{createNewMerchantManagedBean.newMerchant.bankAccount}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="merchantStatus" value="Activate Account"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectBooleanCheckbox id="merchantStatus" value="#{createNewMerchantManagedBean.newMerchant.merchantStatus}"/>
+
+                                </p:column>      
+                            </p:row>
+
+
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="img" value="Image"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="img" value="#{createNewMerchantManagedBean.newMerchant.merchantImage}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="selCommRate" value="Commission Rate"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selCommRate" value="#{createNewMerchantManagedBean.newMerchant.commissionRate}">
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItem itemValue="0.3" itemLabel="Basic Merchant (30%)" />
+                                        <f:selectItem itemValue="0.2" itemLabel="Gold Merchant (20%)" />
+                                        <f:selectItem itemValue="0.1" itemLabel="Platinum Merchant (10%)" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="address" value="Physical Address"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="address" id="address" value="#{createNewMerchantManagedBean.newMerchant.merchantAddress}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contact" value="Contact No."/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="tel" id="contact" value="#{createNewMerchantManagedBean.newMerchant.merchantContactNo}"/>
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Clear" type="reset"/>
+                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewMerchantManagedBean.createNewMerchant}"/>
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
+                        </p:panelGrid>
+                </h:form>
+            </p:panel>
+            </div>
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>

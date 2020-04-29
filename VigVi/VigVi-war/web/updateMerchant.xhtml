@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+           <section id="content" class="content">
+             <div>
+                <p:tooltip />
+                <h:form>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                </h:form>
+
+                <p:separator /> 
+                <p:panel header="Update Merchant">        
+                #{updateProductManagedBean.foo()}
+                <h:form>
+                    <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
+                    <br/>
+                    <p:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{updateMerchantManagedBean.merchantEntityToUpdate != null}">
+                        
+                        <p:outputLabel style="font-weight: bold;" value="Merchant ID"/>
+                        <h:outputText value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantId}"/>
+                        <h:outputText value="" />
+
+                        <p:outputLabel style="font-weight: bold;" for="txtName" value="Name" />
+                        <p:inputText id="txtName" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantName}" required="true" requiredMessage="Name is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtName" />
+
+
+                        <p:outputLabel style="font-weight: bold;" for="txtDescription" value="Description" />
+                        <p:inputTextarea cols="25" counter="display" maxlength="200" counterTemplate="{0} characters remaining." autoResize="true" id="txtDescription" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantDesc}" required="true" requiredMessage="Description is required" />
+                        <h:outputText id="display" />
+                        
+
+                        <p:outputLabel style="font-weight: bold;" for="txtAddress" value="Physical Address" />
+                        <p:inputText id="txtAddress" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantAddress}" required="true" requiredMessage="Physical Address is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtAddress" />
+                                                
+                        <p:outputLabel style="font-weight: bold;" for="txtContact" value="Contact No." />
+                        <p:inputText id="txtContact" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantContactNo}" required="true" requiredMessage="Contact Details is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtContact" />
+                        
+                        <p:outputLabel style="font-weight: bold;" for="selBankName" value="Bank Name" />
+                        <p:selectOneMenu id="selBankName" value="#{updateMerchantManagedBean.merchantEntityToUpdate.bankName}" required="true" requiredMessage="Bank Name is required" >                            
+                            <f:selectItem itemValue="DBS" itemLabel="DBS" />
+                            <f:selectItem itemValue="UOB" itemLabel="UOB" />
+                            <f:selectItem itemValue="Citibank" itemLabel="Citibank" />
+                        </p:selectOneMenu>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selBankName" />                      
+                        
+                        <p:outputLabel style="font-weight: bold;" for="txtBankAccount" value="Bank Account No." />
+                        <p:inputText id="txtBankAccount" value="#{updateMerchantManagedBean.merchantEntityToUpdate.bankAccount}" required="true" requiredMessage="Bank Account is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtBankAccount" />
+
+                                                
+                        <p:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
+                        <p:inputText id="txtEmail" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantEmail}" required="true" requiredMessage="Email is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
+
+                        <p:outputLabel style="font-weight: bold;" for="selCommission" value="Commission Rate" />
+                        <p:selectOneMenu id="selCommission" value="#{updateMerchantManagedBean.merchantEntityToUpdate.commissionRate}" required="true" requiredMessage="Commission Rate is required" >
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItem itemValue="0.3" itemLabel="Basic Merchant (30%)" />
+                                        <f:selectItem itemValue="0.2" itemLabel="Gold Merchant (20%)" />
+                                        <f:selectItem itemValue="0.1" itemLabel="Platinum Merchant (10%)" />
+                        </p:selectOneMenu>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtCommission" />
+  
+                        <p:outputLabel style="font-weight: bold;" for="txtMerchantStatus" value="Active Account" />
+                        <h:selectBooleanCheckbox  id="txtMerchantStatus" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantStatus}"/>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtMerchantStatus" />
+                        
+                    </p:panelGrid>
+                    <br/>                      
+                        <p:commandButton value="Update" type="submit" actionListener="#{updateMerchantManagedBean.updateMerchant}" rendered="#{updateMerchantManagedBean.merchantEntityToUpdate != null}" />   
+                        <p:commandButton value="Cancel" type="cancel" actionListener="#{updateMerchantManagedBean.back}" />
+                </h:form>
+               </p:panel> 
+                 
+            </div>
+           </section>    
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>

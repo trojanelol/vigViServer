@@ -54,7 +54,7 @@ public class ViewAllMerchantsManagedBean{
         Long merchantIdToUpdate = (Long)event.getComponent().getAttributes().get("merchantId");
         System.out.println("get merchant ID " + merchantIdToUpdate);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToUpdate", merchantIdToUpdate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("full_updateMerchant.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("updateMerchant.xhtml");
     }
 
     

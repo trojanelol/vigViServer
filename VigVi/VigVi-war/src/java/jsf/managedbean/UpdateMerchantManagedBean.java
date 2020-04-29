@@ -80,8 +80,7 @@ public class UpdateMerchantManagedBean implements Serializable {
     
     public void back(ActionEvent event) throws IOException
     {
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToView", getMerchantIdToUpdate());
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchantDetails.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchants.xhtml");
     }
     
     
@@ -90,15 +89,31 @@ public class UpdateMerchantManagedBean implements Serializable {
     {        
     }
     
+//    public void info() {
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "PrimeFaces Rocks."));
+//    }
+//     
+//    public void warn() {
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Warning!", "Watch out for PrimeFaces."));
+//    }
+//     
+//    public void error() {
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
+//    }
+//     
+//    public void fatal() {
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fatal!", "System Error"));
+//    }
     
     
-    public void updateProduct(ActionEvent event)
+    public void updateMerchant(ActionEvent event)
     {
             
         
         try
         {
             merchantSessionBeanLocal.updateMerchant(getMerchantEntityToUpdate());
+            
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Merchant updated successfully", null));
         }

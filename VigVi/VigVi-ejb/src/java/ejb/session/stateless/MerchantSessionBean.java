@@ -212,6 +212,7 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
                     merchantEntityToUpdate.setMerchantContactNo(merchant.getMerchantContactNo());
                     merchantEntityToUpdate.setMerchantEmail(merchant.getMerchantEmail());
                     merchantEntityToUpdate.setMerchantPw(merchant.getMerchantPw());
+                    merchantEntityToUpdate.setMerchantStatus(merchant.getMerchantStatus());
             }
             else
             {

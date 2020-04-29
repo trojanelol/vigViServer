@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+            <div>
+                    <p:panel header="View All Merchants">
+
+                  <p:dataTable value="#{viewAllMerchantsManagedBean.merchants}" var="merchant">
+                      <p:column headerText="Merchant ID">
+                          <h:outputText value="#{merchant.merchantId}"/>
+                      </p:column>
+
+                      <p:column headerText="Name">
+                          <h:outputText value="#{merchant.merchantName}"/>
+                      </p:column>
+
+                      <p:column headerText="Email">
+                          <h:outputText value="#{merchant.merchantEmail}"/>
+                      </p:column>
+
+                      <p:column headerText="Description">
+                          <h:outputText value="#{merchant.merchantDesc}"/>
+                      </p:column>
+
+                      <p:column headerText="Commission Rate">
+                          <h:outputText value="#{merchant.commissionRate}"/>
+                      </p:column>
+
+                      <p:column headerText="Bank Name">
+                          <h:outputText value="#{merchant.bankName}"/>
+                      </p:column>
+
+                      <p:column headerText="Bank Account No.">
+                          <h:outputText value="#{merchant.bankAccount}"/>
+                      </p:column>
+
+                      <p:column headerText="Activation Status">
+                          <h:outputText value="#{merchant.merchantStatus}"/>
+                      </p:column>
+
+                      <p:column headerText="Image">
+                          <h:outputText value="#{merchant.merchantImage}"/>
+                      </p:column>
+
+                      <p:column headerText="Address">
+                          <h:outputText value="#{merchant.merchantAddress}"/>
+                      </p:column>
+
+                      <p:column headerText="Contact No.">
+                          <h:outputText value="#{merchant.merchantContactNo}"/>
+                      </p:column>
+
+                      <p:column headerText="Action">    				
+                          <p:commandButton value="Update" actionListener="#{viewAllMerchantsManagedBean.updateMerchantDetails}">
+                              <f:attribute name="merchantId" value="#{merchant.merchantId}" />
+                          </p:commandButton>
+                      </p:column>
+                  </p:dataTable>
+              </p:panel>
+            </div>
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>
