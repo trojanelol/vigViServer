@@ -19,7 +19,7 @@
         <ui:define name="content">
 <!--             <ui:include src = "pfViewMerchants.xhtml" />-->
             <div>
-                <p:panel header="Create New Session">
+                <p:panel header="Search Session">
                 <h:form id="formSession">
                     <p:messages closable="true"  />
                         <p:panelGrid>  
@@ -47,26 +47,6 @@
                                         <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
                                         <f:selectItems value="#{createNewSessionManagedBean.gymClassEntities}" var="gymClassEntity" itemValue="#{gymClassEntity.classId}" itemLabel="#{gymClassEntity.classId}-#{gymClassEntity.className}" />
                                     </p:selectOneMenu>
-                                </p:column>      
-                            </p:row>
-                            
-                            
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="disabledDD" value="Session Date" />
-                                </p:column>
-                                <p:column>
-                                    <p:datePicker  timeZone="#{createNewSessionManagedBean.timeZone}" pattern="dd/MM/yyyy" id="disabledDD" value="#{createNewSessionManagedBean.newSession.sessionDate}" mindate="#{createNewSessionManagedBean.todayDate}" required="true" requiredMessage="Session Date is required" />
-                                </p:column>      
-                            </p:row>
-
-                            
-                            <p:row>
-                                <p:column colspan="2">
-                                    <p:commandButton value="Clear" type="reset"/>
-                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewSessionManagedBean.createNewSession}">
-                                        <p:ajax listener="#{createNewSessionManagedBean.updateDatatableAfterCreateSession}" update="sessionData" />
-                                    </p:commandButton>    
                                 </p:column>      
                             </p:row>
 
