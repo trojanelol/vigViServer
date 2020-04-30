@@ -78,7 +78,6 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 customerSession.setSession(sessionEntity);
                 customerEntity.getSignedUpClass().add(customerSession);
                 sessionEntity.getSignedUpCustomer().add(customerSession);
-                sessionSessionBeanLocal.updateSessionAvailableSlot(sessionEntity.getSessionId(),sessionEntity.getAvailableSlot()-1);
                 em.persist(customerSession);
                 em.flush();
 

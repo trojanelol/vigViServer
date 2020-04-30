@@ -115,7 +115,14 @@ public class ViewAllGymClassesManagedBean implements Serializable {
         System.out.println("get merchant ID " + merchantIdToView);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToView", merchantIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchantDetails.xhtml");
-    }   
+    } 
+    
+    public void viewSessions(ActionEvent event) throws IOException{
+        Long gymClassIdToView = (Long)event.getComponent().getAttributes().get("gymClassId");
+        System.out.println("get class ID " + gymClassIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToView", gymClassIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewClassDetails.xhtml");
+    } 
 
 
     

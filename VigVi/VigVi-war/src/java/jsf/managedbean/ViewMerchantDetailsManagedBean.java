@@ -151,6 +151,14 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantIdToCreate);
         FacesContext.getCurrentInstance().getExternalContext().redirect("createGymClass.xhtml");
     }
+        
+    public void viewClassDetails (ActionEvent event) throws IOException{
+        Long gymClassIdToView = (Long)event.getComponent().getAttributes().get("gymClassId");
+        System.out.println("get class ID " + gymClassIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToView", gymClassIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewClassDetails.xhtml");
+    
+    }    
 
 
     

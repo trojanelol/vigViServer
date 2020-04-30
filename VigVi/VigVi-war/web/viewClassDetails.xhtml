@@ -22,7 +22,7 @@
                 
                 <p:panel header="Merchant Details">
 
-                    <p:dataTable value="#{viewMerchantDetailsManagedBean.merchantEntityToView}" var="merchant">
+                    <p:dataTable value="#{viewClassDetailsManagedBean.gymClassEntityToView.merchant}" var="merchant">
                       <p:column headerText="Merchant ID">
                           <h:outputText value="#{merchant.merchantId}"/>
                       </p:column>
@@ -71,20 +71,16 @@
                 
                 <p:separator/>
                 
-                <p:commandButton value="Create New Class" actionListener="#{viewMerchantDetailsManagedBean.createNewClass}">
-                    <f:attribute name="merchantId" value="#{viewMerchantDetailsManagedBean.merchantIdToView}" />
-                </p:commandButton> 
-                
-                <p:separator/>
-                
-                <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewMerchantDetailsManagedBean.merchantEntityToView != null}">
-                    
-                    <p:panel header="View All Classes">
+                <p:panel header="Class Details">
 
-                        <p:dataTable value="#{viewMerchantDetailsManagedBean.classEntitiesToView}" var="gymClass" paginator="true" rows="5" paginatorPosition="bottom" editable="true" editMode="cell">
+                    <p:dataTable value="#{viewClassDetailsManagedBean.gymClassEntityToView}" var="gymClass">
                       <p:column headerText="Gym Class ID" sortBy="#{gymClass.classId}">
                           <h:outputText value="#{gymClass.classId}"/>
                        </p:column>
+                            
+                       <p:column headerText="Merchant Name">    
+                           <h:outputText value="#{gymClass.merchant.merchantName}"/>
+                      </p:column>     
 
                       <p:column headerText="Name">    
                             <h:outputText value="#{gymClass.className}"/>
@@ -126,18 +122,49 @@
                       <p:column headerText="Remarks">
                           <h:outputText value="#{gymClass.classRemarks}"/>
                       </p:column>
-                      
-<!--                      <p:column style="width:35px">
-                            <p:rowEditor />
-                       </p:column>-->
+                  </p:dataTable>
+              </p:panel>
+                
+                <p:separator/>
+                
+                <p:commandButton value="Create New Session" actionListener="#{viewClassDetailsManagedBean.createNewSession(event)}">
+                    <f:attribute name="merchantId" value="#{viewClassDetailsManagedBean.merchantIdToView}" />
+                </p:commandButton> 
+                
+                <p:separator/>
+                
+                <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewClassDetailsManagedBean.sessionEntitiesToView != null}">
+                    
+                    <p:panel header="View All Sessions">
+
+                        <p:dataTable value="#{viewClassDetailsManagedBean.sessionEntitiesToView}" var="sessionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+                      <p:column headerText="Session ID" >
+                          <h:outputText value="#{sessionEntity.sessionId}"/>
+                       </p:column>
+
+                      <p:column headerText="Available Slot">    
+                          <h:outputText value="#{sessionEntity.availableSlot}/#{sessionEntity.gymClass.classSize}"/>
+                      </p:column> 
+
+
+                      <p:column headerText="Session Date">
+                          <h:outputText value="#{sessionEntity.sessionDate}">
+                              <f:convertDateTime pattern="EEEE,dd/MM/yyyy"/>
+                          </h:outputText>    
+                      </p:column>
+
+                      <p:column headerText="Session Status">
+                          <h:outputText value="#{sessionEntity.sessionStatus}"/>
+                      </p:column>
+
 
                       <p:column headerText="Action">
-                          <p:commandLink value="View Class Details" actionListener="#{viewMerchantDetailsManagedBean.viewClassDetails}">
+                          <p:commandLink value="View Attendance" actionListener="#{viewClassDetailsManagedBean.viewSessions}">
                               <f:attribute name="gymClassId" value="#{gymClass.classId}" />
                           </p:commandLink>
                             <br></br>
                           <br></br>
-                          <p:commandLink value="Update" actionListener="#{viewMerchantDetailsManagedBean.updateClassDetails}">
+                          <p:commandLink value="Update" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
                               <f:attribute name="gymClassId" value="#{gymClass.classId}" />
                           </p:commandLink>
 

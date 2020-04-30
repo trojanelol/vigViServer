@@ -78,6 +78,9 @@ public class Session implements Serializable {
     }
     
        public Integer getAvailableSlot() {
+           
+        this.setAvailableSlot(this.gymClass.getClassSize() - this.signedUpCustomer.size());
+           
         return availableSlot;
     }
 

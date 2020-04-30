@@ -99,16 +99,6 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         return query.getResultList();
     }
     
-    @Override
-    public Session updateSessionAvailableSlot (Long sessionId, Integer newSlotSize) throws SessionNotFoundException{
-        Session sessionEntity = retrieveSessionBySessionId(sessionId);
-        
-        sessionEntity.setAvailableSlot(newSlotSize);
-    
-        return sessionEntity;
-
-    }
-    
     
     @Override
     public Session endSession (Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
