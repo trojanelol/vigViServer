@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Create New Gym Class">
+                <h:form id="formSession">
+                    <p:messages closable="true"  />
+                        <p:panelGrid>  
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selMerchant" value="Merchant" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selMerchant" value="#{createNewSessionManagedBean.merchantId}" required="true" requiredMessage="Merchant is required" >
+                                        <p:ajax listener="#{createNewSessionManagedBean.onMerchantChange}" update="selGymClass" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{createNewSessionManagedBean.merchantEntities}" var="merchantEntity" itemValue="#{merchantEntity.merchantId}" itemLabel="#{merchantEntity.merchantId}-#{merchantEntity.merchantName}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selGymClass" value="Gym Class" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selGymClass" value="#{createNewSessionManagedBean.gymClassId}" required="true" requiredMessage="Gym Class is required" >
+                                        <p:ajax listener="#{createNewSessionManagedBean.onClassChange}" update="sessionData" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{createNewSessionManagedBean.gymClassEntities}" var="gymClassEntity" itemValue="#{gymClassEntity.classId}" itemLabel="#{gymClassEntity.classId}-#{gymClassEntity.className}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="disabledDD" value="Session Date" />
+                                </p:column>
+                                <p:column>
+                                    <p:datePicker  timeZone="#{createNewSessionManagedBean.timeZone}" pattern="dd/MM/yyyy" id="disabledDD" value="#{createNewSessionManagedBean.newSession.sessionDate}" mindate="#{createNewSessionManagedBean.todayDate}" required="true" requiredMessage="Session Date is required" />
+                                </p:column>      
+                            </p:row>
+
+                            
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Clear" type="reset"/>
+                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewSessionManagedBean.createNewSession}">
+                                        <p:ajax listener="#{createNewSessionManagedBean.updateDatatableAfterCreateSession}" update="sessionData" />
+                                    </p:commandButton>    
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
+                        </p:panelGrid>
+                    
+                        <p:separator/>
+                
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{createNewSessionManagedBean.sessionEntities != null}">
+                    
+                    <p:panel header="View All Ongoing Sessions">
+
+                        <p:dataTable id="sessionData" value="#{createNewSessionManagedBean.sessionEntities}" var="sessionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+                      <p:column headerText="Session ID" >
+                          <h:outputText value="#{sessionEntity.sessionId}"/>
+                       </p:column>
+
+                      <p:column headerText="Available Slot">    
+                          <h:outputText value="#{sessionEntity.availableSlot}/#{sessionEntity.gymClass.classSize}"/>
+                      </p:column> 
+
+
+                      <p:column headerText="Session Date">
+                          <h:outputText value="#{sessionEntity.sessionDate}">
+                              <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{createNewSessionManagedBean.timeZone}"/>
+                          </h:outputText>    
+                      </p:column>
+
+                      <p:column headerText="Session Status">
+                          <h:outputText value="#{sessionEntity.sessionStatus}"/>
+                      </p:column>
+
+                      <p:column headerText="Action">
+                          <p:commandLink value="View Attendance" actionListener="#{viewClassDetailsManagedBean.viewSessions}">
+                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          </p:commandLink>
+                            <br></br>
+                          <br></br>
+                          <p:commandLink value="Update" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
+                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          </p:commandLink>
+
+                          
+                      </p:column>
+                  </p:dataTable>
+                        <br></br>
+                           
+              </p:panel>
+              </p:panelGrid>
+                    
+                </h:form>
+            </p:panel>  
+            </div>
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>

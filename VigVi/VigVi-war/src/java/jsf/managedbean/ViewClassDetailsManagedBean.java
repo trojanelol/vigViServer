@@ -6,11 +6,16 @@
 package jsf.managedbean;
 
 import ejb.session.stateless.ClassSessionBeanLocal;
+import ejb.session.stateless.SessionSessionBeanLocal;
 import entity.GymClass;
 import entity.Session;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
@@ -22,7 +27,9 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
+import util.exception.ClassIDExistException;
 import util.exception.GymClassNotFoundException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -31,6 +38,9 @@ import util.exception.GymClassNotFoundException;
 @Named(value = "viewClassDetailsManagedBean")
 @ViewScoped
 public class ViewClassDetailsManagedBean implements Serializable {
+
+    @EJB(name = "SessionSessionBeanLocal")
+    private SessionSessionBeanLocal sessionSessionBeanLocal;
 
     public Long getGymClassIdToView() {
         return gymClassIdToView;
@@ -60,6 +70,7 @@ public class ViewClassDetailsManagedBean implements Serializable {
     @EJB(name = "ClassSessionBeanLocal")
     private ClassSessionBeanLocal classSessionBeanLocal;
 
+    
 
     
     private Long gymClassIdToView;
@@ -124,10 +135,10 @@ public class ViewClassDetailsManagedBean implements Serializable {
     
         public void createNewSession(ActionEvent event) throws IOException
     {
-        Long merchantIdToCreate = (Long)event.getComponent().getAttributes().get("merchantId");
-        System.out.println("create new class for merchant ID " + merchantIdToCreate);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantIdToCreate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("createGymClass.xhtml");
+        Long gymClassIdToCreate = (Long)event.getComponent().getAttributes().get("gymClassId");
+        System.out.println("create new class for merchant ID " + gymClassIdToCreate);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToCreate", gymClassIdToCreate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("createSession.xhtml");
     }
 
     public void endSession(ActionEvent event) throws IOException{
@@ -149,6 +160,41 @@ public class ViewClassDetailsManagedBean implements Serializable {
 //        System.out.println("to activate merchant " + merchantIdToActivate);
 //        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
 //        this.reload();
+    }
+    
+    public void addSession(ActionEvent event){
+        
+        Long gymClassId = (Long)event.getComponent().getAttributes().get("gymClassId");
+        
+        Date sessionDate = (Date)event.getComponent().getAttributes().get("sessionDate");
+        
+        Long newSessionId;
+        try {
+            newSessionId = sessionSessionBeanLocal.createNewSession(gymClassId, new Session(sessionDate));
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New session created successfully: " + newSessionId, null));
+            
+        } catch (ClassIDExistException ex) {
+            Logger.getLogger(ViewClassDetailsManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownPersistenceException ex) {
+            Logger.getLogger(ViewClassDetailsManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (GymClassNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the class details: " + ex.getMessage(), null));
+        }
+        
+        
+    }
+    
+    private Date todayDate = new Date();
+
+    public Date getTodayDate() {
+        return todayDate;
+    }
+    
+    public TimeZone getTimeZone() {  
+        TimeZone timeZone = TimeZone.getDefault();  
+        return timeZone;  
     } 
+    
     
 }
