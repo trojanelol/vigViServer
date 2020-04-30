@@ -119,7 +119,7 @@ public class UpdateMerchantManagedBean implements Serializable {
         }
         catch(MerchantNotFoundException ex)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating product: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating merchant: " + ex.getMessage(), null));
         }
         catch(Exception ex)
         {

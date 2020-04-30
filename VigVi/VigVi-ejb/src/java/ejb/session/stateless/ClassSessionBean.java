@@ -122,7 +122,7 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
     }
     
     @Override
-    public void updateClass(GymClass gymClass) throws InputDataValidationException, MerchantNotFoundException, GymClassNotFoundException
+    public void updateClass(GymClass gymClass) throws GymClassNotFoundException
     {
         if(gymClass != null && gymClass.getClassId()!= null)
         {

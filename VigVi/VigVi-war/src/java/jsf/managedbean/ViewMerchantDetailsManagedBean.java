@@ -29,13 +29,9 @@ import util.exception.MerchantNotFoundException;
  * @author JiaYunTeo
  */
 @Named(value = "viewMerchantDetailsManagedBean")
-@RequestScoped
+@ViewScoped
 public class ViewMerchantDetailsManagedBean implements Serializable {
 
-    @EJB(name = "ClassSessionBeanLocal")
-    private ClassSessionBeanLocal classSessionBeanLocal;
-    
-    
 
     public Boolean getCreateMode() {
         return createMode;
@@ -123,8 +119,7 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
     {
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchants.xhtml");
     }
-    
-    
+
     
     public void foo()
     {        
@@ -140,28 +135,14 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
        this.reload();
     }
     
-    //instantiate classEntityToUpdate By Row Editor
-    
-    
-      public void updateClass(ActionEvent event)
+    public void updateClassDetails(ActionEvent event) throws IOException
     {
-//  
-//        try
-//        {
-//            classSessionBeanLocal.updateClass(this.);
-//            
-//
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Merchant updated successfully", null));
-//        }
-//        catch(MerchantNotFoundException ex)
-//        {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating product: " + ex.getMessage(), null));
-//        }
-//        catch(Exception ex)
-//        {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
-//        }
+        Long gymClassIdToUpdate = (Long)event.getComponent().getAttributes().get("gymClassId");
+        System.out.println("get class ID " + gymClassIdToUpdate);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToUpdate", gymClassIdToUpdate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("updateGymClass.xhtml");
     }
+
 
     
 }

@@ -23,20 +23,13 @@
                     
                     <p:panel header="View All Classes">
 
-                  <p:dataTable value="#{viewMerchantDetailsManagedBean.classEntitiesToView}" var="gymClass" paginator="true" rows="5" paginatorPosition="bottom" editable="true">
+                        <p:dataTable value="#{viewMerchantDetailsManagedBean.classEntitiesToView}" var="gymClass" paginator="true" rows="5" paginatorPosition="bottom" editable="true" editMode="cell">
                       <p:column headerText="Gym Class ID" sortBy="#{gymClass.classId}">
                           <h:outputText value="#{gymClass.classId}"/>
                        </p:column>
 
                       <p:column headerText="Name">    
-                        <p:cellEditor>
-                         <f:facet name="output">
                             <h:outputText value="#{gymClass.className}"/>
-                          </f:facet>
-                          <f:facet name="input">  
-                          <p:inputText value="#{gymClass.className}" style="width:96%"/>
-                          </f:facet>
-                        </p:cellEditor>    
                       </p:column> 
 
 
@@ -57,11 +50,15 @@
                       </p:column>
 
                       <p:column headerText="Start Time">
-                          <h:outputText value="#{gymClass.startTime}"/>
+                          <h:outputText value="#{gymClass.startTime}">
+                              <f:convertDateTime pattern="HH:mm" timeZone="#{timeManagedBean.timeZone}"/>
+                          </h:outputText>    
                       </p:column>
 
                       <p:column headerText="End Time">
-                          <h:outputText value="#{gymClass.endTime}"/>
+                          <h:outputText value="#{gymClass.endTime}">
+                              <f:convertDateTime pattern="HH:mm" timeZone="#{timeManagedBean.timeZone}"/>
+                          </h:outputText>  
                       </p:column>
 
                       <p:column headerText="Activated Class">
@@ -72,9 +69,9 @@
                           <h:outputText value="#{gymClass.classRemarks}"/>
                       </p:column>
                       
-                      <p:column style="width:35px">
+<!--                      <p:column style="width:35px">
                             <p:rowEditor />
-                       </p:column>
+                       </p:column>-->
 
                       <p:column headerText="Action">
                           <p:commandLink value="View Sessions" actionListener="#{viewMerchantDetailsManagedBean.viewSessions}">
@@ -84,116 +81,18 @@
                           <br></br>
                           <p:commandLink value="Update" actionListener="#{viewMerchantDetailsManagedBean.updateClassDetails}">
                               <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                              <f:attribute name="merchantId" value="#{viewMerchantDetailsManagedBean.merchantIdToView}" />
                           </p:commandLink>
 
                           
                       </p:column>
                   </p:dataTable>
                         <br></br>
+                        <h:commandButton value="Save" action="#{viewMerchantDetailsManagedBean.updateClass}" />
                         <p:commandButton onclick="PF('panelCreate').toggle()" value="Create New Class" type="button" />
                         
               </p:panel>
               </p:panelGrid>
-                
-                <p:separator/>  
-                
-                <p:panel header="Create New Gym Class" collapsed="true" widgetVar="panelCreate" toggleable="true">
-                <h:form id="formMain">
-                    <p:messages closable="true"  />
-                        <p:panelGrid>  
-                            
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="className" value="Class Name"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText id="className" value="#{createNewGymClassManagedBean.newGymClass.className}" required="true" requiredMessage="Name is required" />
-                                </p:column>      
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="classDesc" value="Description"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputTextarea cols="25" counter="display" maxlength="200" counterTemplate="{0} characters remaining." autoResize="true" id="classDesc" value="#{createNewGymClassManagedBean.newGymClass.classDesc}" required="true" requiredMessage="Description is required" />
-                                    <br/>
-                                    <h:outputText id="display"/>
-                                </p:column>      
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="instructor" value="Instructor"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText type="text" id="instructor" value="#{createNewGymClassManagedBean.newGymClass.classInstructor}" required="true" requiredMessage="Email is required" />
-                                </p:column>      
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="classPrice" value="Class Price"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText type="number" id="classPrice" value="#{createNewGymClassManagedBean.newGymClass.classPrice}" required="true" requiredMessage="Password is required" />
-                                </p:column>      
-                            </p:row>
-                            
-                            
-                             <p:row>
-                                <p:column>
-                                    <p:outputLabel for="classSize" value="Class Size"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText type="number" id="classSize" value="#{createNewGymClassManagedBean.newGymClass.classSize}" required="true" requiredMessage="Password is required" />
-                                </p:column>      
-                            </p:row>
-
-
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="classRemarks" value="Class Remark"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText id="classRemarks" value="#{createNewGymClassManagedBean.newGymClass.classRemarks}" required="true" requiredMessage="Bank Account is required" />
-                                </p:column>      
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="starttime" value="Start Time"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText id="starttime" value="#{createNewGymClassManagedBean.newGymClass.startTime}" required="true" requiredMessage="Bank Account is required" />
-                                </p:column>      
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="endtime" value="End Time"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText id="endtime" value="#{createNewGymClassManagedBean.newGymClass.endTime}" required="true" requiredMessage="Bank Account is required" />
-                                </p:column>      
-                            </p:row>
-
-                            
-                            <p:row>
-                                <p:column colspan="2">
-                                    <p:commandButton value="Clear" type="reset"/>
-                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewGymClassManagedBean.createNewMerchant}">
-                                        <f:attribute name="merchantId" value="#{viewMerchantDetailsManagedBean.merchantIdToView}" />
-                                    </p:commandButton>    
-                                </p:column>      
-                            </p:row>
-
-
-                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
-                        </p:panelGrid>
-                </h:form>
-            </p:panel>  
             </div>
         </ui:define>
 

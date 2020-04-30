@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 import javax.json.bind.annotation.JsonbTransient;
@@ -65,8 +66,10 @@ public class GymClass implements Serializable {
     private String classImage;
     private Double classPrice;
     private Integer classSize;
-    private String startTime;
-    private String endTime;
+    @Temporal(javax.persistence.TemporalType.TIME)
+    private Date startTime;
+    @Temporal(javax.persistence.TemporalType.TIME)
+    private Date endTime;
     private String classRemarks;
     private String classInstructor;
     private boolean classStatus;
@@ -89,7 +92,7 @@ public class GymClass implements Serializable {
     public GymClass() {
     }
 
-    public GymClass(String className, String classDesc, String classImg, Double classPrice, Integer classSize, String startTime, String endTime, String classRemarks, String classInstructor) {
+    public GymClass(String className, String classDesc, String classImg, Double classPrice, Integer classSize, Date startTime, Date endTime, String classRemarks, String classInstructor) {
         this.className = className;
         this.classDesc = classDesc;
         this.classImage = classImg;
@@ -184,19 +187,19 @@ public class GymClass implements Serializable {
         this.classSize = classSize;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
