@@ -84,23 +84,14 @@
                           <p:commandLink value="View Attendance" actionListener="#{createNewSessionManagedBean.viewAttendance}">
                               <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
                           </p:commandLink>
-                            <br></br>
                           <br></br>
-                          <p:commandLink value="End Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          <p:commandLink value="End Session" rendered="#{sessionEntity.sessionStatus == 'ONGOING'}" actionListener="#{createNewSessionManagedBean.endSession}">
+                              <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
                           </p:commandLink>
                           <br></br>
-                          <br></br>
-                          <p:commandLink value="Cancel Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
-                          </p:commandLink>
-                          <br></br>
-                          <br></br>
-                          <p:commandLink value="Stop Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
-                          </p:commandLink>
-
-                          
+                          <p:commandLink value="Cancel Session" rendered="#{sessionEntity.sessionStatus == 'ONGOING'}" actionListener="#{createNewSessionManagedBean.cancelSession}">
+                              <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
+                          </p:commandLink>                         
                       </p:column>
                   </p:dataTable>
                         <br></br>

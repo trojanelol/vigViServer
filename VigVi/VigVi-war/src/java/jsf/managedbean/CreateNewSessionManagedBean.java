@@ -23,16 +23,23 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import javax.servlet.http.HttpServletRequest;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
+import util.exception.CustomerSessionAttendanceNullException;
+import util.exception.CustomerSessionNotFoundException;
 import util.exception.GymClassNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.MerchantNotFoundException;
 import util.exception.MerchantUsernameExistException;
+import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.WalletNotFoundException;
 
 /**
  *
@@ -112,7 +119,7 @@ public class CreateNewSessionManagedBean implements Serializable  {
         
         setGymClassEntities(classSessionBeanLocal.retrieveAllClasses());
         
-        setSessionEntities(sessionSessionBeanLocal.retrieveAllOngoingSessionsByClassId(gymClassId));
+        setSessionEntities(sessionSessionBeanLocal.retrieveAllSessionsByClassId(gymClassId));
          
 
     }
@@ -192,5 +199,22 @@ public class CreateNewSessionManagedBean implements Serializable  {
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewAttendance.xhtml");
     }
      
+     public void endSession(ActionEvent event) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException, IOException{
+         Long sessionId = (Long)event.getComponent().getAttributes().get("sessionId");
+         this.sessionSessionBeanLocal.endSession(sessionId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToCreate", gymClassId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantId);
+         FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllSessions.xhtml");
+     }
+     
+     public void cancelSession(ActionEvent event){
+         
+     }
+
+    public void reload() throws IOException {
+        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+    }
     
 }
