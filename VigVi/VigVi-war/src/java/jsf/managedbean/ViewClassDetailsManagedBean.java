@@ -136,8 +136,10 @@ public class ViewClassDetailsManagedBean implements Serializable {
         public void createNewSession(ActionEvent event) throws IOException
     {
         Long gymClassIdToCreate = (Long)event.getComponent().getAttributes().get("gymClassId");
+        Long merchantIdToCreate = (Long)event.getComponent().getAttributes().get("merchantId");
         System.out.println("create new class for merchant ID " + gymClassIdToCreate);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToCreate", gymClassIdToCreate);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantIdToCreate);
         FacesContext.getCurrentInstance().getExternalContext().redirect("createSession.xhtml");
     }
 
@@ -160,29 +162,6 @@ public class ViewClassDetailsManagedBean implements Serializable {
 //        System.out.println("to activate merchant " + merchantIdToActivate);
 //        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
 //        this.reload();
-    }
-    
-    public void addSession(ActionEvent event){
-        
-        Long gymClassId = (Long)event.getComponent().getAttributes().get("gymClassId");
-        
-        Date sessionDate = (Date)event.getComponent().getAttributes().get("sessionDate");
-        
-        Long newSessionId;
-        try {
-            newSessionId = sessionSessionBeanLocal.createNewSession(gymClassId, new Session(sessionDate));
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New session created successfully: " + newSessionId, null));
-            
-        } catch (ClassIDExistException ex) {
-            Logger.getLogger(ViewClassDetailsManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownPersistenceException ex) {
-            Logger.getLogger(ViewClassDetailsManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (GymClassNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the class details: " + ex.getMessage(), null));
-        }
-        
-        
     }
     
     private Date todayDate = new Date();

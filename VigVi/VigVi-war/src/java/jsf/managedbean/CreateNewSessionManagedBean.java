@@ -105,6 +105,9 @@ public class CreateNewSessionManagedBean implements Serializable  {
         
         setGymClassId((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("gymClassIdToCreate"));
         
+        setMerchantId((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("merchantIdToCreate"));
+        
+        
         setMerchantEntities(merchantSessionBeanLocal.retrieveAllMerchants());
         
         setGymClassEntities(classSessionBeanLocal.retrieveAllClasses());

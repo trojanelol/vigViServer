@@ -126,6 +126,7 @@
                       <p:column headerText="Action">
                           <p:commandLink value="Create New Session" actionListener="#{viewClassDetailsManagedBean.createNewSession}">
                                 <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                                <f:attribute name="merchantId" value="#{viewClassDetailsManagedBean.gymClassEntityToView.merchant.merchantId}" />
                           </p:commandLink> 
                       </p:column>  
                         
