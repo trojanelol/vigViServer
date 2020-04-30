@@ -110,16 +110,7 @@ public class CreateNewSessionManagedBean implements Serializable  {
         setGymClassEntities(classSessionBeanLocal.retrieveAllClasses());
         
         setSessionEntities(sessionSessionBeanLocal.retrieveAllOngoingSessionsByClassId(gymClassId));
-        
-        try{
-            GymClass gymClassEntity = this.classSessionBeanLocal.retrieveClassByClassId(gymClassId);
-            
-            setMerchantId(gymClassEntity.getMerchant().getMerchantId());
-            
-        }catch(GymClassNotFoundException ex){
-          
-            
-        }   
+         
 
     }
 
