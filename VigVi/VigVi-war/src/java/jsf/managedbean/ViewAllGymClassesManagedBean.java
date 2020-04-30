@@ -23,32 +23,22 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
+import util.exception.GymClassNotFoundException;
 import util.exception.MerchantNotFoundException;
 
 /**
  *
  * @author JiaYunTeo
  */
-@Named(value = "viewMerchantDetailsManagedBean")
+@Named(value = "viewAllGymClassesManagedBean")
 @ViewScoped
-public class ViewMerchantDetailsManagedBean implements Serializable {
+public class ViewAllGymClassesManagedBean implements Serializable {
+
+    @EJB(name = "ClassSessionBeanLocal")
+    private ClassSessionBeanLocal classSessionBeanLocal;
 
 
-    public Boolean getCreateMode() {
-        return createMode;
-    }
 
-    public void setCreateMode(Boolean createMode) {
-        this.createMode = createMode;
-    }
-
-    public GymClass getNewGymClass() {
-        return newGymClass;
-    }
-
-    public void setNewGymClass(GymClass newGymClass) {
-        this.newGymClass = newGymClass;
-    }
 
     public List<GymClass> getClassEntitiesToView() {
         return classEntitiesToView;
@@ -58,55 +48,29 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
         this.classEntitiesToView = classEntitiesToView;
     }
 
-    public Long getMerchantIdToView() {
-        return merchantIdToView;
-    }
-
-    public void setMerchantIdToView(Long merchantIdToView) {
-        this.merchantIdToView = merchantIdToView;
-    }
-
-    public Merchant getMerchantEntityToView() {
-        return merchantEntityToView;
-    }
-
-    public void setMerchantEntityToView(Merchant merchantEntityToView) {
-        this.merchantEntityToView = merchantEntityToView;
-    }
-
     @EJB(name = "MerchantSessionBeanLocal")
     private MerchantSessionBeanLocal merchantSessionBeanLocal;
     
-    private Long merchantIdToView;
-    private Merchant merchantEntityToView;
+    
+    
+
     private List<GymClass> classEntitiesToView;
-    private GymClass newGymClass;   
-    private Boolean createMode;
+
     
     /**
      * Creates a new instance of UpdateMerchantManagedBean
      */
-    public ViewMerchantDetailsManagedBean() {
+    public ViewAllGymClassesManagedBean() {
     }
     
     @PostConstruct
     public void postConstruct()
     {
-
-        setCreateMode(false);
- 
-        
-        setMerchantIdToView((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("merchantIdToView"));
  
         try
         {            
-            setMerchantEntityToView(merchantSessionBeanLocal.retrieveMerchantByMerchantId(getMerchantIdToView()));
-            this.setClassEntitiesToView(merchantEntityToView.getClasses());
+            this.setClassEntitiesToView(classSessionBeanLocal.retrieveAllClasses());
 
-        }
-        catch(MerchantNotFoundException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving the merchant details: " + ex.getMessage(), null));
         }
         catch(Exception ex)
         {
@@ -131,10 +95,7 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
         ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
     }
     
-    public void activateCreateMode() throws IOException{
-        this.setCreateMode(true);
-       this.reload();
-    }
+
     
     public void updateClassDetails(ActionEvent event) throws IOException
     {
@@ -146,11 +107,15 @@ public class ViewMerchantDetailsManagedBean implements Serializable {
     
         public void createNewClass(ActionEvent event) throws IOException
     {
-        Long merchantIdToCreate = (Long)event.getComponent().getAttributes().get("merchantId");
-        System.out.println("create new class for merchant ID " + merchantIdToCreate);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantIdToCreate);
         FacesContext.getCurrentInstance().getExternalContext().redirect("createGymClass.xhtml");
     }
+        
+    public void viewMerchantDetails(ActionEvent event) throws IOException{
+        Long merchantIdToView = (Long)event.getComponent().getAttributes().get("merchantId");
+        System.out.println("get merchant ID " + merchantIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToView", merchantIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewMerchantDetails.xhtml");
+    }   
 
 
     

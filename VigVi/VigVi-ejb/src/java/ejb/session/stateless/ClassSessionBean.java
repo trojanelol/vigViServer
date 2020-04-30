@@ -79,6 +79,14 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
 
     }
     
+    public List<GymClass> retrieveAllClasses() {
+            //retrieveActiveClasses
+        Query query = em.createQuery("SELECT c from GymClass c");
+        
+        return query.getResultList();
+
+    }
+    
 
     
     @Override

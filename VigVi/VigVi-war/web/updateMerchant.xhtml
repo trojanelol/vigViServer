@@ -32,32 +32,32 @@
                 <h:form>
                     <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
                     <br/>
-                    <p:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{updateMerchantManagedBean.merchantEntityToView != null}">
+                    <p:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{updateMerchantManagedBean.merchantEntityToUpdate!= null}">
                         
                         <p:outputLabel style="font-weight: bold;" value="Merchant ID"/>
-                        <h:outputText value="#{updateMerchantManagedBean.merchantEntityToView.merchantId}"/>
+                        <h:outputText value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantId}"/>
                         <h:outputText value="" />
 
                         <p:outputLabel style="font-weight: bold;" for="txtName" value="Name" />
-                        <p:inputText id="txtName" value="#{updateMerchantManagedBean.merchantEntityToView.merchantName}" required="true" requiredMessage="Name is required" />
+                        <p:inputText id="txtName" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantName}" required="true" requiredMessage="Name is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtName" />
 
 
                         <p:outputLabel style="font-weight: bold;" for="txtDescription" value="Description" />
-                        <p:inputTextarea cols="25" counter="display" maxlength="200" counterTemplate="{0} characters remaining." autoResize="true" id="txtDescription" value="#{updateMerchantManagedBean.merchantEntityToView.merchantDesc}" required="true" requiredMessage="Description is required" />
+                        <p:inputTextarea cols="25" counter="display" maxlength="200" counterTemplate="{0} characters remaining." autoResize="true" id="txtDescription" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantDesc}" required="true" requiredMessage="Description is required" />
                         <h:outputText id="display" />
                         
 
                         <p:outputLabel style="font-weight: bold;" for="txtAddress" value="Physical Address" />
-                        <p:inputText id="txtAddress" value="#{updateMerchantManagedBean.merchantEntityToView.merchantAddress}" required="true" requiredMessage="Physical Address is required" />
+                        <p:inputText id="txtAddress" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantAddress}" required="true" requiredMessage="Physical Address is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtAddress" />
                                                 
                         <p:outputLabel style="font-weight: bold;" for="txtContact" value="Contact No." />
-                        <p:inputText id="txtContact" value="#{updateMerchantManagedBean.merchantEntityToView.merchantContactNo}" required="true" requiredMessage="Contact Details is required" />
+                        <p:inputText id="txtContact" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantContactNo}" required="true" requiredMessage="Contact Details is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtContact" />
                         
                         <p:outputLabel style="font-weight: bold;" for="selBankName" value="Bank Name" />
-                        <p:selectOneMenu id="selBankName" value="#{updateMerchantManagedBean.merchantEntityToView.bankName}" required="true" requiredMessage="Bank Name is required" >                            
+                        <p:selectOneMenu id="selBankName" value="#{updateMerchantManagedBean.merchantEntityToUpdate.bankName}" required="true" requiredMessage="Bank Name is required" >                            
                             <f:selectItem itemValue="DBS" itemLabel="DBS" />
                             <f:selectItem itemValue="UOB" itemLabel="UOB" />
                             <f:selectItem itemValue="Citibank" itemLabel="Citibank" />
@@ -65,16 +65,16 @@
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selBankName" />                      
                         
                         <p:outputLabel style="font-weight: bold;" for="txtBankAccount" value="Bank Account No." />
-                        <p:inputText id="txtBankAccount" value="#{updateMerchantManagedBean.merchantEntityToView.bankAccount}" required="true" requiredMessage="Bank Account is required" />
+                        <p:inputText id="txtBankAccount" value="#{updateMerchantManagedBean.merchantEntityToUpdate.bankAccount}" required="true" requiredMessage="Bank Account is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtBankAccount" />
 
                                                 
                         <p:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
-                        <p:inputText id="txtEmail" value="#{updateMerchantManagedBean.merchantEntityToView.merchantEmail}" required="true" requiredMessage="Email is required" />
+                        <p:inputText id="txtEmail" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantEmail}" required="true" requiredMessage="Email is required" />
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
 
                         <p:outputLabel style="font-weight: bold;" for="selCommission" value="Commission Rate" />
-                        <p:selectOneMenu id="selCommission" value="#{updateMerchantManagedBean.merchantEntityToView.commissionRate}" required="true" requiredMessage="Commission Rate is required" >
+                        <p:selectOneMenu id="selCommission" value="#{updateMerchantManagedBean.merchantEntityToUpdate.commissionRate}" required="true" requiredMessage="Commission Rate is required" >
                                         <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
                                         <f:selectItem itemValue="0.3" itemLabel="Basic Merchant (30%)" />
                                         <f:selectItem itemValue="0.2" itemLabel="Gold Merchant (20%)" />
@@ -83,12 +83,12 @@
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtCommission" />
   
                         <p:outputLabel style="font-weight: bold;" for="txtMerchantStatus" value="Active Account" />
-                        <h:selectBooleanCheckbox  id="txtMerchantStatus" value="#{updateMerchantManagedBean.merchantEntityToView.merchantStatus}"/>
+                        <h:selectBooleanCheckbox  id="txtMerchantStatus" value="#{updateMerchantManagedBean.merchantEntityToUpdate.merchantStatus}"/>
                         <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtMerchantStatus" />
                         
                     </p:panelGrid>
                     <br/>                      
-                        <p:commandButton value="Update" type="submit" actionListener="#{updateMerchantManagedBean.updateMerchant}" rendered="#{updateMerchantManagedBean.merchantEntityToView != null}" />   
+                        <p:commandButton value="Update" type="submit" actionListener="#{updateMerchantManagedBean.updateMerchant}" rendered="#{updateMerchantManagedBean.merchantEntityToUpdate != null}" />   
                         <p:commandButton value="Cancel" type="cancel" actionListener="#{updateMerchantManagedBean.back}" />
                 </h:form>
                </p:panel> 

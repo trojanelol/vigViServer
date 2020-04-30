@@ -11,7 +11,10 @@ import ejb.session.stateless.MerchantSessionBeanLocal;
 import entity.Currency;
 import entity.GymClass;
 import entity.Merchant;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -32,17 +35,29 @@ import util.exception.UnknownPersistenceException;
  */
 @Named(value = "createNewGymClassManagedBean")
 @RequestScoped
-public class CreateNewGymClassManagedBean {
+public class CreateNewGymClassManagedBean implements Serializable  {
+
+    public List<Merchant> getMerchantEntities() {
+        return merchantEntities;
+    }
+
+    public void setMerchantEntities(List<Merchant> merchantEntities) {
+        this.merchantEntities = merchantEntities;
+    }
+
+    @EJB(name = "MerchantSessionBeanLocal")
+    private MerchantSessionBeanLocal merchantSessionBeanLocal;
 
     @EJB(name = "ClassSessionBeanLocal")
     private ClassSessionBeanLocal classSessionBeanLocal;
 
-
+    
     
     
     //model
     private GymClass newGymClass;   
     private Long merchantId;
+    private List<Merchant> merchantEntities;
     /**
      * Creates a new instance of CreateNewMerchantManagedBean
      */
@@ -55,15 +70,21 @@ public class CreateNewGymClassManagedBean {
     @PostConstruct
     public void postConstruct()
     {
+        
+        setMerchantId((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("merchantIdToCreate"));
+        
+        setMerchantEntities(merchantSessionBeanLocal.retrieveAllMerchants());
 
     }
     
     
     //actioneventlistener
-    public void createNewMerchant(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException, ClassIDExistException, MerchantNotFoundException{
+    public void createNewGymClass(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException, ClassIDExistException, MerchantNotFoundException{
         
-        //by default, selecting Singapore Region
-        setMerchantId((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("merchantId"));
+        System.out.println("create class for merchantId: " + merchantId);
+        
+        System.out.println("create class " + newGymClass);
+        
         
         Long newGymClassId = classSessionBeanLocal.createNewClass(merchantId, newGymClass);
         
@@ -87,4 +108,10 @@ public class CreateNewGymClassManagedBean {
     public void setMerchantId(Long merchantId) {
         this.merchantId = merchantId;
     }
+    
+    public TimeZone getTimeZone() {  
+        TimeZone timeZone = TimeZone.getDefault();  
+        return timeZone;  
+    }  
+    
 }

@@ -19,13 +19,23 @@
         <ui:define name="content">
 <!--             <ui:include src = "pfViewMerchants.xhtml" />-->
             <div>
-                                
-                <p:separator/>  
-                
-                <p:panel header="Create New Gym Class" collapsed="true" widgetVar="panelCreate" toggleable="true">
-                <h:form id="formMain">
+                <p:panel header="Create New Gym Class">
+                <h:form id="formGym">
                     <p:messages closable="true"  />
                         <p:panelGrid>  
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selMerchant" value="Merchant" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selMerchant" value="#{createNewGymClassManagedBean.merchantId}" required="true" requiredMessage="Merchant is required" >
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{createNewGymClassManagedBean.merchantEntities}" var="merchantEntity" itemValue="#{merchantEntity.merchantId}" itemLabel="#{merchantEntity.merchantId} #{merchantEntity.merchantName}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>  
+                            
                             
                             <p:row>
                                 <p:column>
@@ -52,7 +62,7 @@
                                     <p:outputLabel for="instructor" value="Instructor"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="text" id="instructor" value="#{createNewGymClassManagedBean.newGymClass.classInstructor}" required="true" requiredMessage="Email is required" />
+                                    <p:inputText type="text" id="instructor" value="#{createNewGymClassManagedBean.newGymClass.classInstructor}" required="true" requiredMessage="Instructor is required" />
                                 </p:column>      
                             </p:row>
 
@@ -61,7 +71,7 @@
                                     <p:outputLabel for="classPrice" value="Class Price"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="number" id="classPrice" value="#{createNewGymClassManagedBean.newGymClass.classPrice}" required="true" requiredMessage="Password is required" />
+                                    <p:inputText type="number" id="classPrice" value="#{createNewGymClassManagedBean.newGymClass.classPrice}" required="true" requiredMessage="Class Price is required" />
                                 </p:column>      
                             </p:row>
                             
@@ -71,7 +81,7 @@
                                     <p:outputLabel for="classSize" value="Class Size"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="number" id="classSize" value="#{createNewGymClassManagedBean.newGymClass.classSize}" required="true" requiredMessage="Password is required" />
+                                    <p:inputText type="number" id="classSize" value="#{createNewGymClassManagedBean.newGymClass.classSize}" required="true" requiredMessage="Class Size is required" />
                                 </p:column>      
                             </p:row>
 
@@ -82,7 +92,7 @@
                                     <p:outputLabel for="classRemarks" value="Class Remark"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText id="classRemarks" value="#{createNewGymClassManagedBean.newGymClass.classRemarks}" required="true" requiredMessage="Bank Account is required" />
+                                    <p:inputText id="classRemarks" value="#{createNewGymClassManagedBean.newGymClass.classRemarks}" required="true" requiredMessage="Class Remark is required" />
                                 </p:column>      
                             </p:row>
 
@@ -91,7 +101,9 @@
                                     <p:outputLabel for="starttime" value="Start Time"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="time" id="starttime" value="#{createNewGymClassManagedBean.newGymClass.startTime}" required="true" requiredMessage="Bank Account is required" />
+                                    <p:inputText type="time" id="starttime" value="#{createNewGymClassManagedBean.newGymClass.startTime}" required="true" requiredMessage="Start Time is required">
+                                        <f:convertDateTime pattern="HH:mm" timeZone="#{createNewGymClassManagedBean.timeZone}"></f:convertDateTime>
+                                    </p:inputText>    
                                 </p:column>      
                             </p:row>
                             
@@ -100,7 +112,9 @@
                                     <p:outputLabel for="endtime" value="End Time"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="time" id="endtime" value="#{createNewGymClassManagedBean.newGymClass.endTime}" required="true" requiredMessage="Bank Account is required" />
+                                    <p:inputText type="time" id="endtime" value="#{createNewGymClassManagedBean.newGymClass.endTime}" required="true" requiredMessage="End Time is required">
+                                        <f:convertDateTime pattern="HH:mm" timeZone="#{createNewGymClassManagedBean.timeZone}"></f:convertDateTime>
+                                    </p:inputText>    
                                 </p:column>      
                             </p:row>
 
@@ -108,8 +122,7 @@
                             <p:row>
                                 <p:column colspan="2">
                                     <p:commandButton value="Clear" type="reset"/>
-                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewGymClassManagedBean.createNewMerchant}">
-                                        <f:attribute name="merchantId" value="#{viewMerchantDetailsManagedBean.merchantIdToView}" />
+                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewGymClassManagedBean.createNewGymClass}">
                                     </p:commandButton>    
                                 </p:column>      
                             </p:row>

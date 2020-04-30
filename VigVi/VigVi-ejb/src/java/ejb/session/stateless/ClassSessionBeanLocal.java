@@ -33,5 +33,7 @@ public interface ClassSessionBeanLocal {
     public Long deactivateClass(Long classId);
 
     public void updateClass(GymClass gymClass) throws GymClassNotFoundException;
+
+    public List<GymClass> retrieveAllClasses();
     
 }
