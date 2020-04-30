@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Search Session">
+                <h:form id="formSession">
+                    <p:messages closable="true"  />
+                        <p:panelGrid>  
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selMerchant" value="Merchant" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selMerchant" value="#{viewAttendanceManagedBean.merchantId}" required="true" requiredMessage="Merchant is required" >
+                                        <p:ajax listener="#{viewAttendanceManagedBean.onMerchantChange}" update="selGymClass" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{viewAttendanceManagedBean.merchantEntities}" var="merchantEntity" itemValue="#{merchantEntity.merchantId}" itemLabel="#{merchantEntity.merchantId}-#{merchantEntity.merchantName}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selGymClass" value="Gym Class" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selGymClass" value="#{viewAttendanceManagedBean.gymClassId}" required="true" requiredMessage="Gym Class is required" >
+                                        <p:ajax listener="#{viewAttendanceManagedBean.onClassChange}" update="selSession" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{viewAttendanceManagedBean.gymClassEntities}" var="gymClassEntity" itemValue="#{gymClassEntity.classId}" itemLabel="#{gymClassEntity.classId}-#{gymClassEntity.className}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selSession" value="Session" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selSession" value="#{viewAttendanceManagedBean.sessionId}" required="true" requiredMessage="Session is required" >
+                                        <p:ajax listener="#{viewAttendanceManagedBean.onSessionChange}" update="sessionData" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{viewAttendanceManagedBean.sessionEntities}" var="sessionEntity" itemValue="#{sessionEntity.sessionId}" itemLabel="#{sessionEntity.sessionId}-#{sessionEntity.sessionDate}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selSession" />
+                        </p:panelGrid>
+                    
+                        <p:separator/>
+                
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewAttendanceManagedBean.signedUpCustomer != null}">
+                    
+                    <p:panel header="View All Ongoing Sessions">
+
+                        <p:dataTable id="sessionData" value="#{viewAttendanceManagedBean.signedUpCustomer}" var="customerSessionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+                      <p:column headerText="Customer ID" >
+                          <h:outputText value="#{customerSessionEntity.customerSessionId.customerId}"/>
+                       </p:column>
+                            
+                      <p:column headerText="Customer Name" >
+                          <h:outputText value="#{customerSessionEntity.customer.customerName}"/>
+                       </p:column>      
+
+                      <p:column headerText="Status">    
+                          <h:outputText value="#{customerSessionEntity.customerSessionStatus}"/>
+                      </p:column> 
+
+                      <p:column headerText="Attendance">
+                          <h:outputText value="#{customerSessionEntity.customerAttendance}"/>
+                      </p:column>
+                            
+
+                      <p:column headerText="Amount Received From Customer">
+                          <h:outputText value="#{customerSessionEntity.payableTransaction.customerAmount}"/>
+                      </p:column>  
+                            
+                      <p:column headerText="Received Date">
+                          <h:outputText value="#{customerSessionEntity.payableTransaction.createdDate}"/>
+                      </p:column> 
+
+                      <p:column headerText="Action">
+<!--                      if payable is null & status is active-->
+                        <p:commandLink rendered="#{!customerSessionEntity.customerAttendance}" value="Mark Attendance" actionListener="#{viewAttendanceManagedBean.present}">
+                              <f:attribute name="customerSessionId" value="#{customerSessionEntity.customerSessionId}" />
+                              <f:attribute name="sessionId" value="#{viewAttendanceManagedBean.sessionId}" />
+                          </p:commandLink>    
+                        <p:commandLink rendered="#{customerSessionEntity.customerAttendance}" value="Absent" actionListener="#{viewAttendanceManagedBean.absent}">
+                                <f:attribute name="customerSessionId" value="#{customerSessionEntity.customerSessionId}" />
+                              <f:attribute name="sessionId" value="#{viewAttendanceManagedBean.sessionId}" />
+                          </p:commandLink> 
+                            <br></br>
+                          <br></br>
+                          <p:commandLink value="Refund" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
+                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          </p:commandLink>
+
+                          
+                      </p:column>
+                  </p:dataTable>
+                        <br></br>
+                           
+              </p:panel>
+              </p:panelGrid>
+                    
+                </h:form>
+            </p:panel>  
+            </div>
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>

@@ -10,7 +10,9 @@
     <h:body>
         <h:form>
             <p:growl id="messages" showDetail="true"/>
- 
+            
+            <div></div>
+            
             <p:menuButton value="Merchants">
                 <p:menuitem value="Generate Report" outcome="jasperReport" icon="pi pi-home"/>
                 <p:menuitem value="Create" outcome="createMerchant" icon="pi pi-home"/>
@@ -27,7 +29,26 @@
                 <p:menuitem value="Search" outcome="viewAllSessions" icon="pi pi-home"/>
                 <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
             </p:menuButton>
-
+            <p:menuButton value="Attendance">
+                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
+                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
+            </p:menuButton>
+            <p:menuButton value="Payable">
+                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
+                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
+            </p:menuButton>
+            <p:menuButton value="Receivable">
+                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
+                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
+            </p:menuButton>
+            <p:menuButton value="Tranaaction Dashboard">
+                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
+                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
+            </p:menuButton>
+            <p:menuButton value="Customer-Wallet">
+                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
+                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
+            </p:menuButton>
         </h:form>
     </h:body>
 </html>

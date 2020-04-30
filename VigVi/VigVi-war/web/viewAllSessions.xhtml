@@ -81,12 +81,22 @@
                       </p:column>
 
                       <p:column headerText="Action">
-                          <p:commandLink value="View Attendance" actionListener="#{viewClassDetailsManagedBean.viewSessions}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          <p:commandLink value="View Attendance" actionListener="#{createNewSessionManagedBean.viewAttendance}">
+                              <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
                           </p:commandLink>
                             <br></br>
                           <br></br>
-                          <p:commandLink value="Update" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
+                          <p:commandLink value="End Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
+                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          </p:commandLink>
+                          <br></br>
+                          <br></br>
+                          <p:commandLink value="Cancel Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
+                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
+                          </p:commandLink>
+                          <br></br>
+                          <br></br>
+                          <p:commandLink value="Stop Session" actionListener="#{createNewSessionManagedBean.updateClassDetails}">
                               <f:attribute name="gymClassId" value="#{gymClass.classId}" />
                           </p:commandLink>
 

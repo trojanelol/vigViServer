@@ -183,6 +183,14 @@ public class CreateNewSessionManagedBean implements Serializable  {
             setGymClassEntities(null);
         }
     }
+    
+     public void viewAttendance(ActionEvent event) throws IOException
+    {
+        Long sessionIdToSearch = (Long)event.getComponent().getAttributes().get("sessionId");
+        System.out.println("get class ID " + sessionIdToSearch);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("sessionIdToSearch", sessionIdToSearch);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewAttendance.xhtml");
+    }
      
     
 }

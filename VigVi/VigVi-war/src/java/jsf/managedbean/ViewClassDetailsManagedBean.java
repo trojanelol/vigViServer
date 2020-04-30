@@ -127,10 +127,10 @@ public class ViewClassDetailsManagedBean implements Serializable {
     
     public void viewAttendance(ActionEvent event) throws IOException
     {
-        Long gymClassIdToUpdate = (Long)event.getComponent().getAttributes().get("gymClassId");
-        System.out.println("get class ID " + gymClassIdToUpdate);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToUpdate", gymClassIdToUpdate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("updateGymClass.xhtml");
+        Long sessionIdToSearch = (Long)event.getComponent().getAttributes().get("sessionId");
+        System.out.println("get class ID " + sessionIdToSearch);
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("sessionIdToSearch", sessionIdToSearch);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewAttendance.xhtml");
     }
     
         public void createNewSession(ActionEvent event) throws IOException

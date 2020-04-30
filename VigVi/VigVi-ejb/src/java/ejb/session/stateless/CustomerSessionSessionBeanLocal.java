@@ -46,4 +46,6 @@ public interface CustomerSessionSessionBeanLocal {
 
     public CustomerSession withdrawSession(CustomerSessionId customerSessionId) throws CurrencyNotFoundException, CustomerSessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException;
 
+    public List<CustomerSession> retrieveAllCustomerSessions();
+
 }

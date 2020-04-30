@@ -99,6 +99,19 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         return query.getResultList();
     }
     
+    @Override
+    public List<Session> retrieveAllSessionsByClassId(Long classId){
+        Query query = em.createQuery("SELECT s from Session s where s.gymClass.classId = :id");
+        query.setParameter("id", classId);
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Session> retrieveAllSessions(){
+        Query query = em.createQuery("SELECT s from Session s");
+        return query.getResultList();
+    }
+    
     
     @Override
     public Session endSession (Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{

@@ -23,6 +23,30 @@ import javax.persistence.Temporal;
 @Entity
 public class PayableTransaction implements Serializable {
 
+    public Date getPlatformPaidDate() {
+        return platformPaidDate;
+    }
+
+    public void setPlatformPaidDate(Date platformPaidDate) {
+        this.platformPaidDate = platformPaidDate;
+    }
+
+    public boolean isPlatformPaidStatus() {
+        return platformPaidStatus;
+    }
+
+    public void setPlatformPaidStatus(boolean platformPaidStatus) {
+        this.platformPaidStatus = platformPaidStatus;
+    }
+
+    public String getPlatformPaidReference() {
+        return platformPaidReference;
+    }
+
+    public void setPlatformPaidReference(String platformPaidReference) {
+        this.platformPaidReference = platformPaidReference;
+    }
+
     
 
 
@@ -41,6 +65,10 @@ public class PayableTransaction implements Serializable {
     private boolean merchantReceivedStatus;
     private double merchantAmount;
     private double platformAmount;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date platformPaidDate;
+    private boolean platformPaidStatus;
+    private String platformPaidReference;
 //    private Date deactivatedDate;
     
     @PrePersist

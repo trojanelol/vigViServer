@@ -33,6 +33,10 @@ public interface SessionSessionBeanLocal {
 
     public Session endSession(Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException;
 
+    public List<Session> retrieveAllSessionsByClassId(Long classId);
+
+    public List<Session> retrieveAllSessions();
+
 
     
 

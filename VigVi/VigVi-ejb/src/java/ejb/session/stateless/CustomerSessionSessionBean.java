@@ -163,6 +163,14 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         return query.getResultList();
     }
     
+    @Override
+    public List<CustomerSession> retrieveAllCustomerSessions (){
+        Query query = em.createQuery("SELECT c from CustomerSession c");
+        
+        return query.getResultList();
+    }
+    
+    
      @Override
     public List<CustomerSession> retrieveAllCustomerSessionsByCustomerId (Long customerId){
         Query query = em.createQuery("SELECT c from CustomerSession c WHERE c.customerSessionId.customerId = :id");
