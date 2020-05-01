@@ -111,8 +111,7 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
         Query query = em.createQuery("SELECT s from Session s");
         return query.getResultList();
     }
-    
-    
+
     @Override
     public Session endSession (Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
          Session sessionEntity = retrieveSessionBySessionId(sessionId);
