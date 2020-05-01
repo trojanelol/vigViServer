@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="content">
+            <ez:Navigation pageName=" Create Customer"/>
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Create New Merchant">
+                <h:form id="formCustomer">
+                    <p:messages closable="true"  />
+                        <p:panelGrid>   
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="customerName" value="Customer Name"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="customerName" value="#{createNewCustomerManagedBean.newCustomer.customerName}" required="true" requiredMessage="Name is required" />
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="customerEmail" value="Customer Email"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="email" id="customerEmail" value="#{createNewCustomerManagedBean.newCustomer.customerEmail}" required="true" requiredMessage="Email is required" />
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="password" value="Password"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="password" id="password" value="#{createNewCustomerManagedBean.newCustomer.customerPw}" required="true" requiredMessage="Password is required" />
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="selGender" value="Gender"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="selGender" value="#{createNewCustomerManagedBean.newCustomer.customerGender}" required="true" requiredMessage="Gender is required" >
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItem itemValue="Female" itemLabel="Female" />
+                                        <f:selectItem itemValue="Male" itemLabel="Male" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="disabledDD" value="Session Date" />
+                                </p:column>
+                                <p:column>
+                                    <p:datePicker  timeZone="#{createNewCustomerManagedBean.timeZone}" pattern="dd/MM/yyyy" id="disabledDD" value="#{createNewCustomerManagedBean.newCustomer.customerBday}" maxdate="#{createNewCustomerManagedBean.todayDate}" required="true" requiredMessage="Birthday is required" />
+                                </p:column>      
+                            </p:row>
+
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contact" value="Contact No."/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="tel" id="contact" value="#{createNewCustomerManagedBean.newCustomer.customerContactNo}" required="true" requiredMessage="Contact Number is required" />
+                                </p:column>      
+                            </p:row>
+
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Clear" type="reset"/>
+                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{createNewCustomerManagedBean.createNewCustomer}"/>
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
+                        </p:panelGrid>
+                </h:form>
+            </p:panel>
+            </div>
+        </ui:define>
+
+</ui:composition>
