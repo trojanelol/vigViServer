@@ -168,10 +168,13 @@
                               <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
                           </p:commandLink>
                             <br></br>
-                          <br></br>
-                          <p:commandLink value="Update" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
+                          <p:commandLink value="End Session" rendered="#{sessionEntity.sessionStatus == 'ONGOING'}" actionListener="#{viewClassDetailsManagedBean.endSession}">
                               <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
                           </p:commandLink>
+                          <br></br>
+                          <p:commandLink value="Cancel Session" rendered="#{sessionEntity.sessionStatus == 'ONGOING'}" actionListener="#{viewClassDetailsManagedBean.cancelSession}">
+                              <f:attribute name="sessionId" value="#{sessionEntity.sessionId}" />
+                          </p:commandLink>  
 
                           
                       </p:column>

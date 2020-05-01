@@ -27,9 +27,15 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
+import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
+import util.exception.CurrencyNotFoundException;
+import util.exception.CustomerSessionAttendanceNullException;
+import util.exception.CustomerSessionNotFoundException;
 import util.exception.GymClassNotFoundException;
+import util.exception.SessionNotFoundException;
 import util.exception.UnknownPersistenceException;
+import util.exception.WalletNotFoundException;
 
 /**
  *
@@ -143,19 +149,6 @@ public class ViewClassDetailsManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("createSession.xhtml");
     }
 
-    public void endSession(ActionEvent event) throws IOException{
-//        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
-//        System.out.println("to activate merchant " + merchantIdToActivate);
-//        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
-//        this.reload();
-    }
-    
-    public void undoEndSession(ActionEvent event) throws IOException{
-//        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
-//        System.out.println("to activate merchant " + merchantIdToActivate);
-//        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
-//        this.reload();
-    }
 
     public void cancelSession(ActionEvent event) throws IOException{
 //        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
@@ -174,6 +167,14 @@ public class ViewClassDetailsManagedBean implements Serializable {
         TimeZone timeZone = TimeZone.getDefault();  
         return timeZone;  
     } 
+    
+    
+    public void endSession(ActionEvent event) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException, IOException{
+         Long sessionId = (Long)event.getComponent().getAttributes().get("sessionId");
+         this.sessionSessionBeanLocal.endSession(sessionId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToView", gymClassIdToView);
+         FacesContext.getCurrentInstance().getExternalContext().redirect("viewClassDetails.xhtml");
+     }
     
     
 }
