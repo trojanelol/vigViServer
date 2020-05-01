@@ -106,6 +106,7 @@ public class PayableTransaction implements Serializable {
         this.merchantReceivedStatus = merchantReceivedStatus;
         this.merchantAmount = merchantAmount;
         this.platformAmount = platformAmount;
+        
     }
     
 

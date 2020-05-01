@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="top">
+             <ui:include src = "common_top.xhtml" />
+             <ez:Navigation pageName="Merchant"/>
+        </ui:define>
+
+        <ui:define name="left">
+            <ui:include src = "leftBar.xhtml" />
+        </ui:define>
+
+        <ui:define name="content">
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Create New Session">
+                <h:form id="formPayment">
+                    <p:messages closable="true"  />
+                        <p:panelGrid>  
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selMerchant" value="Merchant" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selMerchant" value="#{makePaymentManagedBean.merchantId}" required="true" requiredMessage="Merchant is required" >
+                                        <p:ajax listener="#{makePaymentManagedBean.onMerchantChange}" update="selTransaction" />
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{makePaymentManagedBean.merchantEntities}" var="merchantEntity" itemValue="#{merchantEntity.merchantId}" itemLabel="#{merchantEntity.merchantId}-#{merchantEntity.merchantName}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selTransaction" value="Transaction" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selTransaction" value="#{makePaymentManagedBean.transactionId}" required="true" requiredMessage="Transaction is required" >
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{makePaymentManagedBean.transactionEntities}" var="transactionEntity" itemValue="#{transactionEntity.payableTransactionId}" itemLabel="#{transactionEntity.payableTransactionId}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+                            
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="payment" value="Payment Reference" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText  id="payment" value="#{makePaymentManagedBean.paymentReference}" required="true" requiredMessage="Payment Reference is required" />
+                                </p:column>      
+                            </p:row>
+
+                            
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Clear" type="reset"/>
+                                    <p:commandButton value="Create" type="submit" process="@form" update="@form" actionListener="#{makePaymentManagedBean.makePayment}">
+                                        <p:ajax listener="#{makePaymentManagedBean.updateDatatableAfterCreateSession}" update="sessionData" />
+                                    </p:commandButton>    
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
+                        </p:panelGrid>
+                    
+                        <p:separator/>
+                
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{makePaymentManagedBean.transactionEntities != null}">
+                    
+                    <p:panel header="View All Payable Transactions">
+
+                        <p:dataTable id="sessionData" value="#{makePaymentManagedBean.transactionEntities}" var="transactionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+                      <p:column headerText="Transaction ID" >
+                          <h:outputText value="#{transactionEntity.payableTransactionId}"/>
+                       </p:column>
+
+                      <p:column headerText="Payable Amount in SGD">    
+                          <h:outputText value="#{transactionEntity.merchantAmount}">
+                              <f:convertNumber pattern="#0.00" />
+                          </h:outputText>    
+                      </p:column> 
+
+                      <p:column headerText="Paid Status">
+                          <h:outputText value="#{transactionEntity.platformPaidStatus}"/>
+                      </p:column>      
+                            
+                      <p:column headerText="Paid Reference">
+                          <h:outputText value="#{transactionEntity.platformPaidReference}"/>
+                      </p:column> 
+                            
+                      <p:column headerText="Paid Date">
+                          <h:outputText value="#{transactionEntity.platformPaidDate}">
+                              <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{makePaymentManagedBean.timeZone}"/>
+                          </h:outputText>    
+                      </p:column>
+                            
+                      <p:column headerText="Payment Confirmation Status">
+                          <h:outputText value="#{transactionEntity.merchantReceivedStatus}"/>
+                      </p:column>
+                            
+                      <p:column headerText="Confirmed Date">
+                          <h:outputText value="#{transactionEntity.merchantReceivedDate}">
+                              <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{makePaymentManagedBean.timeZone}"/>
+                          </h:outputText>    
+                      </p:column>     
+
+                  </p:dataTable>
+                        <br></br>
+                           
+              </p:panel>
+              </p:panelGrid>
+                    
+                </h:form>
+            </p:panel>  
+            </div>
+        </ui:define>
+
+        <ui:define name="bottom">
+             <ui:include src = "common_bottom.xhtml" />
+        </ui:define>
+
+
+</ui:composition>
