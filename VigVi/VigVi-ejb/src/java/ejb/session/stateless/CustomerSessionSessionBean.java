@@ -12,7 +12,9 @@ import entity.CustomerSessionId;
 import entity.Session;
 import entity.PayableTransaction;
 import entity.Wallet;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -129,10 +131,13 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         emp.setCustomerAttendance(false);
         Long currencyId = emp.getSession().getGymClass().getMerchant().getCurrency().getCurrencyId();
         this.updateCustomerSessionStatus(customerSessionId, CustomerSessionStatus.WITHDRAWN, currencyId);
-        
-        //deduct money
-        
+ 
         return emp;
+    }
+    
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
     
     @Override
@@ -257,13 +262,49 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
             if (emp.getCustomerSessionStatus() == CustomerSessionStatus.CANCELLEDBYMERCHANT){
              //create transaction
              double classPrice;
-             //charge 50% if they miss the class
              classPrice = emp.getSession().getGymClass().getClassPrice();
              //refund hold amount
              walletSessionBeanLocal.returnHoldMoney(emp.getCustomer().getCustomerId(), classPrice);
              
              System.out.println( "************amount refunded: " + classPrice);
             }
+             if (emp.getCustomerSessionStatus() == CustomerSessionStatus.WITHDRAWN){
+             //create transaction
+             double classPrice;
+             classPrice = emp.getSession().getGymClass().getClassPrice();
+             //deduct money
+            long long_diff = getDateDiff(emp.getSession().getSessionDate(),new Date(),TimeUnit.DAYS);
+            int diff = (int) long_diff;
+            System.out.println("date diff" + diff);
+
+            if(diff < 3){
+                //deduct money
+                //create transaction
+             double customerAmountBeforeConversion;
+             //charge 20% if they withdrawn the class in less than 2 days
+             customerAmountBeforeConversion = emp.getSession().getGymClass().getClassPrice()*0.2;
+             //deduct hold amount
+             walletSessionBeanLocal.deductVigMoney(emp.getCustomer().getCustomerId(), customerAmountBeforeConversion);
+             double conversionRate;
+             conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+                
+                double customerAmount = customerAmountBeforeConversion*conversionRate;
+             double commissionRate;
+             commissionRate = emp.getSession().getGymClass().getMerchant().getCommissionRate();
+                double platformAmount = customerAmount*commissionRate;
+                double merchantAmount = customerAmount - platformAmount;
+                Long payableId = payableTransactionSessionBeanLocal.createNewTransaction(customerSessionId, new PayableTransaction(customerAmount, false, merchantAmount, platformAmount));
+                System.out.println( "************payable created: " + payableId);
+            }else{
+             //refund hold amount
+             walletSessionBeanLocal.returnHoldMoney(emp.getCustomer().getCustomerId(), classPrice);
+             System.out.println( "************amount refunded: " + classPrice);
+            }
+             
+             
+            }
+            
+            
 
         }
         return emp;

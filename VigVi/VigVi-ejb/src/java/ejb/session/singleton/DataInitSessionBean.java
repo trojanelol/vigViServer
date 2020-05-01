@@ -102,10 +102,10 @@ public class DataInitSessionBean {
     private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException{
         if(em.find(Merchant.class, 1l)==null){
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore")); 
-               SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");  
+               SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
                Long merchantId = merchantSessionBeanLocal.createNewMerchant(singaporeRateId, new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)" , "viggym@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 15.0 , 20 , valueOf("10:00:00"), valueOf("12:00:00"), "Bring Towel", "Mr Muscle"));
-               Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("25/03/2020"))));
+               Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/05/2020"))));
                Long sessionId2 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/04/2020"))));
                Long sessionId3 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("08/04/2020"))));
                Long classId2 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Muay Thai", "Challenge Yourself", "", 10.0 , 20 , valueOf("20:00:00"), valueOf("21:30:00"), "Bring Towel", "Miss Veronica"));
