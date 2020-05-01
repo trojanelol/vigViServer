@@ -7,11 +7,13 @@ package ejb.session.stateless;
 
 import entity.ReceivableTransaction;
 import entity.Wallet;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import util.exception.ClassIDExistException;
 import util.exception.UnknownPersistenceException;
 import util.exception.WalletNotFoundException;
@@ -57,5 +59,23 @@ public class ReceivableTransactionSessionBean implements ReceivableTransactionSe
                 throw new UnknownPersistenceException(ex.getMessage());
             }
         }
+    }
+    
+    @Override
+    public List<ReceivableTransaction> retrieveAllReceivableTransactions() {
+            //retrievePayableTransaction
+        Query query = em.createQuery("SELECT c from ReceivableTransaction c");
+        
+        return query.getResultList();
+
+    }
+    
+    @Override
+    public List<ReceivableTransaction> retrieveAllReceivableTransactionsByCustomerId(Long customerId) {
+            //retrievePayableTransaction
+        Query query = em.createQuery("SELECT c from ReceivableTransaction c WHERE c.wallet.customer.customerId = :id");
+        query.setParameter("id", customerId);
+        return query.getResultList();
+
     }
 }

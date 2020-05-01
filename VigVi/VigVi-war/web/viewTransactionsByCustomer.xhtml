@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+
+    <ui:define name="content">
+        <!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+        <div>
+            <p:panel header="View Transaction By Customer">
+                <h:form id="formTransaction">
+                    <p:messages closable="true"  />
+                    <p:panelGrid>  
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" for="selMerchant" value="Customer" />
+                            </p:column>
+                            <p:column>    
+                                <p:selectOneMenu id="selMerchant" value="#{viewTransactionManagedBean.customerId}">
+                                    <p:ajax listener="#{viewTransactionManagedBean.onCustomerChange()}" update="sessionData sessionData2" />
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                    <f:selectItems value="#{viewTransactionManagedBean.customerEntities}" var="customerEntity" itemValue="#{customerEntity.customerId}" itemLabel="#{customerEntity.customerId}-#{customerEntity.customerName}" />
+                                </p:selectOneMenu>
+                            </p:column>      
+                        </p:row>
+                    </p:panelGrid>
+                    </h:form>
+                        <p:separator/>
+
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewTransactionManagedBean.payableTransactionEntities != null}">
+
+                            <p:panel header="View All Payable Transactions">
+
+                                <p:dataTable id="sessionData" value="#{viewTransactionManagedBean.payableTransactionEntities}" var="transactionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+
+                                    <p:column headerText="Transaction ID" >
+                                        <h:outputText value="#{transactionEntity.payableTransactionId}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Amount in SGD">    
+                                        <h:outputText value="#{transactionEntity.customerAmount}">
+                                            <f:convertNumber pattern="#0.00" />
+                                        </h:outputText>    
+                                    </p:column> 
+
+                                    <p:column headerText="Transferred Date">
+                                        <h:outputText value="#{transactionEntity.createdDate}">
+                                            <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{viewTransactionManagedBean.timeZone}"/>
+                                        </h:outputText>    
+                                    </p:column>   
+
+                                </p:dataTable>
+                                <br></br>
+
+                            </p:panel>
+                        </p:panelGrid>
+
+                        <p:separator/>
+
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{viewTransactionManagedBean.transactionEntities != null}">
+
+                            <p:panel header="View All Receivable Transactions">
+
+                                <p:dataTable id="sessionData2" value="#{viewTransactionManagedBean.transactionEntities}" var="transactionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+
+                                    <p:column headerText="Transaction ID" >
+                                        <h:outputText value="#{transactionEntity.receivableTransactionId}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Top Up Amount in SGD">    
+                                        <h:outputText value="#{transactionEntity.topUpAmount}">
+                                            <f:convertNumber pattern="#0.00" />
+                                        </h:outputText>    
+                                    </p:column> 
+
+                                    <p:column headerText="Issued Amount in $V">    
+                                        <h:outputText value="#{transactionEntity.issuedAmount}">
+                                            <f:convertNumber pattern="#0.00" />
+                                        </h:outputText>    
+                                    </p:column>       
+
+                                    <p:column headerText="Transferred Date">
+                                        <h:outputText value="#{transactionEntity.createdDate}">
+                                            <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{viewTransactionManagedBean.timeZone}"/>
+                                        </h:outputText>    
+                                    </p:column>   
+
+                                </p:dataTable>
+                                <br></br>
+
+                            </p:panel>
+                        </p:panelGrid>
+
+
+            </p:panel>  
+        </div>
+    </ui:define>
+
+</ui:composition>

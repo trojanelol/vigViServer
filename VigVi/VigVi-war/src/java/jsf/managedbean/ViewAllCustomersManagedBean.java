@@ -66,8 +66,8 @@ public class ViewAllCustomersManagedBean{
     {
         Long customerIdToView = (Long)event.getComponent().getAttributes().get("customerId");
         System.out.println("get customer ID " + customerIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("customerIdToView", customerIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("viewCustomerDetails.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("customerIdToSearch", customerIdToView);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewTransactionsByCustomer.xhtml");
     }
     
     public void activateCustomer(ActionEvent event) throws IOException{

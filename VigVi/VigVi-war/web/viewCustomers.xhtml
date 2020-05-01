@@ -44,7 +44,7 @@
                     </p:column>
 
                     <p:column headerText="Action">
-                        <p:commandLink value="View Wallet Info" rendered="#{customer.wallet != null}" actionListener="#{viewAllCustomersManagedBean.viewCustomerDetails}">
+                        <p:commandLink value="View Transaction Info" rendered="#{customer.wallet != null}" actionListener="#{viewAllCustomersManagedBean.viewCustomerDetails}">
                             <f:attribute name="customerId" value="#{customer.customerId}" />
                         </p:commandLink>
                         <br></br>
