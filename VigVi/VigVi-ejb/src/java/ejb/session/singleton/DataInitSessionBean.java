@@ -5,6 +5,7 @@
  */
 package ejb.session.singleton;
 
+import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.ClassSessionBeanLocal;
 import ejb.session.stateless.CurrencySessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
@@ -66,7 +67,6 @@ public class DataInitSessionBean {
     @EJB(name = "CustomerSessionSessionBeanLocal")
     private CustomerSessionSessionBeanLocal customerSessionSessionBeanLocal;
 
-
     @EJB(name = "WalletSessionBeanLocal")
     private WalletSessionBeanLocal walletSessionBeanLocal;
 
@@ -79,14 +79,14 @@ public class DataInitSessionBean {
     @EJB(name = "ClassSessionBeanLocal")
     private ClassSessionBeanLocal classSessionBeanLocal;
 
-    
     @PersistenceContext(unitName="VigVi-ejbPU")
     private EntityManager em;
     
     @EJB(name="MerchantSessionBeanLocal")
     private MerchantSessionBeanLocal merchantSessionBeanLocal; 
     
-    
+    @EJB
+    private AdminSessionBeanLocal adminSessionBeanLocal;
     
     @PostConstruct
     public void postConstruct() {
