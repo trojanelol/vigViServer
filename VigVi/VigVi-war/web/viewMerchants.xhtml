@@ -8,9 +8,9 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"> 
 
         <ui:define name="content">
-             <ez:Navigation pageName="Merchant"/>
-            <div>
-                    <p:panel header="View All Merchants">
+   
+             <div>
+                    <p:panel header="View All Merchants" >
 
                   <p:dataTable value="#{viewAllMerchantsManagedBean.merchants}" var="merchant">
                       <p:column headerText="Merchant ID">
@@ -43,10 +43,6 @@
 
                       <p:column headerText="Activation Status">
                           <h:outputText value="#{merchant.merchantStatus}"/>
-                      </p:column>
-
-                      <p:column headerText="Image">
-                          <h:outputText value="#{merchant.merchantImage}"/>
                       </p:column>
 
                       <p:column headerText="Address">

@@ -170,8 +170,8 @@ public class MakePaymentManagedBean implements Serializable  {
         
         }
         
-//        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToSearch",merchantId);
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("viewTransactionsByMerchant.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToSearch",merchantId);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("viewTransactionsByMerchant.xhtml");
 
         
     }

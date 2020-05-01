@@ -100,18 +100,6 @@
                           <h:outputText value="#{sessionEntity.sessionStatus}"/>
                       </p:column>
 
-                      <p:column headerText="Action">
-                          <p:commandLink value="View Attendance" actionListener="#{viewClassDetailsManagedBean.viewSessions}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
-                          </p:commandLink>
-                            <br></br>
-                          <br></br>
-                          <p:commandLink value="Update" actionListener="#{viewClassDetailsManagedBean.updateClassDetails}">
-                              <f:attribute name="gymClassId" value="#{gymClass.classId}" />
-                          </p:commandLink>
-
-                          
-                      </p:column>
                   </p:dataTable>
                         <br></br>
                            

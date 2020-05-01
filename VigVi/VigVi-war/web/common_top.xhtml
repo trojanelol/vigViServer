@@ -2,44 +2,77 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
-    <h:body>
-        <h1>Welcome to Admin Panel</h1> 
-        
-        <aside id="loginbox" class="loginbox">
-            
-            <h:panelGroup rendered="#{sessionScope.isLogin == false}">
-                <h:form id="loginForm">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-                    <h:outputLabel for="username" value="Username" />&nbsp;
-                    <h:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
-                        <f:validateLength minimum="4" />
-                    </h:inputText>
-                    <h:message for="username" errorClass="errorText" fatalClass="errorText" />&nbsp;
+    <h:body styleClass="cyan lighten-5">
 
-                    <h:outputLabel for="password" value="Password" />&nbsp;
-                    <h:inputSecret id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
-                        <f:validateLength minimum="4" />
-                    </h:inputSecret>
-                    <h:message for="password" errorClass="errorText" fatalClass="errorText" />&nbsp;
+        <div class="valign-wrapper" id="login-page">
+            <div class="container">
+                <div class="center-align">
+                    <div class="col s6 offset-s3">
+                        `   <br></br>
+                        <p:graphicImage style="max-width: 64px;"  name="/img/VigViLogo_Color.png"/>
+                        <h5>Welcome to VigVi Admin Panel!</h5> 
 
-                    <h:commandButton type="reset" value="Clear" />&nbsp;
-                    <h:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" />
 
-                    <h:messages errorClass="errorTexts" fatalClass="errorTexts" infoClass="infoTexts" globalOnly="true" />
 
-                </h:form>
-            </h:panelGroup>
-            
-            <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-                <h:form id="logoutForm">
-                    <h:outputText value="You are login as #{sessionScope.currentAdmin.firstName} #{sessionScope.currentAdmin.lastName}" />&nbsp;
-                    <h:commandButton value="Logout" actionListener="#{loginManagedBean.logout}" />
-                </h:form>
-            </h:panelGroup>
-                
-        </aside>
+                        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
+                            <div class="row">
+                            <div class="col s6 offset-s3">
+                            <div class="card">
+                                <div class="card-content">
+                                    <h5>Access Denied</h5> 
+                                    <h7>Login to access page</h7>
+                                    <div class="left-align">
+                                                
+                                        <h:form id="loginForm">
+                                            <div class="row">
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="username" value="Username" />&nbsp;
+                                                    <h:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputText>
+                                                    <h:message for="username" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="password" value="Password" />&nbsp;
+                                                    <h:inputSecret id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputSecret>
+                                                    <h:message for="password" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                <h:commandButton type="reset" value="Clear" styleClass="btn btn-large"/>&nbsp;
+                                                <h:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" styleClass="btn btn-large"/>
+
+                                                <h:messages errorClass="errorTexts" fatalClass="errorTexts" infoClass="infoTexts" globalOnly="true" />
+                                            
+                                                </div>
+                                            </div>
+                                        </h:form>
+
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            </div>
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{sessionScope.isLogin == true}">
+                            <h:form id="logoutForm">
+                                <h:outputText value="Hi #{sessionScope.currentAdmin.firstName} #{sessionScope.currentAdmin.lastName}, you can  " />
+                                <p:commandLink styleClass="btn btn-small" value="Logout" actionListener="#{loginManagedBean.logout}" />
+                                <h:outputText value="  here."/>
+                                <div></div>
+                            </h:form>
+                        </h:panelGroup>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>
 

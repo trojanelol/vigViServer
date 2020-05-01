@@ -7,44 +7,42 @@
     <h:head>
         <title>Facelet Title</title>
     </h:head>
-    <h:body>
+    <h:body >
         <h:form>
-            <p:growl id="messages" showDetail="true"/>
-            
-            <div></div>
-            
-            <p:menuButton value="Merchants">
-                <p:menuitem value="Generate Report" outcome="jasperReport" icon="pi pi-home"/>
-                <p:menuitem value="Create" outcome="createMerchant" icon="pi pi-home"/>
-                <p:menuitem value="View All" outcome="viewMerchants" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Classes">
-                <p:menuitem value="Create" outcome="createGymClass" icon="pi pi-home"/>
-                <p:menuitem value="View All" outcome="viewAllClasses" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Sessions">
-                <p:menuitem value="Create" outcome="createSession" icon="pi pi-home"/>
-                <p:menuitem value="Search" outcome="viewAllSessions" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Attendance">
-                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Payable">
-                <p:menuitem value="Search By Merchant" outcome="viewTransactionsByMerchant" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Transaction Dashboard">
-                <p:menuitem value="Search" outcome="dashboard" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
-            <p:menuButton value="Customer-Wallet">
-                <p:menuitem value="Search" outcome="viewAttendance" icon="pi pi-home"/>
-                <p:menuitem value="Homepage" outcome="index" icon="pi pi-home"/>
-            </p:menuButton>
+            <p:separator></p:separator>
+            <p:menubar style="background-color: #e0f7fa !important">
+                <p:menuitem value="Homepage" outcome="index"/>
+                <p:submenu label="Merchants" >
+                    <p:menuitem value="Create" outcome="createMerchant" />
+                    <p:menuitem value="View All" outcome="viewMerchants" />
+                </p:submenu>
+                <p:submenu label="Classes">
+                    <p:menuitem value="Create" outcome="createGymClass" />
+                    <p:menuitem value="View All" outcome="viewAllClasses" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+                <p:submenu label="Sessions">
+                    <p:menuitem value="Create" outcome="createSession" />
+                    <p:menuitem value="Search" outcome="viewAllSessions" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+                <p:submenu label="Attendance">
+                    <p:menuitem value="Search" outcome="viewAttendance" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+                <p:submenu label="Payable">
+                    <p:menuitem value="Search By Merchant" outcome="viewTransactionsByMerchant" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+                <p:submenu label="Transaction Dashboard">
+                    <p:menuitem value="Search" outcome="dashboard" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+                <p:submenu label="Customer-Wallet">
+                    <p:menuitem value="Search" outcome="viewAttendance" />
+                    <p:menuitem value="Homepage" outcome="index" />
+                </p:submenu>
+            </p:menubar>
         </h:form>
     </h:body>
 </html>
