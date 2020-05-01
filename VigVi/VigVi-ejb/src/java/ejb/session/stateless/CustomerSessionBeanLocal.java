@@ -32,5 +32,11 @@ public interface CustomerSessionBeanLocal {
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
 
     public Long createNewCustomer(Customer newCustomer) throws InputDataValidationException, CustomerUsernameExistException, UnknownPersistenceException;
+
+    public void updateCustomer(Customer customer) throws InputDataValidationException, CustomerNotFoundException;
+
+    public Long deactivateCustomer(Long customerId);
+
+    public Long approveCustomer(Long customerId);
     
 }

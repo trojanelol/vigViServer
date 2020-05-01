@@ -168,4 +168,53 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             throw new CustomerNotFoundException ("Customer" + customerId + "does not exist");
         }
     }
+    
+    @Override
+    public void updateCustomer(Customer customer) throws InputDataValidationException, CustomerNotFoundException
+    {
+        if(customer != null && customer.getCustomerId()!= null)
+        {
+            Set<ConstraintViolation<Customer>>constraintViolations = validator.validate(customer);
+        
+            if(constraintViolations.isEmpty())
+            {
+                Customer customerEntityToUpdate = this.retrieveCustomerByCustomerId(customer.getCustomerId());
+                    
+                    customerEntityToUpdate.setCustomerName(customer.getCustomerName());
+                    customerEntityToUpdate.setCustomerBday(customer.getCustomerBday());
+                    customerEntityToUpdate.setCustomerContactNo(customer.getCustomerContactNo());
+                    customerEntityToUpdate.setCustomerEmail(customer.getCustomerEmail());
+                    customerEntityToUpdate.setCustomerGender(customer.getCustomerGender());
+                    customerEntityToUpdate.setCustomerPw(customer.getCustomerPw());
+                    customerEntityToUpdate.setCustomerStatus(customer.getCustomerStatus());
+
+            }
+            else
+            {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        }
+        else
+        {
+            throw new CustomerNotFoundException("Customer ID not provided for product to be updated");
+        }
+    }
+    
+        @Override
+    public Long approveCustomer(Long customerId){
+        Customer customerEntity = em.find(Customer.class, customerId);
+        
+        customerEntity.setCustomerStatus(Boolean.TRUE);
+        
+        return customerEntity.getCustomerId();
+    }
+    
+    @Override
+    public Long deactivateCustomer(Long customerId){
+        Customer customerEntity = em.find(Customer.class, customerId);
+        
+        customerEntity.setCustomerStatus(Boolean.FALSE);
+        
+        return customerEntity.getCustomerId();
+    }
 }
