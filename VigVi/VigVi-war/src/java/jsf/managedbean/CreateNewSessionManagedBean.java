@@ -207,8 +207,12 @@ public class CreateNewSessionManagedBean implements Serializable  {
          FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllSessions.xhtml");
      }
      
-     public void cancelSession(ActionEvent event){
-         
+     public void cancelSession(ActionEvent event) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException, IOException{
+         Long sessionId = (Long)event.getComponent().getAttributes().get("sessionId");
+         this.sessionSessionBeanLocal.cancelSession(sessionId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToCreate", gymClassId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("merchantIdToCreate", merchantId);
+         FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllSessions.xhtml");
      }
 
     public void reload() throws IOException {

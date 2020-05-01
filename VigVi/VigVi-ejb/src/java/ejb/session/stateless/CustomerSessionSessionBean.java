@@ -205,6 +205,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         
         return true;
     }
+
     
     
     @Override
@@ -252,6 +253,16 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 double merchantAmount = customerAmount - platformAmount;
                 Long payableId = payableTransactionSessionBeanLocal.createNewTransaction(customerSessionId, new PayableTransaction(customerAmount, false, merchantAmount, platformAmount));
                 System.out.println( "************payable created: " + payableId);
+            }
+            if (emp.getCustomerSessionStatus() == CustomerSessionStatus.CANCELLEDBYMERCHANT){
+             //create transaction
+             double classPrice;
+             //charge 50% if they miss the class
+             classPrice = emp.getSession().getGymClass().getClassPrice();
+             //refund hold amount
+             walletSessionBeanLocal.returnHoldMoney(emp.getCustomer().getCustomerId(), classPrice);
+             
+             System.out.println( "************amount refunded: " + classPrice);
             }
 
         }

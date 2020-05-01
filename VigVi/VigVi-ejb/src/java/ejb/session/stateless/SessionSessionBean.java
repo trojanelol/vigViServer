@@ -141,5 +141,33 @@ public class SessionSessionBean implements SessionSessionBeanLocal {
          
          return sessionEntity;
     }
+    
+    @Override
+    public Session cancelSession (Long sessionId) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException{
+         Session sessionEntity = retrieveSessionBySessionId(sessionId);
+         Long currencyId = sessionEntity.getGymClass().getMerchant().getCurrency().getCurrencyId();
+         
+         sessionEntity.setSessionStatus(Session.SessionStatus.CANCELLED);
+         
+         //mark attendancea for all customer sessions to false if null
+//         Query query = em.createQuery("UPDATE CustomerSession e SET e.customerAttendance = :attendance WHERE e.session.sessionId = :id AND e.customerAttendance is NULL");
+//         query.setParameter("attendance", false);
+//         query.setParameter("id", sessionEntity.getSessionId());
+//         int rowsUpdated = query.executeUpdate();
+//         System.out.println("attendances Updated: " + rowsUpdated);
+         
+         List<CustomerSession> results = customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId);
+         
+         //forloop
+         for (int i = 0; i < results.size(); i++) {
+            //check attendance to update status
+             System.out.println("changing" + results.get(i).getCustomerSessionId() + "status");
+            customerSessionSessionBeanLocal.updateCustomerSessionStatus(results.get(i).getCustomerSessionId(), CustomerSession.CustomerSessionStatus.CANCELLEDBYMERCHANT, currencyId);
+         }
+
+         
+         return sessionEntity;
+    }
+
 
 }

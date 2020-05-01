@@ -149,13 +149,6 @@ public class ViewClassDetailsManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("createSession.xhtml");
     }
 
-
-    public void cancelSession(ActionEvent event) throws IOException{
-//        Long merchantIdToActivate = (Long)event.getComponent().getAttributes().get("merchantId");
-//        System.out.println("to activate merchant " + merchantIdToActivate);
-//        merchantSessionBeanLocal.approveMerchant(merchantIdToActivate);
-//        this.reload();
-    }
     
     private Date todayDate = new Date();
 
@@ -172,6 +165,13 @@ public class ViewClassDetailsManagedBean implements Serializable {
     public void endSession(ActionEvent event) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException, IOException{
          Long sessionId = (Long)event.getComponent().getAttributes().get("sessionId");
          this.sessionSessionBeanLocal.endSession(sessionId);
+         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToView", gymClassIdToView);
+         FacesContext.getCurrentInstance().getExternalContext().redirect("viewClassDetails.xhtml");
+     }
+    
+    public void cancelSession(ActionEvent event) throws SessionNotFoundException, CustomerSessionNotFoundException, CurrencyNotFoundException, WalletNotFoundException, AmountNotSufficientException, ClassIDExistException, UnknownPersistenceException, CustomerSessionAttendanceNullException, IOException{
+         Long sessionId = (Long)event.getComponent().getAttributes().get("sessionId");
+         this.sessionSessionBeanLocal.cancelSession(sessionId);
          FacesContext.getCurrentInstance().getExternalContext().getFlash().put("gymClassIdToView", gymClassIdToView);
          FacesContext.getCurrentInstance().getExternalContext().redirect("viewClassDetails.xhtml");
      }

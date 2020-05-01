@@ -127,7 +127,7 @@ public class DataInitSessionBean {
                customerSessionSessionBeanLocal.markAttendance(customerSessionId2, false);
                sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId1);
                
-               sessionSessionBeanLocal.endSession(sessionId1);
+               sessionSessionBeanLocal.cancelSession(sessionId1);
                sessionSessionBeanLocal.endSession(sessionId2);
                sessionSessionBeanLocal.endSession(sessionId3);
         }
