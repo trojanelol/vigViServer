@@ -3,7 +3,7 @@
 <glassfish-web-app error-url="">  
   <resource-ref>
     <res-ref-name>VigViDataSource</res-ref-name>
-    <jndi-name>jdbc/vigVi</jndi-name>
+    <jndi-name>jdbc/vigViDatasource</jndi-name>
   </resource-ref>
   <class-loader delegate="true"/>
   <jsp-config>
