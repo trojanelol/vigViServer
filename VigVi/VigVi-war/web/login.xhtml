@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Admin Panel Main Page</title>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:head>
+    <h:body styleClass="cyan lighten-5">
+        <div class="valign-wrapper" id="login-page">
+            <div class="container">
+                <div class="center-align">
+                    <div class="row">
+                        <div class="col s6 offset-s3">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p:graphicImage style="max-width: 64px;"  name="/img/VigViLogo_Color.png"/>
+                                    <h5>Welcome to VigVi Admin Panel!</h5>
+                                    <div class="left-align">
+                                        <h:form id="loginForm" rendered="#{!sessionScope.isLogin}">
+                                            <div class="row">
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="username" value="Username" />&nbsp;
+                                                    <h:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputText>
+                                                    <h:message for="username" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="password" value="Password" />&nbsp;
+                                                    <h:inputSecret id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputSecret>
+                                                    <h:message for="password" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                    <h:commandButton type="reset" value="Clear" styleClass="btn btn-large" />&nbsp;
+                                                    <h:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" styleClass="btn btn-large"/>
+
+                                                    <h:messages errorClass="errorTexts" fatalClass="errorTexts" infoClass="infoTexts" globalOnly="true" />
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

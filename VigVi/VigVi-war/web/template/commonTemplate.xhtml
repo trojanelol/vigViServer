@@ -14,18 +14,22 @@
     <h:body>
         
         <div id="top">
-            <ui:insert name="top">Top</ui:insert>
+            <ui:insert name="top">
+                <ui:include src="/common_top.xhtml" />
+            </ui:insert>
         </div>
-        <div>
             <div id="left">
-                <ui:insert name="left">Left</ui:insert>
-            </div>
-            <div id="content" class="left_content">
+                <ui:insert name="left">
+                    <ui:include src="/leftBar.xhtml" />
+                </ui:insert>
+            <section id="content" class="content">
                 <ui:insert name="content">Content</ui:insert>
-            </div>
+            </section>
         </div>
         <div id="bottom">
-            <ui:insert name="bottom">Bottom</ui:insert>
+            <ui:insert name="bottom">
+                <ui:include src="/common_bottom.xhtml" />
+            </ui:insert>
         </div>
 
     </h:body>

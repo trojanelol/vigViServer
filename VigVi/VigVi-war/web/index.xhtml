@@ -3,17 +3,149 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Admin Panel Main Page</title>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"/>
+        <script type="text/javascript" src="js/materialize.min.js"></script>
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </h:head>
-    <h:body>
-        <h1>Welcome to VigVi Admin Panel Page!</h1>
-        <ez:Navigation pageName="Main"/>
-        <ul>
-            <li><p:link outcome="viewMerchants">Merchant</p:link></li>
-            <li><p:link outcome="jasperReport">Generate Report</p:link></li>
-        </ul>      
+    <h:body styleClass="cyan lighten-5">
+        <div class="valign-wrapper" id="login-page">
+            <div class="container">
+                <div class="center-align">
+                    <div class="row">
+                        <div class="col s6 offset-s3">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p:graphicImage style="max-width: 64px;"  name="/img/VigViLogo_Color.png"/>
+                                    <h5>Welcome to VigVi Admin Panel!</h5>
+                                    <div class="left-align">
+                                        <h:form id="loginForm" rendered="#{!sessionScope.isLogin}">
+                                            <div class="row">
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="username" value="Username" />&nbsp;
+                                                    <h:inputText id="username" value="#{loginManagedBean.username}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputText>
+                                                    <h:message for="username" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                    <h:outputLabel for="password" value="Password" />&nbsp;
+                                                    <h:inputSecret id="password" value="#{loginManagedBean.password}" size="16" required="true" requiredMessage="Password is required" maxlength="32">
+                                                        <f:validateLength minimum="4" />
+                                                    </h:inputSecret>
+                                                    <h:message for="password" errorClass="errorText" fatalClass="errorText" />&nbsp;
+                                                </div>
+                                                <div class="col s12 input-field">
+                                                    <h:commandButton type="reset" value="Clear" styleClass="btn btn-large" />&nbsp;
+                                                    <h:commandButton type="submit" value="Login" actionListener="#{loginManagedBean.login}" styleClass="btn btn-large"/>
+
+                                                    <h:messages errorClass="errorTexts" fatalClass="errorTexts" infoClass="infoTexts" globalOnly="true" />
+                                                </div>
+                                            </div>
+                                        </h:form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h:form id="menuForm" rendered="#{sessionScope.isLogin}">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Merchant Module</span>
+                                            <p>You can manage merchant-related information, including gym classes, sessions etc here.</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/createMerchant.xhtml">Create New Merchant</a>
+                                            <a href="/VigVi-war/viewMerchants.xhtml">Manage Merchants</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Class Module</span>
+                                            <p>You can manage class-related information, including marking attendance etc here.</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/createGymClass.xhtml">Create New Class</a>
+                                            <a href="/VigVi-war/viewAllClasses.xhtml">Manage Classes</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Session Module</span>
+                                            <p>You can manage session-related information, including marking attendance etc here.</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/createSession.xhtml">Create New Session</a>
+                                            <a href="/VigVi-war/viewAllSessions.xhtml">Manage Sessions</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Attendance Module</span>
+                                            <p>You can manage all sign up session related information, including marking attendance etc here.</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/viewAttendance.xhtml">Manage Attendance</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Transaction Module</span>
+                                            <p>You can manage payable transaction here.</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/viewTransactionsByMerchant.xhtml">Manage Payable</a>
+                                            <a href="/VigVi-war/viewTransactionsByMerchant.xhtml">View Receivable</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="card blue-grey darken-1">
+                                        <div class="card-content white-text">
+                                            <span class="card-title">Customer</span>
+                                            <p>You can manage customer-related information here, including customer insight dashboard</p>
+                                        </div>
+                                        <div class="card-action">
+                                            <a href="/VigVi-war/viewTransactionsByMerchant.xhtml">Create New Customer</a>
+                                            <a href="/VigVi-war/viewTransactionsByMerchant.xhtml">Manage Customer</a>
+                                            <a href="/VigVi-war/dashboard.xhtml">Customer Dashboard</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>
 

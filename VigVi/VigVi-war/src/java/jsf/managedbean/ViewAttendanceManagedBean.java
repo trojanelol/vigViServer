@@ -148,23 +148,6 @@ public class ViewAttendanceManagedBean implements Serializable  {
         
         
         setSessionId((Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("sessionIdToSearch"));
-        
-        setSessionEntities(sessionSessionBeanLocal.retrieveAllSessions());
-        
-        if(sessionId == null && sessionId.equals("")){
-            setSessionId(sessionEntities.get(0).getSessionId());
-        }
-        
-        try {
-            setSessionEntityToInitialise(sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId));
-            setGymClassId(sessionEntityToInitialise.getGymClass().getClassId());
-            setMerchantId(sessionEntityToInitialise.getGymClass().getMerchant().getMerchantId());
-            setSignedUpCustomer(customerSessionSessionBeanLocal.retrieveAllCustomerSessionsBySessionId(sessionId));
-        } catch (SessionNotFoundException ex) {
-            setSessionEntityToInitialise(null);
-            setSignedUpCustomer(customerSessionSessionBeanLocal.retrieveAllCustomerSessions());
-            
-        }
 
         setMerchantEntities(merchantSessionBeanLocal.retrieveAllMerchants());
         
@@ -172,8 +155,8 @@ public class ViewAttendanceManagedBean implements Serializable  {
         
         setSessionEntities(sessionSessionBeanLocal.retrieveAllSessions());
         
+        setSignedUpCustomer(customerSessionSessionBeanLocal.retrieveAllCustomerSessions());
         
- 
 
     }
 

@@ -33,7 +33,7 @@ public class LoginManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);
-            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/VigVi-war/index.xhtml");
         }
         catch(InvalidLoginCredentialException ex)
         {
