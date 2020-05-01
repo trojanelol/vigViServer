@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/src/java/jsf/managedbean/CreateNewSessionManagedBean.java</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/web/viewClassDetails.xhtml</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/web/viewAllSessions.xhtml</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/web/viewMerchants.xhtml</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/src/java/jsf/managedbean/ViewClassDetailsManagedBean.java</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/src/java/jsf/managedbean/ViewAttendanceManagedBean.java</file>
-            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/web/viewAttendance.xhtml</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/web/dashboard.xhtml</file>
+            <file>file:/C:/Users/JiaYunTeo/Desktop/vigViServer/VigVi/VigVi-war/src/java/jsf/managedbean/DashboardManagedBean.java</file>
         </group>
     </open-files>
 </project-private>
