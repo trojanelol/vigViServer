@@ -44,7 +44,7 @@
                     </p:column>
 
                     <p:column headerText="Action">
-                        <p:commandLink value="View Classes" actionListener="#{viewAllCustomersManagedBean.viewCustomerDetails}">
+                        <p:commandLink value="View Wallet Info" rendered="#{customer.wallet != null}" actionListener="#{viewAllCustomersManagedBean.viewCustomerDetails}">
                             <f:attribute name="customerId" value="#{customer.customerId}" />
                         </p:commandLink>
                         <br></br>
@@ -57,7 +57,7 @@
                         <p:commandLink rendered="#{!customer.customerStatus}" value="Activate" actionListener="#{viewAllCustomersManagedBean.activateCustomer}">
                             <f:attribute name="customerId" value="#{customer.customerId}" />
                         </p:commandLink>    
-                        <p:commandLink rendered="#{customer.customerStatus}" value="Deactivate" actionListener="#{viewAllCustomersManagedBean.deactivateMerchant}">
+                        <p:commandLink rendered="#{customer.customerStatus}" value="Deactivate" actionListener="#{viewAllCustomersManagedBean.deactivateCustomer}">
                             <f:attribute name="customerId" value="#{customer.customerId}" />
                         </p:commandLink>    
                     </p:column>

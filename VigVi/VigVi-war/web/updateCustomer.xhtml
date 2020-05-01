@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="content">
+           <section id="content" class="content">
+             <div>
+                <p:tooltip />
+                <h:form>
+                    <p:messages id="messages" showDetail="true" closable="true">
+                        <p:autoUpdate />
+                    </p:messages>
+                </h:form>
+
+                <p:separator /> 
+                <p:panel header="Update Customer">        
+                #{updateCustomerManagedBean.foo()}
+                <h:form>
+                    <h:messages errorClass="errorTextsWithBullet" fatalClass="errorTextsWithBullet" infoClass="infoTextsWithBullet" globalOnly="true" />
+                    <br/>
+                    <p:panelGrid columnClasses="dataTable3Label,dataTable3Value,dataTable3Message" columns="3" rendered="#{updateCustomerManagedBean.customerEntityToUpdate!= null}">
+                        
+                        <p:outputLabel style="font-weight: bold;" value="Customer ID"/>
+                        <h:outputText value="#{updateCustomerManagedBean.customerEntityToUpdate.customerId}"/>
+                        <h:outputText value="" />
+
+                        <p:outputLabel style="font-weight: bold;" for="txtName" value="Name" />
+                        <p:inputText id="txtName" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerName}" required="true" requiredMessage="Name is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtName" />
+                                                
+                        <p:outputLabel style="font-weight: bold;" for="txtContact" value="Contact No." />
+                        <p:inputText id="txtContact" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerContactNo}" required="true" requiredMessage="Contact Details is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtContact" />
+                        
+                        <p:outputLabel style="font-weight: bold;" for="selBankName" value="Gender" />
+                        <p:selectOneMenu id="selBankName" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerGender}" required="true" requiredMessage="Gender is required" >                            
+                            <f:selectItem itemValue="Female" itemLabel="Female" />
+                            <f:selectItem itemValue="Male" itemLabel="Male" />
+                        </p:selectOneMenu>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selBankName" />   
+                        
+                        <p:outputLabel style="font-weight: bold;" for="txtDate" value="Contact No." />
+                            <p:datePicker  timeZone="#{updateCustomerManagedBean.timeZone}" pattern="dd/MM/yyyy" id="txtDate" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerBday}" maxdate="#{updateCustomerManagedBean.todayDate}" required="true" requiredMessage="Birthday is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtDate" />
+
+                                                
+                        <p:outputLabel style="font-weight: bold;" for="txtEmail" value="Email" />
+                            <p:inputText id="txtEmail" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerEmail}" required="true" requiredMessage="Email is required" />
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtEmail" />
+
+  
+                        <p:outputLabel style="font-weight: bold;" for="txtMerchantStatus" value="Active Account" />
+                        <h:selectBooleanCheckbox  id="txtMerchantStatus" value="#{updateCustomerManagedBean.customerEntityToUpdate.customerStatus}"/>
+                        <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="txtMerchantStatus" />
+                        
+                    </p:panelGrid>
+                    <br/>                      
+                    <p:commandButton value="Update" type="submit" actionListener="#{updateCustomerManagedBean.updateCustomer}" rendered="#{updateCustomerManagedBean.customerEntityToUpdate != null}" />   
+                    <p:commandButton value="Cancel" type="cancel" actionListener="#{updateCustomerManagedBean.back}" />
+                </h:form>
+               </p:panel> 
+                 
+            </div>
+           </section>    
+        </ui:define>
+
+
+</ui:composition>

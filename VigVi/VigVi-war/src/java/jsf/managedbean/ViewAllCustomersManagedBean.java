@@ -72,14 +72,14 @@ public class ViewAllCustomersManagedBean{
     
     public void activateCustomer(ActionEvent event) throws IOException{
         Long customerIdToActivate = (Long)event.getComponent().getAttributes().get("customerId");
-        System.out.println("to activate merchant " + customerIdToActivate);
+        System.out.println("to activate customer " + customerIdToActivate);
         customerSessionBeanLocal.approveCustomer(customerIdToActivate);
         this.reload();
     }
     
-     public void deactivateMerchant(ActionEvent event) throws IOException{
+     public void deactivateCustomer(ActionEvent event) throws IOException{
         Long customerIdToActivate = (Long)event.getComponent().getAttributes().get("customerId");
-        System.out.println("to deactivate merchant " + customerIdToActivate);
+        System.out.println("to deactivate customer " + customerIdToActivate);
         customerSessionBeanLocal.deactivateCustomer(customerIdToActivate);
         this.reload();
     }
