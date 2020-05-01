@@ -13,6 +13,7 @@ import ejb.session.stateless.CustomerSessionSessionBeanLocal;
 import ejb.session.stateless.MerchantSessionBeanLocal;
 import ejb.session.stateless.SessionSessionBeanLocal;
 import ejb.session.stateless.WalletSessionBeanLocal;
+import entity.Admin;
 import entity.Currency;
 import entity.Customer;
 import entity.CustomerSession;
@@ -36,6 +37,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.AdminUsernameExistException;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
@@ -93,14 +95,15 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException | CustomerSessionAttendanceNullException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException | CustomerSessionAttendanceNullException | AdminUsernameExistException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException{
-        if(em.find(Merchant.class, 1l)==null){
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException, AdminUsernameExistException{
+        if(em.find(Admin.class, 1l)==null){
+               Long adminId = adminSessionBeanLocal.createNewAdmin(new Admin("Veronica","Wong","admin","password"));
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"Singapore")); 
                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");  
                Long merchantId = merchantSessionBeanLocal.createNewMerchant(singaporeRateId, new Merchant("Vig Gym", "Award-winning Gym (Mr.Muscle 2019)" , "viggym@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
