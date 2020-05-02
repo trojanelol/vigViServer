@@ -52,6 +52,10 @@
                       <p:column headerText="Contact No.">
                           <h:outputText value="#{merchant.merchantContactNo}"/>
                       </p:column>
+                      
+                      <p:column headerText="Currency">
+                          <h:outputText value="#{merchant.currency.currencyName}"/>
+                      </p:column>
 
                       <p:column headerText="Action">
                           <p:commandLink value="View Classes" actionListener="#{viewAllMerchantsManagedBean.viewMerchantDetails}">

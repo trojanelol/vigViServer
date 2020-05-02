@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+
+        <ui:define name="content">
+            
+<!--             <ui:include src = "pfViewMerchants.xhtml" />-->
+            <div>
+                <p:panel header="Update Conversion Rate">
+                <h:form id="formCurrency">
+                    <p:messages closable="true"  />
+                        <p:panelGrid>  
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold;" for="selCurrency" value="Currency" />
+                                </p:column>
+                                <p:column>    
+                                    <p:selectOneMenu id="selCurrency" value="#{manageCurrencyManagedBean.currencyId}" required="true" requiredMessage="Currency is required" >
+                                        <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
+                                        <f:selectItems value="#{manageCurrencyManagedBean.currencyEntities}" var="currencyEntity" itemValue="#{currencyEntity.currencyId}" itemLabel="#{currencyEntity.currencyId}-#{currencyEntity.currencyName}" />
+                                    </p:selectOneMenu>
+                                </p:column>      
+                            </p:row>
+
+                            
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="payment" value="New Conversion Rate" />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText  id="payment" type="float" value="#{manageCurrencyManagedBean.newRate}" required="true" requiredMessage="New Rate is required">
+                                        <f:convertNumber pattern="#0.0000" />
+                                    </p:inputText>
+                                </p:column>      
+                            </p:row>
+
+                            
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Clear" type="reset"/>
+                                    <p:commandButton value="Update" type="submit" process="@form" update="@form" actionListener="#{manageCurrencyManagedBean.updateConversionRate}">
+                                    </p:commandButton>    
+                                </p:column>      
+                            </p:row>
+
+
+                            <h:message errorClass="errorTextsNoMarginLeft" fatalClass="errorTextsNoMarginLeft" for="selCurrency" />
+                        </p:panelGrid>
+                    
+                        <p:separator/>
+                
+                        <p:panelGrid columnClasses="dataTableLabel,dataTableValue" columns="2" style="width: 100%;" rendered="#{manageCurrencyManagedBean.currencyEntities != null}">
+                    
+                    <p:panel header="View All Payable Transactions">
+
+                        <p:dataTable id="sessionData" value="#{manageCurrencyManagedBean.currencyEntities}" var="transactionEntity" paginator="true" rows="5" paginatorPosition="bottom">
+                      
+                        <p:column headerText="Currency ID" >
+                            <h:outputText value="#{transactionEntity.currencyId}"/>
+                       </p:column>     
+                            
+                        <p:column headerText="Currency Name" >
+                            <h:outputText value="#{transactionEntity.currencyName}"/>
+                       </p:column>
+
+                      <p:column headerText="Conversion Rate by 1 $V">    
+                          <h:outputText value="#{transactionEntity.conversionRate}">
+                              <f:convertNumber pattern="#0.0000" />
+                          </h:outputText>    
+                      </p:column>
+                      
+                       <p:column headerText="Last Updated">    
+                           <h:outputText value="#{transactionEntity.updatedDate}">
+                               <f:convertDateTime pattern="EEEE, dd/MM/yyyy" timeZone="#{manageCurrencyManagedBean.timeZone}"/>
+                          </h:outputText>    
+                      </p:column>      
+
+                  </p:dataTable>
+                        <br></br>
+                           
+              </p:panel>
+              </p:panelGrid>
+                    
+                </h:form>
+            </p:panel>  
+            </div>
+        </ui:define>
+
+
+</ui:composition>
