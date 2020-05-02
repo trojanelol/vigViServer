@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.ReceivableTransaction;
 import entity.Wallet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -17,10 +18,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import util.exception.AmountNotSufficientException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
+import util.exception.ReferralCodeNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.WalletNotFoundException;
 
@@ -46,15 +49,33 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
     
     
     @Override
-    public Long activateWallet(Long customerId, Wallet newWallet, Long currencyId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException{
+    public Long activateWallet(Long customerId, Wallet newWallet, Long currencyId, String referralCode) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException, ReferralCodeNotFoundException{
         try{
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         newWallet.setCustomer(customerEntity);
         customerEntity.setWallet(newWallet);
+        
         em.persist(newWallet);
         em.flush();
+        
+        System.out.println("******************* create new Wallet" + newWallet.getWalletId());
+                System.out.println("******************* generated referralCode" + newWallet.getReferralCode());
         double realAmount = newWallet.getCurrentBalance();
+        System.out.println("******************* referralCode" + referralCode);
+
+        if(referralCode != ""){
+            try{
+                Wallet walletEmp = this.retrieveWalletByReferralCode(referralCode).get(0);
+                System.out.println("******************* referred by this wallet" + walletEmp.getWalletId());
+                walletEmp.setReferredUser(walletEmp.getReferredUser() + 1);
+                realAmount = realAmount + 10;
+                this.topUpMoney(walletEmp.getCustomer().getCustomerId(), 10, currencyId);
+            }catch (NoResultException | NonUniqueResultException ex){
+                throw new ReferralCodeNotFoundException(ex.getMessage());
+            }
+        }
         if(realAmount != 0){
+            System.out.println("******************* top up real amount" + realAmount);
             double conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
             double issuedAmount = realAmount/conversionRate;
             newWallet.setCurrentBalance(issuedAmount);
@@ -79,6 +100,16 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
         }
+    }
+    
+    @Override
+    public List<Wallet> retrieveWalletByReferralCode( String referralCode){
+ 
+        Query query = em.createQuery("SELECT c from Wallet c WHERE c.referralCode = :code");
+        query.setParameter("code", referralCode);
+        
+        return query.getResultList();
+
     }
     
     @Override
@@ -154,6 +185,17 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             return walletEntity;
         }catch (NoResultException | NonUniqueResultException ex){
             throw new WalletNotFoundException ("Wallet from customer" + customerId + "does not exist");
+        }
+    }
+    
+    @Override
+    public Wallet retrieveWalletByWalletId(Long walletId)throws WalletNotFoundException{
+       Wallet walletEntity = em.find(Wallet.class, walletId);
+
+        try{
+            return walletEntity;
+        }catch (NoResultException | NonUniqueResultException ex){
+            throw new WalletNotFoundException ("Wallet" + walletId + "does not exist");
         }
     }
 }

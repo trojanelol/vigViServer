@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
+import util.security.CryptographicHelper;
 
 /**
  *
@@ -26,6 +27,22 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Wallet implements Serializable {
+
+    public int getReferredUser() {
+        return referredUser;
+    }
+
+    public void setReferredUser(int referredUser) {
+        this.referredUser = referredUser;
+    }
+
+    public String getReferralCode() {
+        return referralCode;
+    }
+
+    public void setReferralCode(String referralCode) {
+        this.referralCode = referralCode;
+    }
 
     public List<ReceivableTransaction> getReceivableTransactions() {
         return receivableTransactions;
@@ -69,13 +86,13 @@ public class Wallet implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long walletId;
+    private Long walletId; //use for referral
     private Double currentBalance;
     private Double holdBalance;
     private String ccName;
     private String ccBillingAddress;
     private CardType ccType;
-    @Column(unique = true)
+    
     private String ccNumber;
     @OneToOne(mappedBy = "wallet")
     private Customer customer;
@@ -85,6 +102,9 @@ public class Wallet implements Serializable {
     private Date updatedDate;
     @OneToMany(mappedBy="wallet")
     private List<ReceivableTransaction> receivableTransactions;
+    @Column(unique = true)
+    private String referralCode; //generate upon activation
+    private int referredUser;
 //    private Date deactivatedDate;
     
     @PrePersist
@@ -98,9 +118,12 @@ public class Wallet implements Serializable {
     }
 
     public Wallet() {
+        this.referralCode = CryptographicHelper.getInstance().generateRandomString(6);
+        this.referredUser = 0;
     }
 
     public Wallet(Double balance, String ccName, String ccBillingAddress, CardType ccType, String ccNumber) {
+        this();
         this.currentBalance = balance;
         this.ccName = ccName;
         this.ccBillingAddress = ccBillingAddress;
