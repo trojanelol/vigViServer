@@ -12,35 +12,29 @@
             <p:separator></p:separator>
             <p:menubar style="background-color: #e0f7fa !important">
                 <p:menuitem value="Homepage" outcome="index"/>
-                <p:submenu label="Merchants" >
-                    <p:menuitem value="Create" outcome="createMerchant" />
-                    <p:menuitem value="View All" outcome="viewMerchants" />
+                <p:submenu label="Merchant" >
+                    <p:menuitem value="Create New Merchant" outcome="createMerchant" />
+                    <p:menuitem value="Manage Merchants" outcome="viewMerchants" />
                 </p:submenu>
-                <p:submenu label="Classes">
-                    <p:menuitem value="Create" outcome="createGymClass" />
-                    <p:menuitem value="View All" outcome="viewAllClasses" />
-                    <p:menuitem value="Homepage" outcome="index" />
+                <p:submenu label="Class">
+                    <p:menuitem value="Create New Class" outcome="createGymClass" />
+                    <p:menuitem value="Manage Classes" outcome="viewAllClasses" />
                 </p:submenu>
                 <p:submenu label="Sessions">
-                    <p:menuitem value="Create" outcome="createSession" />
-                    <p:menuitem value="Search" outcome="viewAllSessions" />
-                    <p:menuitem value="Homepage" outcome="index" />
+                    <p:menuitem value="Create New Session" outcome="createSession" />
+                    <p:menuitem value="Manage Sessions" outcome="viewAllSessions" />
                 </p:submenu>
                 <p:submenu label="Attendance">
-                    <p:menuitem value="Search" outcome="viewAttendance" />
-                    <p:menuitem value="Homepage" outcome="index" />
+                    <p:menuitem value="Manage Attendance" outcome="viewAttendance" />
                 </p:submenu>
-                <p:submenu label="Payable">
-                    <p:menuitem value="Search By Merchant" outcome="viewTransactionsByMerchant" />
-                    <p:menuitem value="Homepage" outcome="index" />
+                <p:submenu label="Transaction">
+                    <p:menuitem value="Manage Merchant" outcome="viewTransactionsByMerchant" />
+                    <p:menuitem value="View Customer" outcome="viewTransactionsByCustomer" />
                 </p:submenu>
-                <p:submenu label="Transaction Dashboard">
-                    <p:menuitem value="Search" outcome="dashboard" />
-                    <p:menuitem value="Homepage" outcome="index" />
-                </p:submenu>
-                <p:submenu label="Customer-Wallet">
-                    <p:menuitem value="Search" outcome="viewAttendance" />
-                    <p:menuitem value="Homepage" outcome="index" />
+                <p:submenu label="Customer">
+                    <p:menuitem value="Create New Customer" outcome="createCustomer" />
+                    <p:menuitem value="Manage Customer" outcome="viewCustomers" />
+                    <p:menuitem value="Customer Dashboard" outcome="dashboard" />
                 </p:submenu>
             </p:menubar>
         </h:form>
