@@ -25,12 +25,12 @@ import javax.persistence.Temporal;
 @Entity
 public class Currency implements Serializable {
 
-    public String getConversionRegion() {
-        return conversionRegion;
+    public String getCurrencyName() {
+        return currencyName;
     }
 
-    public void setConversionRegion(String conversionRegion) {
-        this.conversionRegion = conversionRegion;
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
     }
 
     public List<Merchant> getMerchants() {
@@ -47,7 +47,7 @@ public class Currency implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long currencyId;
     private Double conversionRate;
-    private String conversionRegion;
+    private String currencyName;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -69,9 +69,9 @@ public class Currency implements Serializable {
     public Currency() {
     }
 
-    public Currency(Double conversionRate, String conversionRegion) {
+    public Currency(Double conversionRate, String currencyName) {
         this.conversionRate = conversionRate;
-        this.conversionRegion = conversionRegion;
+        this.currencyName = currencyName;
     }
     
 

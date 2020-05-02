@@ -80,7 +80,7 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             double issuedAmount = realAmount/conversionRate;
             newWallet.setCurrentBalance(issuedAmount);
             newWallet.setHoldBalance(0.0);
-            receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(realAmount, issuedAmount));
+            receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(realAmount, issuedAmount,currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getCurrencyName()));
         }
         return newWallet.getWalletId();
         } catch(PersistenceException ex){
@@ -121,7 +121,7 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
         double issuedAmount = topUpAmount / conversionRate;
         walletEntity.setCurrentBalance(currentBalance + issuedAmount);
         
-        receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(topUpAmount, issuedAmount));
+        receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(topUpAmount, issuedAmount, currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getCurrencyName()));
         
         return walletEntity;
 

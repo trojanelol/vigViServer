@@ -24,6 +24,14 @@ import javax.persistence.Temporal;
 @Entity
 public class ReceivableTransaction implements Serializable {
 
+    public String getConversionCurrency() {
+        return conversionCurrency;
+    }
+
+    public void setConversionCurrency(String conversionCurrency) {
+        this.conversionCurrency = conversionCurrency;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +46,8 @@ public class ReceivableTransaction implements Serializable {
     private double topUpAmount;
     // in $V
     private double issuedAmount;
+    // store the current one
+    private String conversionCurrency;
 //    private Date deactivatedDate;
     
     @PrePersist
@@ -70,9 +80,10 @@ public class ReceivableTransaction implements Serializable {
     public ReceivableTransaction() {
     }
 
-    public ReceivableTransaction(double topUpAmount, double issuedAmount) {
+    public ReceivableTransaction(double topUpAmount, double issuedAmount, String conversionCurrency) {
         this.topUpAmount = topUpAmount;
         this.issuedAmount = issuedAmount;
+        this.conversionCurrency = conversionCurrency;
     }
     
     public Wallet getWallet() {
