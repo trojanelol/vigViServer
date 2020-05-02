@@ -42,11 +42,17 @@
                                         <h:outputText value="#{transactionEntity.payableTransactionId}"/>
                                     </p:column>
 
-                                    <p:column headerText="Amount in SGD">    
+                                    <p:column headerText="Amount">    
                                         <h:outputText value="#{transactionEntity.customerAmount}">
                                             <f:convertNumber pattern="#0.00" />
                                         </h:outputText>    
-                                    </p:column> 
+                                    </p:column>
+                                    
+                                                          
+                                    <p:column headerText="Currency (based on Merchant)">    
+                                        <h:outputText value="#{transactionEntity.customerSession.session.gymClass.merchant.currency.currencyName}">
+                                       </h:outputText>    
+                                   </p:column>   
 
                                     <p:column headerText="Transferred Date">
                                         <h:outputText value="#{transactionEntity.createdDate}">
@@ -72,9 +78,14 @@
                                         <h:outputText value="#{transactionEntity.receivableTransactionId}"/>
                                     </p:column>
 
-                                    <p:column headerText="Top Up Amount in SGD">    
+                                    <p:column headerText="Top Up Amount">    
                                         <h:outputText value="#{transactionEntity.topUpAmount}">
                                             <f:convertNumber pattern="#0.00" />
+                                        </h:outputText>    
+                                    </p:column> 
+                                    
+                                    <p:column headerText="Currency">    
+                                        <h:outputText value="#{transactionEntity.conversionCurrency}">
                                         </h:outputText>    
                                     </p:column> 
 

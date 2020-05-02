@@ -73,15 +73,25 @@
                     <p:panel header="View All Payable Transactions">
 
                         <p:dataTable id="sessionData" value="#{makePaymentManagedBean.transactionEntities}" var="transactionEntity" paginator="true" rows="5" paginatorPosition="bottom">
-                      <p:column headerText="Transaction ID" >
+                      
+                        <p:column headerText="Merchant ID" >
+                            <h:outputText value="#{transactionEntity.customerSession.session.gymClass.merchant.merchantId}"/>
+                       </p:column>     
+                            
+                        <p:column headerText="Transaction ID" >
                           <h:outputText value="#{transactionEntity.payableTransactionId}"/>
                        </p:column>
 
-                      <p:column headerText="Payable Amount in SGD">    
+                      <p:column headerText="Payable Amount">    
                           <h:outputText value="#{transactionEntity.merchantAmount}">
                               <f:convertNumber pattern="#0.00" />
                           </h:outputText>    
-                      </p:column> 
+                      </p:column>
+                      
+                       <p:column headerText="Currency">    
+                           <h:outputText value="#{transactionEntity.customerSession.session.gymClass.merchant.currency.currencyName}">
+                          </h:outputText>    
+                      </p:column>      
 
                       <p:column headerText="Paid Status">
                           <h:outputText value="#{transactionEntity.platformPaidStatus}"/>
@@ -93,7 +103,7 @@
                             
                       <p:column headerText="Paid Date">
                           <h:outputText value="#{transactionEntity.platformPaidDate}">
-                              <f:convertDateTime pattern="EEEE,dd/MM/yyyy" timeZone="#{makePaymentManagedBean.timeZone}"/>
+                              <f:convertDateTime pattern="EEEE, dd/MM/yyyy" timeZone="#{makePaymentManagedBean.timeZone}"/>
                           </h:outputText>    
                       </p:column>
                             

@@ -142,6 +142,7 @@ public class DataInitSessionBean {
                sessionSessionBeanLocal.cancelSession(sessionId1);
                sessionSessionBeanLocal.endSession(sessionId2);
                sessionSessionBeanLocal.endSession(sessionId3);
+               sessionSessionBeanLocal.endSession(sessionId1My);
         }
     }
 }
