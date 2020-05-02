@@ -94,11 +94,11 @@
 
                       <p:column headerText="Action">
 <!--                      if payable is null & status is active-->
-                        <p:commandLink rendered="#{!customerSessionEntity.customerAttendance}" value="Mark Attendance" actionListener="#{viewAttendanceManagedBean.present}">
+<p:commandLink rendered="#{!customerSessionEntity.customerAttendance and customerSessionEntity.customerSessionStatus eq 'ACTIVE'}" value="Mark Attendance" actionListener="#{viewAttendanceManagedBean.present}">
                               <f:attribute name="customerSessionId" value="#{customerSessionEntity.customerSessionId}" />
                               <f:attribute name="sessionId" value="#{viewAttendanceManagedBean.sessionId}" />
                           </p:commandLink>    
-                        <p:commandLink rendered="#{customerSessionEntity.customerAttendance}" value="Absent" actionListener="#{viewAttendanceManagedBean.absent}">
+                        <p:commandLink rendered="#{customerSessionEntity.customerAttendance and customerSessionEntity.customerSessionStatus eq 'ACTIVE'}" value="Absent" actionListener="#{viewAttendanceManagedBean.absent}">
                                 <f:attribute name="customerSessionId" value="#{customerSessionEntity.customerSessionId}" />
                               <f:attribute name="sessionId" value="#{viewAttendanceManagedBean.sessionId}" />
                           </p:commandLink> 

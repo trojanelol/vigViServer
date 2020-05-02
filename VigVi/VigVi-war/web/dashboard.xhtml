@@ -7,26 +7,72 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"> 
 
+    <ui:define name="top">
 
-        <ui:define name="content">          
-            <div>   
-                <p:chart type="line" model="#{dashboardManagedBean.animatedModelSignUpCustomers}"/>
-                <p:panelGrid columns="2" style="border:none">
-                    <p:panel style="width:650px;height:300px;border:none">
-                       <p:chart type="pie" model="#{dashboardManagedBean.pieModelCustomerGender}" />
-                    </p:panel>
+    </ui:define>
 
-                    <p:panel style="width:650px;height:300px;border:none">
-                        <p:chart type="pie" model="#{dashboardManagedBean.pieModelCustomerStatus}"/>
-                    </p:panel>
-                                  
-                </p:panelGrid>
+    <ui:define name="content">
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            .row {
+                display: flex;
+            }
+
+            /* Create two equal columns that sits next to each other */
+            .column {
+                flex: 50%;
+                padding: 10px;
+                height: 300px; /* Should be removed. Only for demonstration */
+            }
+
+            .card{
+                /* Default padding: .5em */
+                padding-top: 60px;
+                padding-left: 40px;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+        </style>
+        <div>
+            <div class="row">
+
+                <div class="container">
+                    <div class="center-align">
+                        <div class="row">
+                            <div class="col s6 offset-s3">
+                                <div class="ui-fluid">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <h3 style="text-align: center">As of today</h3>&nbsp;
+                                            <h2 style="text-align: center">Total Customer Sign Up : #{dashboardManagedBean.customers.size()}</h2>&nbsp;
+                                            <h2 style="text-align: center">Total Merchant Sign Up : #{dashboardManagedBean.merchants.size()}</h2>&nbsp;
+                                            <h2 style="text-align: center">Total Issued Amount : $V #{dashboardManagedBean.totalIssuedVAmount}</h2>
+                                        </div></div> </div> </div> </div> </div>
+                </div>
+                <p:donutChart model="#{dashboardManagedBean.donutModel}" style="width: 100%; height: 500px;"/>
+
             </div>
-        </ui:define>
+            <div class="col-2">
+                <p:chart type="line" model="#{dashboardManagedBean.animatedModelSignUpCustomers}"/>
+            </div>
+            <div class="row">
+                <div class="column" style="width:650px;height:300px;border:none">
+                    <p:chart type="pie" model="#{dashboardManagedBean.pieModelCustomerGender}" />
+                </div>
 
-        <ui:define name="bottom">
-             
-        </ui:define>
+                <div class="column" style="width:650px;height:300px;border:none">
+                    <p:chart type="pie" model="#{dashboardManagedBean.pieModelCustomerStatus}"/>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="bottom">
+
+    </ui:define>
 
 
 </ui:composition>

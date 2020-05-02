@@ -78,4 +78,13 @@ public class ReceivableTransactionSessionBean implements ReceivableTransactionSe
         return query.getResultList();
 
     }
+    
+    @Override
+    public List retrieveIssuedAmountToDate(){
+        Query query = em.createQuery("SELECT SUM(c.issuedAmount) AS totalIssuedAmount from ReceivableTransaction c");
+        
+        List sum = query.getResultList();
+        
+        return sum;
+    }
 }

@@ -24,5 +24,8 @@ public interface ReceivableTransactionSessionBeanLocal {
     public List<ReceivableTransaction> retrieveAllReceivableTransactions();
 
     public List<ReceivableTransaction> retrieveAllReceivableTransactionsByCustomerId(Long customerId);
+
+    public List retrieveIssuedAmountToDate();
+
     
 }

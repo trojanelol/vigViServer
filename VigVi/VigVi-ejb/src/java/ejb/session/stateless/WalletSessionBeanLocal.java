@@ -38,5 +38,7 @@ public interface WalletSessionBeanLocal {
     public Long activateWallet(Long customerId, Wallet newWallet, Long currencyId, String referralCode) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException, ReferralCodeNotFoundException;
 
     public Wallet retrieveWalletByWalletId(Long walletId) throws WalletNotFoundException;
+
+    public List<Wallet> retrieveAllWallets();
     
 }

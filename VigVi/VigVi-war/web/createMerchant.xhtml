@@ -17,12 +17,12 @@
                         <p:panelGrid>
                              <p:row>
                                 <p:column>
-                                    <p:outputLabel style="font-weight: bold;" for="selRegion" value="Region" />
+                                    <p:outputLabel style="font-weight: bold;" for="selRegion" value="Currency" />
                                 </p:column>
                                 <p:column>    
-                                    <p:selectOneMenu id="selRegion" value="#{createNewMerchantManagedBean.currencyId}" required="true" requiredMessage="Region is required" >
+                                    <p:selectOneMenu id="selRegion" value="#{createNewMerchantManagedBean.currencyId}" required="true" requiredMessage="Currency is required" >
                                         <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="false" />
-                                        <f:selectItems value="#{createNewMerchantManagedBean.currencyEntities}" var="currencyEntity" itemValue="#{currencyEntity.currencyId}" itemLabel="#{currencyEntity.conversionRegion}" />
+                                        <f:selectItems value="#{createNewMerchantManagedBean.currencyEntities}" var="currencyEntity" itemValue="#{currencyEntity.currencyId}" itemLabel="#{currencyEntity.currencyName}" />
                                     </p:selectOneMenu>
                                 </p:column>      
                             </p:row>    
@@ -98,17 +98,6 @@
                                 </p:column>      
                             </p:row>
 
-
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="img" value="Image"/>
-                                </p:column>
-                                <p:column>
-                                    <p:inputText id="img" value="#{createNewMerchantManagedBean.newMerchant.merchantImage}"/>
-                                </p:column>      
-                            </p:row>
-
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="selCommRate" value="Commission Rate"/>
@@ -128,7 +117,7 @@
                                     <p:outputLabel for="address" value="Physical Address"/>
                                 </p:column>
                                 <p:column>
-                                    <p:inputText type="address" id="address" value="#{createNewMerchantManagedBean.newMerchant.merchantAddress}" required="true" requiredMessage="Physical Address is required" />
+                                    <p:inputText id="address" value="#{createNewMerchantManagedBean.newMerchant.merchantAddress}" required="true" requiredMessage="Physical Address is required" />
                                 </p:column>      
                             </p:row>
 

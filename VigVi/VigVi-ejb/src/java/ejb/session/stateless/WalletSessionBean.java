@@ -198,4 +198,11 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             throw new WalletNotFoundException ("Wallet" + walletId + "does not exist");
         }
     }
+    
+    @Override
+    public List<Wallet> retrieveAllWallets(){
+        Query query = em.createQuery("SELECT c from Wallet c");
+        
+        return query.getResultList();
+    }
 }

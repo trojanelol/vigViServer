@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/commonTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://java.sun.com/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+
+        <ui:define name="content">
+   
+             <div>
+                    <p:panel header="View Top Referral" >
+
+                        <p:dataTable value="#{viewReferralRankManagedBean.wallets}" var="customer"  sortBy="#{customer.referredUser}" sortOrder="DESCENDING" rowIndexVar="index">
+                      
+                            <p:column >
+        <f:facet name="header">
+            <h:outputText value="Rank" />
+        </f:facet>
+        <h:outputText 
+            value="#{index + 1}" />
+    </p:column>
+                            
+                    <p:column headerText="Customer ID">
+                          <h:outputText value="#{customer.customer.customerId}"/>
+                      </p:column>
+                        
+                            <p:column headerText="Customer Name">
+                          <h:outputText value="#{customer.customer.customerName}"/>
+                      </p:column>
+
+                      <p:column headerText="Contact No.">
+                          <h:outputText value="#{customer.customer.customerContactNo}"/>
+                      </p:column>
+
+                      <p:column headerText="Email">
+                          <h:outputText value="#{customer.customer.customerEmail}"/>
+                      </p:column>
+
+                      <p:column headerText="Referral Code">
+                          <h:outputText value="#{customer.referralCode}"/>
+                      </p:column>
+
+                      <p:column headerText="Total Referral">
+                          <h:outputText value="#{customer.referredUser}"/>
+                      </p:column>
+
+                  </p:dataTable>
+              </p:panel>
+            </div>
+        </ui:define>
+
+</ui:composition>

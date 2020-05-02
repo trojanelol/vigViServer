@@ -7,13 +7,16 @@ package jsf.managedbean;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.MerchantSessionBeanLocal;
+import ejb.session.stateless.ReceivableTransactionSessionBeanLocal;
 import ejb.session.stateless.SessionSessionBeanLocal;
 import entity.Customer;
 import entity.CustomerSession;
 import entity.Merchant;
 import entity.Session;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -27,6 +30,9 @@ import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.donut.DonutChartDataSet;
+import org.primefaces.model.charts.donut.DonutChartModel;
 
 /**
  *
@@ -35,6 +41,25 @@ import org.primefaces.model.chart.PieChartModel;
 @Named(value = "dashboardManagedBean")
 @ViewScoped
 public class DashboardManagedBean implements Serializable {
+
+    public DonutChartModel getDonutModel() {
+        return donutModel;
+    }
+
+    public void setDonutModel(DonutChartModel donutModel) {
+        this.donutModel = donutModel;
+    }
+
+    public double getTotalIssuedVAmount() {
+        return totalIssuedVAmount;
+    }
+
+    public void setTotalIssuedVAmount(double totalIssuedVAmount) {
+        this.totalIssuedVAmount = totalIssuedVAmount;
+    }
+
+    @EJB(name = "ReceivableTransactionSessionBeanLocal")
+    private ReceivableTransactionSessionBeanLocal receivableTransactionSessionBeanLocal;
 
     public LineChartModel getAnimatedModelSignUpCustomers() {
         return animatedModelSignUpCustomers;
@@ -109,6 +134,8 @@ public class DashboardManagedBean implements Serializable {
     private PieChartModel pieModelCustomerGender;
     private PieChartModel pieModelCustomerStatus;
     private LineChartModel animatedModelSignUpCustomers;
+    private double totalIssuedVAmount;
+    private DonutChartModel donutModel;
     
     @PostConstruct
     public void postConstruct()
@@ -117,12 +144,42 @@ public class DashboardManagedBean implements Serializable {
         setCustomers(customerSessionBeanLocal.retrieveAllCustomers());
         setMerchants(merchantSessionBeanLocal.retrieveAllMerchants());
         setSessions(sessionSessionBeanLocal.retrieveAllSessions());
+        setTotalIssuedVAmount((double)receivableTransactionSessionBeanLocal.retrieveIssuedAmountToDate().get(0));
+        totalIssuedVAmount=Math.round(totalIssuedVAmount);
         
         this.customerGenderPieChart();
         this.customerActivePieChart();
         this.customerSignUpChart();
+        this.customerVSmerchant();
 
     }
+    
+    public void customerVSmerchant() {
+        setDonutModel(new DonutChartModel());
+        ChartData data = new ChartData();
+
+        DonutChartDataSet dataSet = new DonutChartDataSet();
+        List<Number> values = new ArrayList<>();
+        values.add(customers.size());
+        values.add(merchants.size());
+        dataSet.setData(values);
+         
+        List<String> bgColors = new ArrayList<>();
+        bgColors.add("rgb(255, 99, 132)");
+        bgColors.add("rgb(54, 162, 235)");
+        dataSet.setBackgroundColor(bgColors);
+         
+        data.addChartDataSet(dataSet);
+        List<String> labels = new ArrayList<>();
+        labels.add("Customer");
+        labels.add("Merchant");
+        data.setLabels(labels);
+        
+        donutModel.setData(data);
+         
+    }
+    
+    
 
     
     private void customerGenderPieChart() {
@@ -189,7 +246,11 @@ public class DashboardManagedBean implements Serializable {
         animatedModelSignUpCustomers.setAnimate(true);
         animatedModelSignUpCustomers.setLegendPosition("se");
         Axis yAxis = animatedModelSignUpCustomers.getAxis(AxisType.Y);
+        Axis xAxis = animatedModelSignUpCustomers.getAxis(AxisType.X);
         yAxis.setMin(0);
+        xAxis.setMin(0);
+        xAxis.setLabel("Session ID");
+        yAxis.setLabel("Sign Ups");
  
     }
 }
