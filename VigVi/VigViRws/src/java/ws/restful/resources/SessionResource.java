@@ -6,7 +6,10 @@
 package ws.restful.resources;
 
 import ejb.session.stateless.ClassSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionSessionBeanLocal;
 import ejb.session.stateless.SessionSessionBeanLocal;
+import entity.CustomerSession;
+import entity.CustomerSessionId;
 import entity.GymClass;
 import entity.Merchant;
 import entity.Session;
@@ -33,6 +36,7 @@ import ws.restful.model.CreateNewSessionRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllOngoingSessionsReq;
 import ws.restful.model.RetrieveAllOngoingSessionsRsp;
+import ws.restful.model.RetrieveAttendanceBySessionRsp;
 
 /**
  * REST Web Service
@@ -41,6 +45,8 @@ import ws.restful.model.RetrieveAllOngoingSessionsRsp;
  */
 @Path("Session")
 public class SessionResource {
+
+    CustomerSessionSessionBeanLocal customerSessionSessionBean = lookupCustomerSessionSessionBeanLocal();
 
     ClassSessionBeanLocal classSessionBean = lookupClassSessionBeanLocal();
 
@@ -131,6 +137,84 @@ public class SessionResource {
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
         }
     }
+    
+    @Path("Attendance")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAttendanceBySessionId(@QueryParam("merchantId") Long merchantId, 
+                                                    @QueryParam("sessionId") Long sessionId ) {
+        
+        try
+        {
+            List<CustomerSession> temp = customerSessionSessionBean.retrieveAllActiveCustomerSessionsBySessionId(sessionId);
+            
+            if(temp.get(0).getSession().getGymClass().getMerchant().getMerchantId()!= merchantId){
+                ErrorRsp errorRsp = new ErrorRsp("Invalid access, wrong merchant ID");
+            
+                return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+
+            RetrieveAttendanceBySessionRsp retrieveAttendanceBySessionRsp = new RetrieveAttendanceBySessionRsp(temp);
+
+            return Response.status(Status.OK).entity(retrieveAttendanceBySessionRsp).build();
+        }catch(ArrayIndexOutOfBoundsException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("No sign up so far");
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+     @Path("MarkAttendance")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response markAttendance(@QueryParam("merchantId") Long merchantId, 
+                                                    @QueryParam("sessionId") Long sessionId, 
+                                                    @QueryParam("customerId") Long customerId,
+                                                    @QueryParam("attendance") boolean attendance) {
+        
+        try
+        {
+            List<CustomerSession> temp = customerSessionSessionBean.retrieveAllActiveCustomerSessionsBySessionId(sessionId);
+            
+            if(temp.get(0).getSession().getGymClass().getMerchant().getMerchantId()!= merchantId){
+                ErrorRsp errorRsp = new ErrorRsp("Invalid access, wrong merchant ID");
+            
+                return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            }
+            
+            CustomerSessionId customerSessionId = customerSessionSessionBean.retrieveCustomerSessionByCustomerAndSessionId(customerId, sessionId).get(0).getCustomerSessionId();
+            
+            customerSessionSessionBean.markAttendance(customerSessionId, attendance);
+            
+            List<CustomerSession> after = customerSessionSessionBean.retrieveAllActiveCustomerSessionsBySessionId(sessionId);
+
+            RetrieveAttendanceBySessionRsp retrieveAttendanceBySessionRsp = new RetrieveAttendanceBySessionRsp(after);
+
+            return Response.status(Status.OK).entity(retrieveAttendanceBySessionRsp).build();
+        }catch(ArrayIndexOutOfBoundsException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("No sign up so far");
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    
 
     private SessionSessionBeanLocal lookupSessionSessionBeanLocal() {
         try {
@@ -146,6 +230,16 @@ public class SessionResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ClassSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/ClassSessionBean!ejb.session.stateless.ClassSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionSessionBeanLocal lookupCustomerSessionSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/CustomerSessionSessionBean!ejb.session.stateless.CustomerSessionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

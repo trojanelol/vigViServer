@@ -48,4 +48,8 @@ public interface CustomerSessionSessionBeanLocal {
 
     public List<CustomerSession> retrieveAllCustomerSessions();
 
+    public List<CustomerSession> retrieveAllActiveCustomerSessionsBySessionId(Long sessionId);
+
+    public List<CustomerSession> retrieveCustomerSessionByCustomerAndSessionId(Long customerId, Long sessionId);
+
 }

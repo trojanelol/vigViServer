@@ -46,6 +46,7 @@ public class Customer implements Serializable {
     private Long customerId;
     @Column(unique = true)
     private String customerEmail;
+    @JsonbTransient
     private String customerPw;
     private String customerImage;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -66,6 +67,7 @@ public class Customer implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
     @Column(columnDefinition = "CHAR(32) NOT NULL")
+    @JsonbTransient
     private String salt;
 //    private Date deactivatedDate;
     

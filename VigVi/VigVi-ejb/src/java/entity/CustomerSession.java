@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
@@ -52,11 +53,13 @@ public class CustomerSession implements Serializable {
     @ManyToOne
     private Customer customer;
     @ManyToOne
+    @JsonbTransient
     private Session session;
     private CustomerSessionStatus customerSessionStatus;
     private Boolean customerAttendance;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payableTransactionId", referencedColumnName = "payableTransactionId")
+    @JsonbTransient
     private PayableTransaction payableTransaction;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;

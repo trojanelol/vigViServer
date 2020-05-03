@@ -169,6 +169,15 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     }
     
     @Override
+    public List<CustomerSession> retrieveAllActiveCustomerSessionsBySessionId (Long sessionId){
+        Query query = em.createQuery("SELECT c from CustomerSession c WHERE c.customerSessionId.sessionId = :id and c.customerSessionStatus = :status");
+        query.setParameter("id", sessionId);
+        query.setParameter("status", CustomerSession.CustomerSessionStatus.ACTIVE);
+        
+        return query.getResultList();
+    }
+    
+    @Override
     public List<CustomerSession> retrieveAllCustomerSessions (){
         Query query = em.createQuery("SELECT c from CustomerSession c");
         
@@ -308,5 +317,14 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
 
         }
         return emp;
+    }
+    
+    @Override
+    public List<CustomerSession> retrieveCustomerSessionByCustomerAndSessionId(Long customerId, Long sessionId){
+        Query query = em.createQuery("SELECT c from CustomerSession c WHERE c.customerSessionId.sessionId = :id and c.customerSessionId.customerId = :id2");
+        query.setParameter("id", sessionId);
+        query.setParameter("id2", customerId);
+        
+        return query.getResultList();
     }
 }
