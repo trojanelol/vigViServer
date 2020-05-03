@@ -29,7 +29,7 @@ import ws.restful.model.CreateNewClassReq;
 import ws.restful.model.CreateNewClassRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllActiveClassesRsp;
-import ws.restful.model.SignUpClassRsp;
+import ws.restful.model.GlobalRsp;
 
 /**
  * REST Web Service
@@ -115,7 +115,7 @@ public class GymClassResource {
         {
             customerSessionSessionBean.signUpClass(customerId, sessionId);
             
-            SignUpClassRsp signUpClassRsp = new SignUpClassRsp(true);
+            GlobalRsp signUpClassRsp = new GlobalRsp(true);
                 
             return Response.status(Response.Status.OK).entity(signUpClassRsp).build();
             
@@ -141,7 +141,7 @@ public class GymClassResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewMerchant(CreateNewClassReq createNewClassReq) {
+    public Response createNewClass(CreateNewClassReq createNewClassReq) {
         
         if(createNewClassReq != null)
         {

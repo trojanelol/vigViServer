@@ -37,7 +37,7 @@ import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllOngoingSessionsReq;
 import ws.restful.model.RetrieveAllOngoingSessionsRsp;
 import ws.restful.model.RetrieveAttendanceBySessionRsp;
-import ws.restful.model.SignUpClassRsp;
+import ws.restful.model.GlobalRsp;
 
 /**
  * REST Web Service
@@ -173,7 +173,7 @@ public class SessionResource {
         }
     }
     
-     @Path("EndSession")
+    @Path("EndSession")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -196,7 +196,7 @@ public class SessionResource {
 
           sessionSessionBean.endSession(sessionId);
           
-          SignUpClassRsp signUpClassRsp = new SignUpClassRsp(true);
+          GlobalRsp signUpClassRsp = new GlobalRsp(true);
 
             return Response.status(Status.OK).entity(signUpClassRsp).build();
         }catch(ArrayIndexOutOfBoundsException ex){

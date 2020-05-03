@@ -9,7 +9,7 @@ package ws.restful.model;
  *
  * @author JiaYunTeo
  */
-public class SignUpClassRsp {
+public class GlobalRsp {
 
     public boolean isSuccess() {
         return success;
@@ -21,10 +21,10 @@ public class SignUpClassRsp {
     
     private boolean success;
 
-    public SignUpClassRsp() {
+    public GlobalRsp() {
     }
 
-    public SignUpClassRsp(boolean success) {
+    public GlobalRsp(boolean success) {
         this.success = success;
     }
     
