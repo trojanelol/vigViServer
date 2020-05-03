@@ -37,6 +37,7 @@ import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllOngoingSessionsReq;
 import ws.restful.model.RetrieveAllOngoingSessionsRsp;
 import ws.restful.model.RetrieveAttendanceBySessionRsp;
+import ws.restful.model.SignUpClassRsp;
 
 /**
  * REST Web Service
@@ -158,6 +159,46 @@ public class SessionResource {
             RetrieveAttendanceBySessionRsp retrieveAttendanceBySessionRsp = new RetrieveAttendanceBySessionRsp(temp);
 
             return Response.status(Status.OK).entity(retrieveAttendanceBySessionRsp).build();
+        }catch(ArrayIndexOutOfBoundsException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("No sign up so far");
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+     @Path("EndSession")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response endSession(@QueryParam("merchantId") Long merchantId, 
+                                                    @QueryParam("sessionId") Long sessionId ) {
+        
+        try
+        {
+            
+          //merchant
+            
+          Session emp = sessionSessionBean.retrieveSessionBySessionId(sessionId);
+          
+          if(emp.getGymClass().getMerchant().getMerchantId()!= merchantId){
+              
+              ErrorRsp errorRsp = new ErrorRsp("Invalid access, wrong merchant");
+              
+              return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+          }
+
+          sessionSessionBean.endSession(sessionId);
+          
+          SignUpClassRsp signUpClassRsp = new SignUpClassRsp(true);
+
+            return Response.status(Status.OK).entity(signUpClassRsp).build();
         }catch(ArrayIndexOutOfBoundsException ex){
             
             ErrorRsp errorRsp = new ErrorRsp("No sign up so far");

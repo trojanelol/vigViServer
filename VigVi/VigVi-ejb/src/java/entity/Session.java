@@ -79,7 +79,9 @@ public class Session implements Serializable {
     
        public Integer getAvailableSlot() {
            
-        this.setAvailableSlot(this.gymClass.getClassSize() - this.signedUpCustomer.size());
+        int activeCustomer = (int) this.signedUpCustomer.stream().filter(o -> o.getCustomerSessionStatus() == CustomerSession.CustomerSessionStatus.ACTIVE).count();   
+           
+        this.setAvailableSlot(this.gymClass.getClassSize() - activeCustomer);
            
         return availableSlot;
     }
