@@ -87,6 +87,17 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
 
     }
     
+    
+    @Override
+    public List<GymClass> retrieveAllClassesByMerchantId(Long merchantId) {
+            //retrieveActiveClasses
+        Query query = em.createQuery("SELECT c from GymClass c WHERE c.merchant.merchantId = :id");
+        query.setParameter("id", merchantId);
+        
+        return query.getResultList();
+
+    }
+    
 
     
     @Override

@@ -108,12 +108,12 @@ public class DataInitSessionBean {
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"SGD"));
                Long malaysiaRateId = currencySessionBeanLocal.createNewCurrency(new Currency(10.0,"MYR"));
                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-               Long merchantIdMy = merchantSessionBeanLocal.createNewMerchant(malaysiaRateId, new Merchant("Vig Gym Malaysia", "Award-winning Gym (Mr.Muscle 2019)" , "viggym@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
+               Long merchantIdMy = merchantSessionBeanLocal.createNewMerchant(malaysiaRateId, new Merchant("Vig Gym Malaysia", "Award-winning Gym (Mr.Muscle 2019)" , "viggymmy@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1My = classSessionBeanLocal.createNewClass(merchantIdMy, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 15.0 , 20 , valueOf("10:00:00"), valueOf("12:00:00"), "Bring Towel", "Mr Muscle"));
                Long sessionId1My = sessionSessionBeanLocal.createNewSession(classId1My, new Session((formatter.parse("01/05/2020"))));
                Long sessionId2My = sessionSessionBeanLocal.createNewSession(classId1My, new Session((formatter.parse("01/05/2020"))));
                Long sessionId3My = sessionSessionBeanLocal.createNewSession(classId1My, new Session((formatter.parse("08/05/2020"))));
-               Long merchantId = merchantSessionBeanLocal.createNewMerchant(singaporeRateId, new Merchant("Vig Gym Singapore", "Award-winning Gym (Mr.Muscle 2019)" , "viggym@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
+               Long merchantId = merchantSessionBeanLocal.createNewMerchant(singaporeRateId, new Merchant("Vig Gym Singapore", "Award-winning Gym (Mr.Muscle 2019)" , "viggymsg@gmail.com", "password" , "DBS" , "123-4567-890","","+65-88990099","Vig Avenue #01-12 S12345"));
                Long classId1 = classSessionBeanLocal.createNewClass(merchantId, new GymClass("Lunch Vig Gym", "Best way to spend your lunch time", "", 15.0 , 20 , valueOf("10:00:00"), valueOf("12:00:00"), "Bring Towel", "Mr Muscle"));
                Long sessionId1 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/05/2020"))));
                Long sessionId2 = sessionSessionBeanLocal.createNewSession(classId1, new Session((formatter.parse("01/05/2020"))));

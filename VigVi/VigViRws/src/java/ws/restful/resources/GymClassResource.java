@@ -80,6 +80,30 @@ public class GymClassResource {
         }
     }
     
+    @Path("MerchantClasses")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllActiveClassesByMerchant(@QueryParam("merchantId") Long merchantId) {
+        
+        try
+        {
+            List<GymClass> gymclasses = classSessionBean.retrieveAllClassesByMerchantId(merchantId);
+
+            RetrieveAllActiveClassesRsp retrieveAllActiveClassesRsp = new RetrieveAllActiveClassesRsp(gymclasses);
+
+            return Response.status(Status.OK).entity(retrieveAllActiveClassesRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    
+    
     @Path("SignUpClass")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)

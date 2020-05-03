@@ -35,5 +35,7 @@ public interface ClassSessionBeanLocal {
     public void updateClass(GymClass gymClass) throws GymClassNotFoundException;
 
     public List<GymClass> retrieveAllClasses();
+
+    public List<GymClass> retrieveAllClassesByMerchantId(Long merchantId);
     
 }

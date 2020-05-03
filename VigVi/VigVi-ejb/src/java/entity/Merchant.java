@@ -48,6 +48,7 @@ public class Merchant implements Serializable {
     private String merchantName;
     private String merchantDesc;
     private Double commissionRate;
+    @Column(unique = true)
     private String merchantEmail;
     @JsonbTransient
     private String merchantPw;
