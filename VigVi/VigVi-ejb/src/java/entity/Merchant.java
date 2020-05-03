@@ -50,7 +50,6 @@ public class Merchant implements Serializable {
     private Double commissionRate;
     @Column(unique = true)
     private String merchantEmail;
-    @JsonbTransient
     private String merchantPw;
     private Boolean merchantStatus;
     private String bankName;
@@ -62,7 +61,6 @@ public class Merchant implements Serializable {
     private Date createdDate;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date updatedDate;
-    @JsonbTransient
     private String salt;
     @ManyToOne
     @JsonbTransient

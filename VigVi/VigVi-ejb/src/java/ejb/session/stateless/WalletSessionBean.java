@@ -103,6 +103,48 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
     }
     
     @Override
+    public Long activateWalletWithoutCode(Long customerId, Wallet newWallet, Long currencyId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, CurrencyNotFoundException, WalletNotFoundException, ReferralCodeNotFoundException{
+        try{
+        Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+        newWallet.setCustomer(customerEntity);
+        customerEntity.setWallet(newWallet);
+        
+        em.persist(newWallet);
+        em.flush();
+        
+        System.out.println("******************* create new Wallet" + newWallet.getWalletId());
+                System.out.println("******************* generated referralCode" + newWallet.getReferralCode());
+        double realAmount = newWallet.getCurrentBalance();
+
+        if(realAmount != 0){
+            System.out.println("******************* top up real amount" + realAmount);
+            double conversionRate = currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getConversionRate();
+            double issuedAmount = realAmount/conversionRate;
+            newWallet.setCurrentBalance(issuedAmount);
+            newWallet.setHoldBalance(0.0);
+            receivableTransactionSessionBeanLocal.createNewTransaction(customerId, new ReceivableTransaction(realAmount, issuedAmount,currencySessionBeanLocal.retrieveCurrencyByCurrencyId(currencyId).getCurrencyName()));
+        }
+        return newWallet.getWalletId();
+        } catch(PersistenceException ex){
+            if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
+            {
+                if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
+                {
+                    throw new ClassIDExistException();
+                }
+                else
+                {
+                    throw new UnknownPersistenceException(ex.getMessage());
+                }
+            }
+            else
+            {
+                throw new UnknownPersistenceException(ex.getMessage());
+            }
+        }
+    }
+    
+    @Override
     public List<Wallet> retrieveWalletByReferralCode( String referralCode){
  
         Query query = em.createQuery("SELECT c from Wallet c WHERE c.referralCode = :code");

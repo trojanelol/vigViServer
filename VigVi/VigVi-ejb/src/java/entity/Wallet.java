@@ -76,12 +76,6 @@ public class Wallet implements Serializable {
         this.customer = customer;
     }
 
-    public enum CardType
-    { 
-        Visa, 
-        Mastercard, 
-        Amex
-    } 
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -90,8 +84,8 @@ public class Wallet implements Serializable {
     private Double currentBalance;
     private Double holdBalance;
     private String ccName;
-    private String ccBillingAddress;
-    private CardType ccType;
+    private String ccExpiry;
+    private String ccType;
     
     private String ccNumber;
     @OneToOne(mappedBy = "wallet")
@@ -120,13 +114,15 @@ public class Wallet implements Serializable {
     public Wallet() {
         this.referralCode = CryptographicHelper.getInstance().generateRandomString(6);
         this.referredUser = 0;
+        this.currentBalance = 0.0;
+        this.holdBalance = 0.0;
     }
 
-    public Wallet(Double balance, String ccName, String ccBillingAddress, CardType ccType, String ccNumber) {
+    public Wallet(Double balance, String ccName, String ccBillingAddress, String ccType, String ccNumber) {
         this();
         this.currentBalance = balance;
         this.ccName = ccName;
-        this.ccBillingAddress = ccBillingAddress;
+        this.ccExpiry = ccBillingAddress;
         this.ccType = ccType;
         this.ccNumber = ccNumber;
     }
@@ -189,19 +185,19 @@ public class Wallet implements Serializable {
         this.ccName = ccName;
     }
 
-    public String getCcBillingAddress() {
-        return ccBillingAddress;
+    public String getCcExpiry() {
+        return ccExpiry;
     }
 
-    public void setCcBillingAddress(String ccBillingAddress) {
-        this.ccBillingAddress = ccBillingAddress;
+    public void setCcExpiry(String ccExpiry) {
+        this.ccExpiry = ccExpiry;
     }
 
-    public CardType getCcType() {
+    public String getCcType() {
         return ccType;
     }
 
-    public void setCcType(CardType ccType) {
+    public void setCcType(String ccType) {
         this.ccType = ccType;
     }
 

@@ -124,9 +124,9 @@ public class DataInitSessionBean {
                Long sessionId6 = sessionSessionBeanLocal.createNewSession(classId2, new Session((formatter.parse("08/05/2020"))));
                Long customerId1 = customerSessionBeanLocal.createNewCustomer(new Customer("customer1@gmail.com", "password", "", (formatter.parse("08/04/1998")), "Valerie", Customer.Gender.Female , "+65-89765677"));
                Long customerId2 = customerSessionBeanLocal.createNewCustomer(new Customer("customer2@gmail.com", "password", "", (formatter.parse("08/04/1998")), "John Wick", Customer.Gender.Male , "+65-89765678"));
-               Long walletId = walletSessionBeanLocal.activateWallet(customerId1, new Wallet(1000.0, "Valerie Vintage", "Pasir Panjang 12345", Wallet.CardType.Visa, "4182567812345678"),singaporeRateId, "");
+               Long walletId = walletSessionBeanLocal.activateWalletWithoutCode(customerId1, new Wallet(1000.0, "Valerie Vintage", "Pasir Panjang 12345", "visa", "4182567812345678"),singaporeRateId);
                Wallet wallet = walletSessionBeanLocal.retrieveWalletByWalletId(walletId);
-               walletSessionBeanLocal.activateWallet(customerId2, new Wallet(1000.0, "John Wick", "Pasir Pendek 12345", Wallet.CardType.Visa, "4182567812341122"),singaporeRateId, wallet.getReferralCode());
+               walletSessionBeanLocal.activateWallet(customerId2, new Wallet(1000.0, "John Wick", "Pasir Pendek 12345", "visa", "4182567812341122"),singaporeRateId, wallet.getReferralCode());
                CustomerSessionId customerSessionId1 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId1My);
                CustomerSessionId customerSessionId2 = customerSessionSessionBeanLocal.signUpClass(customerId1, sessionId2);
                CustomerSessionId customerSessionId3 = customerSessionSessionBeanLocal.signUpClass(customerId2, sessionId1);
