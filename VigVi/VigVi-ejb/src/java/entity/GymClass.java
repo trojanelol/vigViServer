@@ -56,10 +56,8 @@ public class GymClass implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long classId;
     @ManyToOne
-    @JsonbTransient
     private Merchant merchant;
     @OneToMany(mappedBy="gymClass")
-    @JsonbTransient
     private List<Session> sessions;
     private String className;
     private String classDesc;

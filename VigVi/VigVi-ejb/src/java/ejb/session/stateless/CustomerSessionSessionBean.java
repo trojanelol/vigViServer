@@ -66,7 +66,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     @Override
     public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException, NoAvailableSlotException{
      try{
-        
+
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         Session sessionEntity = sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId);
         
