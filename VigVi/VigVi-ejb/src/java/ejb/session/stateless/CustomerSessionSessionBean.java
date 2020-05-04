@@ -64,31 +64,50 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     
     
     @Override
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException,AmountNotSufficientException, NoAvailableSlotException{
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, NoAvailableSlotException{
      try{
 
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
         Session sessionEntity = sessionSessionBeanLocal.retrieveSessionBySessionId(sessionId);
         
             if(sessionEntity.getAvailableSlot() > 0){ 
-        
-                walletSessionBeanLocal.holdVigMoney(customerId, sessionEntity.getGymClass().getClassPrice());
-                CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
-                CustomerSession customerSession = new CustomerSession(customerSessionId);
-                customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
-                customerSession.setCustomer(customerEntity);
-                customerSession.setSession(sessionEntity);
-                customerEntity.getSignedUpClass().add(customerSession);
-                sessionEntity.getSignedUpCustomer().add(customerSession);
-                em.persist(customerSession);
-                em.flush();
+                
+                if(customerEntity.getWallet() != null){
 
-                return customerSessionId;
+                    if(customerEntity.getWallet().getCurrentBalance() >= sessionEntity.getGymClass().getClassPrice() ){
+
+                         walletSessionBeanLocal.holdVigMoney(customerId, sessionEntity.getGymClass().getClassPrice());
+                         
+
+                        CustomerSessionId customerSessionId = new CustomerSessionId(customerId, sessionId);
+                        CustomerSession customerSession = new CustomerSession(customerSessionId);
+                        customerSession.setCustomerSessionStatus(CustomerSession.CustomerSessionStatus.ACTIVE);
+                        customerSession.setCustomer(customerEntity);
+                        customerSession.setSession(sessionEntity);
+                        customerEntity.getSignedUpClass().add(customerSession);
+                        sessionEntity.getSignedUpCustomer().add(customerSession);
+                        em.persist(customerSession);
+                        em.flush();
+
+                        return customerSessionId;
+
+                    }else{
+                        
+                        throw new AmountNotSufficientForSignUpException("You do not have enough money. Please top up");
+                    }
+                    
+                }else{
+                    throw new WalletNotFoundException("You have not activated your account. Please activate");
+                }
 
             }else{
                 throw new NoAvailableSlotException("Session" + sessionId + "does not have enough slot");
             }
-        } catch(PersistenceException ex){
+        }catch(WalletNotFoundException ex){
+            throw new WalletNotFoundException("You have not activated your account. Please activate");
+        }catch(AmountNotSufficientException ex){
+            throw new AmountNotSufficientForSignUpException("You do not have enough money. Please top up");
+        }catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {
                 if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
@@ -97,12 +116,12 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
                 }
                 else
                 {
-                    throw new UnknownPersistenceException(ex.getMessage());
+                    throw new UnknownPersistenceException("Sign Up Failure");
                 }
             }
             else
             {
-                throw new UnknownPersistenceException(ex.getMessage());
+                throw new UnknownPersistenceException("Sign Up Failure");
             }
         }
     }

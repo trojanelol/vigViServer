@@ -25,6 +25,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.AmountNotSufficientException;
+import util.exception.ClassIDExistException;
+import util.exception.NoAvailableSlotException;
+import util.exception.WalletNotFoundException;
 import ws.restful.model.CreateNewClassReq;
 import ws.restful.model.CreateNewClassRsp;
 import ws.restful.model.ErrorRsp;
@@ -106,9 +109,9 @@ public class GymClassResource {
     
     @Path("SignUpClass")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response staffLogin(@QueryParam("customerId") Long customerId, 
+    public Response signUpClass(@QueryParam("customerId") Long customerId, 
                                 @QueryParam("sessionId") Long sessionId)
     {
         try
@@ -119,6 +122,23 @@ public class GymClassResource {
                 
             return Response.status(Response.Status.OK).entity(signUpClassRsp).build();
             
+        }catch(NoAvailableSlotException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("The class is full!");
+            
+            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            
+        }catch(WalletNotFoundException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("Please activate your wallet to sign up for this session");
+            
+            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+        }catch(ClassIDExistException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("You have already signed up for this session.");
+            
+            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            
         }catch(AmountNotSufficientException ex){
             
             ErrorRsp errorRsp = new ErrorRsp("Please top up to sign up for this session");
@@ -127,7 +147,7 @@ public class GymClassResource {
         }
         catch(Exception ex)
         {
-            ErrorRsp errorRsp = new ErrorRsp("You have already signed up for this session");
+            ErrorRsp errorRsp = new ErrorRsp("Unknown sign up failure");
             
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }

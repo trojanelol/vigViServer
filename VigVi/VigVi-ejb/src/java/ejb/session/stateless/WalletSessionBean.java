@@ -172,6 +172,7 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
     //for internal use only
     @Override
     public Wallet holdVigMoney(Long customerId, double deductAmount) throws WalletNotFoundException, AmountNotSufficientException{
+        try{
         Wallet walletEntity = retrieveWalletByCustomerId(customerId);
 
         double currentBalance = walletEntity.getCurrentBalance();
@@ -184,6 +185,9 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
             return walletEntity;
         }else{
             throw new AmountNotSufficientException ("Wallet from customer" + customerId + "does not have enough current Vig$");
+        }
+        }catch(WalletNotFoundException ex){
+            throw new WalletNotFoundException ("Customer" + customerId + " has not activated his account.");
         }
     }
     
@@ -220,11 +224,17 @@ public class WalletSessionBean implements WalletSessionBeanLocal {
     
     @Override
     public Wallet retrieveWalletByCustomerId(Long customerId)throws WalletNotFoundException{
-        Customer customerEntity = em.find(Customer.class, customerId);
-        Wallet walletEntity = em.find(Wallet.class, customerEntity.getWallet().getWalletId());
-
         try{
-            return walletEntity;
+        
+            Customer customerEntity = em.find(Customer.class, customerId);
+            if(customerEntity.getWallet().getWalletId()!= null ){
+                Wallet walletEntity = em.find(Wallet.class, customerEntity.getWallet().getWalletId());
+
+                return walletEntity;
+            
+            }else{
+                throw new WalletNotFoundException ("Wallet from customer" + customerId + "does not exist");
+            }
         }catch (NoResultException | NonUniqueResultException ex){
             throw new WalletNotFoundException ("Wallet from customer" + customerId + "does not exist");
         }
