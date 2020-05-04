@@ -1,12 +1,12 @@
 # vigvi server
 IS3106 Project
 
-Group GP03
-Group Leader: TEO JIA YUN - A0170057L - 93211665 - jiayunt@u.nus.edu
-Group Member: 
-DZULHILMI BIN DZULKIFLI - A0184015M - 82686113 - dzulhilmi@u.nus.edu
-NG HENG YEE - A0185578J - 96620552 - E0318869@u.nus.edu
-TRISHA TAN LI TING - A0185331J - 92952157 - e0318622@u.nus.edu
+##Group GP03
+###Group Leader: TEO JIA YUN - A0170057L - 93211665 - jiayunt@u.nus.edu
+##Group Member: 
+###DZULHILMI BIN DZULKIFLI - A0184015M - 82686113 - dzulhilmi@u.nus.edu
+###NG HENG YEE - A0185578J - 96620552 - E0318869@u.nus.edu
+###TRISHA TAN LI TING - A0185331J - 92952157 - e0318622@u.nus.edu
 
 ### Initialise data
 #### Data will be initiated upon deployment.
