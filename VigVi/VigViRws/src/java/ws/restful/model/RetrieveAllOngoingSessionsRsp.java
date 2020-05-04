@@ -5,6 +5,7 @@
  */
 package ws.restful.model;
 
+import entity.CustomerSession;
 import entity.GymClass;
 import entity.Merchant;
 import entity.Session;
@@ -15,6 +16,14 @@ import java.util.List;
  * @author JiaYunTeo
  */
 public class RetrieveAllOngoingSessionsRsp {
+
+    public List<CustomerSession> getCsessions() {
+        return csessions;
+    }
+
+    public void setCsessions(List<CustomerSession> csessions) {
+        this.csessions = csessions;
+    }
 
     public GymClass getGymClass() {
         return gymClass;
@@ -35,7 +44,8 @@ public class RetrieveAllOngoingSessionsRsp {
     
     private List<Session> sessions;
     private GymClass gymClass;
-    private Merchant merchant;        
+    private Merchant merchant;  
+    private List<CustomerSession> csessions;
 
     public RetrieveAllOngoingSessionsRsp() {
     }
@@ -55,6 +65,15 @@ public class RetrieveAllOngoingSessionsRsp {
     public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
     }
+
+
+    public RetrieveAllOngoingSessionsRsp(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+    
+    
+    
+    
             
             
 }

@@ -97,7 +97,6 @@ public class ClassSessionBean implements ClassSessionBeanLocal {
         return query.getResultList();
 
     }
-    
 
     
     @Override

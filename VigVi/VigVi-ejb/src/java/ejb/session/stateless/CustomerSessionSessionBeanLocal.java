@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerSession;
 import entity.CustomerSessionId;
+import entity.Session;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AmountNotSufficientException;
@@ -51,5 +52,7 @@ public interface CustomerSessionSessionBeanLocal {
     public List<CustomerSession> retrieveAllActiveCustomerSessionsBySessionId(Long sessionId);
 
     public List<CustomerSession> retrieveCustomerSessionByCustomerAndSessionId(Long customerId, Long sessionId);
+
+    public List<Session> retrieveCustomerSessionByCustomerId(Long customerId);
 
 }

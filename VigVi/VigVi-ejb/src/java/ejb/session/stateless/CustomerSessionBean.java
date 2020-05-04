@@ -158,6 +158,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
     }
     
+    
     @Override
     public Customer retrieveCustomerByCustomerId(Long customerId)throws CustomerNotFoundException{
         Customer customerEntity = em.find(Customer.class, customerId);

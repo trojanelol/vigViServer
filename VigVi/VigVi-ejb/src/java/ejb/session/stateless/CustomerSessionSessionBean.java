@@ -327,4 +327,13 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         
         return query.getResultList();
     }
+    
+    @Override
+    public List<Session> retrieveCustomerSessionByCustomerId(Long customerId){
+        Query query = em.createQuery("SELECT c.session from CustomerSession c WHERE c.customerSessionId.customerId = :id2 and c.customerSessionStatus = :status");
+        query.setParameter("status", CustomerSession.CustomerSessionStatus.ACTIVE);
+        query.setParameter("id2", customerId);
+        
+        return query.getResultList();
+    }
 }

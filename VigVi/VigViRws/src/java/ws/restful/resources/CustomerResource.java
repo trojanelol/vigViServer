@@ -5,10 +5,16 @@
  */
 package ws.restful.resources;
 
+import ejb.session.stateless.ClassSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionSessionBeanLocal;
 import entity.Customer;
+import entity.CustomerSession;
+import entity.GymClass;
+import entity.Session;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -29,6 +35,8 @@ import ws.restful.model.CreateNewCustomerReq;
 import ws.restful.model.CreateNewCustomerRsp;
 import ws.restful.model.CustomerLoginRsp;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.GlobalRsp;
+import ws.restful.model.RetrieveAllOngoingSessionsRsp;
 
 /**
  * REST Web Service
@@ -38,7 +46,13 @@ import ws.restful.model.ErrorRsp;
 @Path("Customer")
 public class CustomerResource {
 
+    ClassSessionBeanLocal classSessionBean = lookupClassSessionBeanLocal();
+
+    CustomerSessionSessionBeanLocal customerSessionSessionBean = lookupCustomerSessionSessionBeanLocal();
+
     CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
+    
+    
 
     @Context
     private UriInfo context;
@@ -90,6 +104,51 @@ public class CustomerResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+     @Path("Class")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveActiveRegisteredClass(@QueryParam("customerId") Long customerId)
+    {
+        try
+        {
+            List<Session> emp = customerSessionSessionBean.retrieveCustomerSessionByCustomerId(customerId);
+            
+            return Response.status(Status.OK).entity(new RetrieveAllOngoingSessionsRsp(emp)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+       @Path("Withdraw")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response withdrawSession(@QueryParam("customerId") Long customerId, @QueryParam("sessionId") Long sessionId)
+    {
+        try
+        {
+            
+            CustomerSession temp = customerSessionSessionBean.retrieveCustomerSessionByCustomerAndSessionId(customerId, sessionId).get(0);
+            
+            CustomerSession emp = customerSessionSessionBean.withdrawSession(temp.getCustomerSessionId());
+            
+            return Response.status(Status.OK).entity(new GlobalRsp(true)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+   
 
     
 
@@ -133,6 +192,26 @@ public class CustomerResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (CustomerSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionSessionBeanLocal lookupCustomerSessionSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/CustomerSessionSessionBean!ejb.session.stateless.CustomerSessionSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private ClassSessionBeanLocal lookupClassSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (ClassSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/ClassSessionBean!ejb.session.stateless.ClassSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
