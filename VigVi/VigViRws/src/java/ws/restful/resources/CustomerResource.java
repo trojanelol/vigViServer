@@ -125,6 +125,29 @@ public class CustomerResource {
         }
     }
     
+    
+     @Path("Profile")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response customerProfile(@QueryParam("customerId") Long customerId)
+    {
+        try
+        {
+            Customer profile = customerSessionBean.retrieveCustomerByCustomerId(customerId);
+            
+              return Response.status(Status.OK).entity(new CustomerLoginRsp(profile)).build();
+            
+
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
        @Path("Withdraw")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
@@ -172,6 +195,41 @@ public class CustomerResource {
                 CreateNewCustomerRsp createNewCustomerRsp = new CreateNewCustomerRsp(customer);
                 
                 return Response.status(Response.Status.OK).entity(createNewCustomerRsp).build();
+            }
+            catch(Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+     /**
+     * PUT method for updating or creating an instance of CustomerResource
+     * @param content representation for the resource
+     */
+    @Path("Update")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCustomer(CreateNewCustomerReq createNewCustomerReq) {
+        
+        if(createNewCustomerReq != null)
+        {
+            try
+            {
+  
+                customerSessionBean.updateCustomer(createNewCustomerReq.getNewCustomer());
+               
+                
+                return Response.status(Response.Status.OK).entity(new GlobalRsp(true)).build();
             }
             catch(Exception ex)
             {

@@ -30,6 +30,7 @@ import util.exception.InvalidLoginCredentialException;
 import ws.restful.model.CreateNewMerchantReq;
 import ws.restful.model.CreateNewMerchantRsp;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.GlobalRsp;
 import ws.restful.model.MerchantLoginRsp;
 import ws.restful.model.RetrieveAllOngoingSessionsReq;
 import ws.restful.model.RetrieveAllOngoingSessionsRsp;
@@ -93,6 +94,29 @@ public class MerchantResource {
         }
     }
     
+     @Path("Profile")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response merchantProfile(@QueryParam("merchantId") Long merchantId)
+    {
+        try
+        {
+            Merchant profile = merchantSessionBean.retrieveMerchantByMerchantId(merchantId);
+            
+              return Response.status(Status.OK).entity(new MerchantLoginRsp(profile)).build();
+            
+
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    
     
     
     @Path("Login")
@@ -145,6 +169,38 @@ public class MerchantResource {
                 CreateNewMerchantRsp createNewMerchantRsp = new CreateNewMerchantRsp(merchant);
                 
                 return Response.status(Response.Status.OK).entity(createNewMerchantRsp).build();
+            }
+            catch(Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("Update")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateMerchant(CreateNewMerchantReq createNewMerchantReq) {
+        
+        if(createNewMerchantReq != null)
+        {
+            try
+            {
+                
+                
+                merchantSessionBean.updateMerchant(createNewMerchantReq.getNewMerchant());
+               
+                
+                return Response.status(Response.Status.OK).entity(new GlobalRsp(true)).build();
             }
             catch(Exception ex)
             {

@@ -38,6 +38,5 @@ public class CreateNewSessionReq {
     public void setNewSession(Session newSession) {
         this.newSession = newSession;
     }
-    
-    
+
 }
