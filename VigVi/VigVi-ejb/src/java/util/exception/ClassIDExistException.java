@@ -13,5 +13,9 @@ public class ClassIDExistException extends Exception {
 
     public ClassIDExistException() {
     }
+
+    public ClassIDExistException(String msg) {
+        super(msg);
+    }
     
 }

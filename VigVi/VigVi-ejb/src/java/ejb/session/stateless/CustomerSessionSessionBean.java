@@ -93,7 +93,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
             {
                 if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                 {
-                    throw new ClassIDExistException();
+                    throw new ClassIDExistException("You have already signed up for this session.");
                 }
                 else
                 {

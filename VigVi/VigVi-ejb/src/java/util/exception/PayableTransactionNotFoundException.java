@@ -12,6 +12,7 @@ package util.exception;
 public class PayableTransactionNotFoundException extends Exception {
 
     public PayableTransactionNotFoundException(String string) {
+        super(string);
     }
     
 }

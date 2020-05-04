@@ -12,7 +12,7 @@ package util.exception;
 public class CustomerSessionAttendanceNullException extends Exception {
 
     public CustomerSessionAttendanceNullException(String string) {
-        System.out.print(string);
+        super(string);
     }
     
 }

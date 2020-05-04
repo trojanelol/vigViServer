@@ -13,5 +13,9 @@ public class MerchantUsernameExistException extends Exception {
 
     public MerchantUsernameExistException() {
     }
+
+    public MerchantUsernameExistException(String merchant_Name_Exists) {
+        super(merchant_Name_Exists);
+    }
     
 }

@@ -66,8 +66,9 @@ public class CreateNewMerchantManagedBean {
     
     
     //actioneventlistener
-    public void createNewMerchant(ActionEvent event) throws InputDataValidationException, MerchantUsernameExistException, UnknownPersistenceException, CurrencyNotFoundException{
+    public void createNewMerchant(ActionEvent event) throws  CurrencyNotFoundException{
         
+      try{
         //by default, selecting Singapore Region
         if(currencyId == 0){
           Long currencyId = currencySessionBeanLocal.retrieveAllCurrencies().get(0).getCurrencyId();
@@ -76,7 +77,13 @@ public class CreateNewMerchantManagedBean {
         Long newMerchantId = merchantSessionBeanLocal.createNewMerchant(currencyId, newMerchant);
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New merchant created successfully: " + newMerchantId, null));
-        
+      }catch(InputDataValidationException ex){
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New merchant created failure: " + ex.getMessage(), null));  
+      }catch(MerchantUsernameExistException ex){
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New merchant created failure: " + ex.getMessage(), null));  
+      }catch(Exception ex){
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New merchant created failure: " + ex.getMessage(), null));  
+      }
     }
 
     public Merchant getNewMerchant() {

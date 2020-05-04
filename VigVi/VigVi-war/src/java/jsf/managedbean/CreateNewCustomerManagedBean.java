@@ -67,11 +67,13 @@ public class CreateNewCustomerManagedBean {
     //actioneventlistener
     public void createNewCustomer(ActionEvent event) throws InputDataValidationException, UnknownPersistenceException, CustomerUsernameExistException{
         
-        
+        try{
         Long newCustomerId = customerSessionBeanLocal.createNewCustomer(getNewCustomer());
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New customer created successfully: " + newCustomerId, null));
-        
+        }catch(Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new merchant: " + ex.getMessage(), null));
+        }
     }
     
         public TimeZone getTimeZone() {  

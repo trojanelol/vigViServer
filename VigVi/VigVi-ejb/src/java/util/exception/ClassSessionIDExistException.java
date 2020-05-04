@@ -12,6 +12,11 @@ package util.exception;
 public class ClassSessionIDExistException extends Exception {
 
     public ClassSessionIDExistException() {
+        
+    }
+    
+    public ClassSessionIDExistException(String string) {
+        super(string);
     }
     
 }

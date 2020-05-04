@@ -26,7 +26,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.MerchantUsernameExistException;
 import ws.restful.model.CreateNewMerchantReq;
 import ws.restful.model.CreateNewMerchantRsp;
 import ws.restful.model.ErrorRsp;
@@ -169,13 +171,22 @@ public class MerchantResource {
                 CreateNewMerchantRsp createNewMerchantRsp = new CreateNewMerchantRsp(merchant);
                 
                 return Response.status(Response.Status.OK).entity(createNewMerchantRsp).build();
-            }
-            catch(Exception ex)
-            {
-                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+                }catch(InputDataValidationException ex){
+                    ErrorRsp errorRsp = new ErrorRsp("Input data does not meet requirement.");
 
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-            }
+                    return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        
+                }catch(MerchantUsernameExistException ex){
+                    ErrorRsp errorRsp = new ErrorRsp("Merchant Name or/and Email already exist.");
+
+                    return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+                }
+                catch(Exception ex)
+                {
+                    ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+                }
         }
         else
         {

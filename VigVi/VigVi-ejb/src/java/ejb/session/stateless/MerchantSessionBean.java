@@ -134,7 +134,7 @@ public class MerchantSessionBean implements MerchantSessionBeanLocal {
             {
                 if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException"))
                 {
-                    throw new MerchantUsernameExistException();
+                    throw new MerchantUsernameExistException("Merchant Name Exists.");
                 }
                 else
                 {
