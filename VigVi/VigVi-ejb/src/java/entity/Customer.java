@@ -56,7 +56,6 @@ public class Customer implements Serializable {
     private String customerContactNo;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "walletId", referencedColumnName = "walletId")
-    @JsonbTransient
     private Wallet wallet;
     @OneToMany(mappedBy = "customer")
     @JsonbTransient

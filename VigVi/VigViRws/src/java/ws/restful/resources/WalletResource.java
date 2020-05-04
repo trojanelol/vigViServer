@@ -6,8 +6,11 @@
 package ws.restful.resources;
 
 import ejb.session.stateless.CurrencySessionBeanLocal;
+import ejb.session.stateless.PayableTransactionSessionBeanLocal;
 import ejb.session.stateless.WalletSessionBeanLocal;
+import entity.PayableTransaction;
 import entity.Wallet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
@@ -19,8 +22,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
@@ -30,6 +35,7 @@ import util.exception.WalletNotFoundException;
 import ws.restful.model.ActivateWalletReq;
 import ws.restful.model.ActivateWalletRsp;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.ViewEWalletRsp;
 
 /**
  * REST Web Service
@@ -39,9 +45,13 @@ import ws.restful.model.ErrorRsp;
 @Path("Wallet")
 public class WalletResource {
 
+    PayableTransactionSessionBeanLocal payableTransactionSessionBean = lookupPayableTransactionSessionBeanLocal();
+
     CurrencySessionBeanLocal currencySessionBean = lookupCurrencySessionBeanLocal();
 
     WalletSessionBeanLocal walletSessionBean = lookupWalletSessionBeanLocal();
+    
+    
 
     @Context
     private UriInfo context;
@@ -58,11 +68,26 @@ public class WalletResource {
      * Retrieves representation of an instance of ws.restful.resources.WalletResource
      * @return an instance of java.lang.String
      */
+    @Path("eWallet")
     @GET
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getJson() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+    public Response customerLogin(@QueryParam("customerId") Long customerId)
+    {
+        try
+        {
+            Wallet walletEntity = walletSessionBean.retrieveWalletByCustomerId(customerId);
+            
+            List<PayableTransaction> payables = payableTransactionSessionBean.retrieveAllPayableTransactionsByCustomerId(customerId);
+            
+            return Response.status(Status.OK).entity(new ViewEWalletRsp(walletEntity, payables)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
     }
 
     /**
@@ -152,6 +177,16 @@ public class WalletResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (CurrencySessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/CurrencySessionBean!ejb.session.stateless.CurrencySessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private PayableTransactionSessionBeanLocal lookupPayableTransactionSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (PayableTransactionSessionBeanLocal) c.lookup("java:global/VigVi/VigVi-ejb/PayableTransactionSessionBean!ejb.session.stateless.PayableTransactionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

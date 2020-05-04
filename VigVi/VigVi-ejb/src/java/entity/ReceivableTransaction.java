@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,7 @@ public class ReceivableTransaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long receivableTransactionId;
     @ManyToOne
+    @JsonbTransient
     private Wallet wallet;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;

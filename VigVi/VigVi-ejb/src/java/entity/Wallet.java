@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -89,6 +90,7 @@ public class Wallet implements Serializable {
     
     private String ccNumber;
     @OneToOne(mappedBy = "wallet")
+    @JsonbTransient
     private Customer customer;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date createdDate;
