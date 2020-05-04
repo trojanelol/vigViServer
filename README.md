@@ -8,10 +8,14 @@ IS3106 Project
 ### NG HENG YEE - A0185578J - 96620552 - E0318869@u.nus.edu
 ### TRISHA TAN LI TING - A0185331J - 92952157 - e0318622@u.nus.edu
 
-### Initialise data
+### Initialise backend data
 #### Data will be initiated upon deployment.
 #### If you need to drop all tables, you can find script in 'data' folder.
 #### If you need to Jsonb.jar, you can find it in 'data' folder as well. 
+#### 1. You will find 2 folders in src folder - one is for server application ('vigViServer'), and the other for client ('VigViClient').
+#### 2. Open vigViServer using NetBeans 
+#### 3. Create vigvi Database
+#### 4. Build and deploy vigviserver project
 
 ### VigVi Server
 #### 1. go to http://localhost:8080/VigVi-war/
@@ -20,7 +24,7 @@ IS3106 Project
 
 ### VigVI Client
 #### 1. Go to folder "VigViClient" thru git bash or cmd or vscode terminal
-#### 2. Run 'npm install' to install dependencies
+#### 2. Run 'npm install' to install all dependencies
 #### 3. Run 'npm start'
 #### 4. Go to http://localhost:4200/login
 #### 6. To login as customer, use username: customer2@gmail.com and password: password
