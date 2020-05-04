@@ -173,6 +173,31 @@ public class SessionResource {
         }
     }
     
+     @Path("cancelSession")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response cancelSession(@QueryParam("sessionId") Long sessionId ) {
+        
+        try
+        {
+            sessionSessionBean.cancelSession(sessionId);   
+
+            return Response.status(Status.OK).entity(new GlobalRsp(true)).build();
+        }catch(ArrayIndexOutOfBoundsException ex){
+            
+            ErrorRsp errorRsp = new ErrorRsp("No sign up so far");
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
     @Path("EndSession")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
