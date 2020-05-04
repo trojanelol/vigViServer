@@ -72,7 +72,7 @@ public class WalletResource {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response customerLogin(@QueryParam("customerId") Long customerId)
+    public Response viewWallet(@QueryParam("customerId") Long customerId)
     {
         try
         {
@@ -81,6 +81,27 @@ public class WalletResource {
             List<PayableTransaction> payables = payableTransactionSessionBean.retrieveAllPayableTransactionsByCustomerId(customerId);
             
             return Response.status(Status.OK).entity(new ViewEWalletRsp(walletEntity, payables)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("TopUp")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response topUp(@QueryParam("customerId") Long customerId, @QueryParam("amount") int amount, @QueryParam("currencyId") Long currencyId)
+    {
+        try
+        {
+            Wallet walletEntity = walletSessionBean.topUpMoney(customerId, amount, currencyId);
+           
+            
+            return Response.status(Status.OK).entity(new ViewEWalletRsp(walletEntity)).build();
         }
         catch(Exception ex)
         {

@@ -36,6 +36,10 @@ public class ViewEWalletRsp {
 
     public ViewEWalletRsp() {
     }
+    
+    public ViewEWalletRsp(Wallet wallet) {
+        this.wallet = wallet;
+    }
 
     public ViewEWalletRsp(Wallet wallet, List<PayableTransaction> payables) {
         this.wallet = wallet;
