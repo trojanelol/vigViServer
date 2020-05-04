@@ -35,6 +35,7 @@ import util.exception.WalletNotFoundException;
 import ws.restful.model.ActivateWalletReq;
 import ws.restful.model.ActivateWalletRsp;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.GlobalRsp;
 import ws.restful.model.ViewEWalletRsp;
 
 /**
@@ -102,6 +103,27 @@ public class WalletResource {
            
             
             return Response.status(Status.OK).entity(new ViewEWalletRsp(walletEntity)).build();
+        }
+        catch(Exception ex)
+        {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("Verify")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response verify(@QueryParam("payableId") Long payableId)
+    {
+        try
+        {
+            boolean payable = payableTransactionSessionBean.merchantReceiveTransaction(payableId);
+           
+            
+            return Response.status(Status.OK).entity(new GlobalRsp(payable)).build();
         }
         catch(Exception ex)
         {
