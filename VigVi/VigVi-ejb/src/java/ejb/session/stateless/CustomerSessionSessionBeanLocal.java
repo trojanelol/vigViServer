@@ -11,6 +11,7 @@ import entity.Session;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.AmountNotSufficientException;
+import util.exception.AmountNotSufficientForSignUpException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
@@ -30,8 +31,6 @@ public interface CustomerSessionSessionBeanLocal {
 
     
     public CustomerSession retrieveCustomerSessionById(CustomerSessionId customerSessionId) throws CustomerSessionNotFoundException;
-
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException;  
 
     public List<CustomerSession> retrieveAllCustomerSessionsBySessionId(Long sessionId);
 
@@ -54,5 +53,7 @@ public interface CustomerSessionSessionBeanLocal {
     public List<CustomerSession> retrieveCustomerSessionByCustomerAndSessionId(Long customerId, Long sessionId);
 
     public List<Session> retrieveCustomerSessionByCustomerId(Long customerId);
+
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException, AmountNotSufficientForSignUpException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, NoAvailableSlotException;
 
 }

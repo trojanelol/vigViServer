@@ -39,6 +39,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.AdminUsernameExistException;
 import util.exception.AmountNotSufficientException;
+import util.exception.AmountNotSufficientForSignUpException;
 import util.exception.ClassIDExistException;
 import util.exception.CurrencyNotFoundException;
 import util.exception.CustomerNotFoundException;
@@ -96,13 +97,13 @@ public class DataInitSessionBean {
 
         try {
                 initializeData();        
-        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException | CustomerSessionAttendanceNullException | AdminUsernameExistException | ReferralCodeNotFoundException ex) {
+        } catch (ParseException | CustomerNotFoundException | GymClassNotFoundException | ClassIDExistException | UnknownPersistenceException | MerchantNotFoundException | CustomerSessionNotFoundException | SessionNotFoundException | CurrencyNotFoundException | InputDataValidationException | CustomerUsernameExistException | MerchantUsernameExistException | WalletNotFoundException | AmountNotSufficientException | NoAvailableSlotException | CustomerSessionAttendanceNullException | AdminUsernameExistException | ReferralCodeNotFoundException | AmountNotSufficientForSignUpException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     
-    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException, AdminUsernameExistException, ReferralCodeNotFoundException{
+    private void initializeData() throws ClassIDExistException, UnknownPersistenceException, MerchantNotFoundException, ParseException, GymClassNotFoundException, CustomerNotFoundException, SessionNotFoundException, CurrencyNotFoundException, CustomerSessionNotFoundException, InputDataValidationException, CustomerUsernameExistException, MerchantUsernameExistException, WalletNotFoundException, AmountNotSufficientException, NoAvailableSlotException, CustomerSessionAttendanceNullException, AdminUsernameExistException, ReferralCodeNotFoundException, AmountNotSufficientForSignUpException{
         if(em.find(Admin.class, 1l)==null){
                Long adminId = adminSessionBeanLocal.createNewAdmin(new Admin("Veronica","Wong","admin","password"));
                Long singaporeRateId = currencySessionBeanLocal.createNewCurrency(new Currency(2.5,"SGD"));

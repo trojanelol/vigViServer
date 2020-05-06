@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.AmountNotSufficientException;
+import util.exception.AmountNotSufficientForSignUpException;
 import util.exception.ClassIDExistException;
 import util.exception.ClassSessionIDExistException;
 import util.exception.CurrencyNotFoundException;
@@ -64,7 +65,7 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
     
     
     @Override
-    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, NoAvailableSlotException{
+    public CustomerSessionId signUpClass(Long customerId, Long sessionId) throws ClassIDExistException , AmountNotSufficientForSignUpException, UnknownPersistenceException, CustomerNotFoundException, SessionNotFoundException, WalletNotFoundException, NoAvailableSlotException{
      try{
 
         Customer customerEntity = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
@@ -106,7 +107,8 @@ public class CustomerSessionSessionBean implements CustomerSessionSessionBeanLoc
         }catch(WalletNotFoundException ex){
             throw new WalletNotFoundException("You have not activated your account. Please activate");
         }catch(AmountNotSufficientException ex){
-            throw new AmountNotSufficientForSignUpException("You do not have enough money. Please top up");
+
+             throw new AmountNotSufficientForSignUpException("You do not have enough money. Please top up");
         }catch(PersistenceException ex){
             if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException"))
             {

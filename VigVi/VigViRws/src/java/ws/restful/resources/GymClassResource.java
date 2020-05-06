@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.AmountNotSufficientException;
+import util.exception.AmountNotSufficientForSignUpException;
 import util.exception.ClassIDExistException;
 import util.exception.NoAvailableSlotException;
 import util.exception.WalletNotFoundException;
@@ -139,7 +140,7 @@ public class GymClassResource {
             
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
             
-        }catch(AmountNotSufficientException ex){
+        }catch(AmountNotSufficientForSignUpException ex){
             
             ErrorRsp errorRsp = new ErrorRsp("Please top up to sign up for this session");
             
